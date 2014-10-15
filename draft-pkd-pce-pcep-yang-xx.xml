@@ -11,7 +11,7 @@
 <?rfc compact="yes" ?>
 <?rfc iprnotified="Yes" ?>
 <?rfc strict="no" ?>
-<rfc ipr="trust200902" category="std" docName="draft-pkd-pce-pcep-yang-00" obsoletes="" updates="" submissionType="IETF" xml:lang="en">
+<rfc ipr="trust200902" category="std" docName="draft-pkd-pce-pcep-yang-01" obsoletes="" updates="" submissionType="IETF" xml:lang="en">
   <front>
     <title abbrev="PCE-YANG">A YANG Data Model for Path Computation Element Communications Protocol (PCEP)</title>
     <author initials="R" surname="Pobbathi" fullname="Rohit Pobbathi">
@@ -252,135 +252,137 @@ module ietf-pcep
  |           +--rw addr         inet:ip-address
  |           +--rw description? string
  +--ro pcep-state
-    +--ro entity* [addr-type addr]
-       +--ro index?                uint32
-       +--ro addr-type             inet:ip-version
-       +--ro addr                  inet:ip-address
-       +--ro admin-status?         pcep-admin-status
-       +--ro oper-status?          pcep-admin-status
-       +--ro role?                 pcep-role
-       +--ro connect-timer?        uint32
-       +--ro connect-max-retry?    uint32
-       +--ro init-backoff-timer?   uint32
-       +--ro max-backoff-timer?    uint32
-       +--ro open-wait-timer?      uint32
-       +--ro keep-wait-timer?      uint32
-       +--ro keep-alive-timer?     uint32
-       +--ro dead-timer?           uint32
-       +--ro allow-negotiation?    boolean
-       +--ro max-keep-alive-timer? uint32
-       +--ro max-dead-timer?       uint32
-       +--ro min-keep-alive-timer? uint32
-       +--ro min-dead-timer?       uint32
-       +--ro sync-timer?           uint32
-       +--ro request-timer?        uint32
-       +--ro max-sessions?         uint32
-       +--ro max-unknown-reqs?     uint32
-       +--ro max-unknown-msgs?     uint32
-       +--ro peers
-          +--ro peer* [addr-type addr]
-             +--ro addr-type                 inet:ip-version
-             +--ro addr                      inet:ip-address
-             +--ro role?                     pcep-role
-             +--ro discontinuity-time?       yang:timestamp
-             +--ro initiate-session?         boolean
-             +--ro session-exists?           boolean
-             +--ro num-sess-setup-ok?        yang:counter32
-             +--ro num-sess-setup-fail?      yang:counter32
-             +--ro session-up-time?          yang:timestamp
-             +--ro session-fail-time?        yang:timestamp
-             +--ro session-fail-up-time?     yang:timestamp
-             +--ro avg-rsp-time?             uint32
-             +--ro lwm-rsp-time?             uint32
-             +--ro hwm-rsp-time?             uint32
-             +--ro num-pcreq-sent?           yang:counter32
-             +--ro num-pcreq-rcvd?           yang:counter32
-             +--ro num-pcrep-sent?           yang:counter32
-             +--ro num-pcrep-rcvd?           yang:counter32
-             +--ro num-pcerr-sent?           yang:counter32
-             +--ro num-pcerr-rcvd?           yang:counter32
-             +--ro num-pcntf-sent?           yang:counter32
-             +--ro num-pcntf-rcvd?           yang:counter32
-             +--ro num-keepalive-sent?       yang:counter32
-             +--ro num-keepalive-rcvd?       yang:counter32
-             +--ro num-unknown-rcvd?         yang:counter32
-             +--ro num-corrupt-rcvd?         yang:counter32
-             +--ro num-req-sent?             yang:counter32
-             +--ro num-svec-sent?            yang:counter32
-             +--ro num-svec-req-sent?        yang:counter32
-             +--ro num-req-sent-pend-rep?    yang:counter32
-             +--ro num-req-sent-ero-rcvd?    yang:counter32
-             +--ro num-req-sent-nopath-rcvd? yang:counter32
-             +--ro num-req-sent-cancel-rcvd? yang:counter32
-             +--ro num-req-sent-error-rcvd?  yang:counter32
-             +--ro num-req-sent-timeout?     yang:counter32
-             +--ro num-req-sent-cancel-sent? yang:counter32
-             +--ro num-req-rcvd?             yang:counter32
-             +--ro num-svec-rcvd?            yang:counter32
-             +--ro num-svec-req-rcvd?        yang:counter32
-             +--ro num-req-rcvd-pend-rep?    yang:counter32
-             +--ro num-req-rcvd-ero-sent?    yang:counter32
-             +--ro num-req-rcvd-nopath-sent? yang:counter32
-             +--ro num-req-rcvd-cancel-sent? yang:counter32
-             +--ro num-req-rcvd-cancel-rcvd? yang:counter32
-             +--ro num-rep-rcvd-unknown?     yang:counter32
-             +--ro num-req-rcvd-unknown?     yang:counter32
-             +--ro num-req-sent-closed?      yang:counter32
-             +--ro num-req-rcvd-closed?      yang:counter32
-             +--ro sessions
-                +--ro session* [initiator]
-                   +--ro initiator                 pcep-initiator
-                   +--ro state-last-change?        yang:timestamp
-                   +--ro state?                    pcep-sess-state
-                   +--ro connect-retry?            yang:counter32
-                   +--ro local-id?                 uint32
-                   +--ro remote-id?                uint32
-                   +--ro keepalive-timer?          uint32
-                   +--ro peer-keepalive-timer?     uint32
-                   +--ro dead-timer?               uint32
-                   +--ro peer-dead-timer?          uint32
-                   +--ro ka-hold-time-rem?         uint32
-                   +--ro overloaded?               boolean
-                   +--ro overload-time?            uint32
-                   +--ro peer-overloaded?          boolean
-                   +--ro peer-overload-time?       uint32
-                   +--ro discontinuity-time?       yang:timestamp
-                   +--ro avg-rsp-time?             uint32
-                   +--ro lwm-rsp-time?             uint32
-                   +--ro hwm-rsp-time?             uint32
-                   +--ro num-pcreq-sent?           yang:counter32
-                   +--ro num-pcreq-rcvd?           yang:counter32
-                   +--ro num-pcrep-sent?           yang:counter32
-                   +--ro num-pcrep-rcvd?           yang:counter32
-                   +--ro num-pcerr-sent?           yang:counter32
-                   +--ro num-pcerr-rcvd?           yang:counter32
-                   +--ro num-pcntf-sent?           yang:counter32
-                   +--ro num-pcntf-rcvd?           yang:counter32
-                   +--ro num-keepalive-sent?       yang:counter32
-                   +--ro num-keepalive-rcvd?       yang:counter32
-                   +--ro num-unknown-rcvd?         yang:counter32
-                   +--ro num-corrupt-rcvd?         yang:counter32
-                   +--ro num-req-sent?             yang:counter32
-                   +--ro num-svec-sent?            yang:counter32
-                   +--ro num-svec-req-sent?        yang:counter32
-                   +--ro num-req-sent-pend-rep?    yang:counter32
-                   +--ro num-req-sent-ero-rcvd?    yang:counter32
-                   +--ro num-req-sent-nopath-rcvd? yang:counter32
-                   +--ro num-req-sent-cancel-rcvd? yang:counter32
-                   +--ro num-req-sent-error-rcvd?  yang:counter32
-                   +--ro num-req-sent-timeout?     yang:counter32
-                   +--ro num-req-sent-cancel-sent? yang:counter32
-                   +--ro num-req-rcvd?             yang:counter32
-                   +--ro num-svec-rcvd?            yang:counter32
-                   +--ro num-svec-req-rcvd?        yang:counter32
-                   +--ro num-req-rcvd-pend-rep?    yang:counter32
-                   +--ro num-req-rcvd-ero-sent?    yang:counter32
-                   +--ro num-req-rcvd-nopath-sent? yang:counter32
-                   +--ro num-req-rcvd-cancel-sent? yang:counter32
-                   +--ro num-req-rcvd-cancel-rcvd? yang:counter32
-                   +--ro num-rep-rcvd-unknown?     yang:counter32
-                   +--ro num-req-rcvd-unknown?     yang:counter32 
-                   ]]></artwork>
+ |  +--ro entity* [addr-type addr]
+ |     +--ro index?                uint32
+ |     +--ro addr-type             inet:ip-version
+ |     +--ro addr                  inet:ip-address
+ |     +--ro admin-status?         pcep-admin-status
+ |     +--ro oper-status?          pcep-admin-status
+ |     +--ro role?                 pcep-role
+ |     +--ro connect-timer?        uint32
+ |     +--ro connect-max-retry?    uint32
+ |     +--ro init-backoff-timer?   uint32
+ |     +--ro max-backoff-timer?    uint32
+ |     +--ro open-wait-timer?      uint32
+ |     +--ro keep-wait-timer?      uint32
+ |     +--ro keep-alive-timer?     uint32
+ |     +--ro dead-timer?           uint32
+ |     +--ro allow-negotiation?    boolean
+ |     +--ro max-keep-alive-timer? uint32
+ |     +--ro max-dead-timer?       uint32
+ |     +--ro min-keep-alive-timer? uint32
+ |     +--ro min-dead-timer?       uint32
+ |     +--ro sync-timer?           uint32
+ |     +--ro request-timer?        uint32
+ |     +--ro max-sessions?         uint32
+ |     +--ro max-unknown-reqs?     uint32
+ |     +--ro max-unknown-msgs?     uint32
+ |     +--ro peers
+ |        +--ro peer* [addr-type addr]
+ |           +--ro addr-type                 inet:ip-version
+ |           +--ro addr                      inet:ip-address
+ |           +--ro role?                     pcep-role
+ |           +--ro discontinuity-time?       yang:timestamp
+ |           +--ro initiate-session?         boolean
+ |           +--ro session-exists?           boolean
+ |           +--ro num-sess-setup-ok?        yang:counter32
+ |           +--ro num-sess-setup-fail?      yang:counter32
+ |           +--ro session-up-time?          yang:timestamp
+ |           +--ro session-fail-time?        yang:timestamp
+ |           +--ro session-fail-up-time?     yang:timestamp
+ |           +--ro avg-rsp-time?             uint32
+ |           +--ro lwm-rsp-time?             uint32
+ |           +--ro hwm-rsp-time?             uint32
+ |           +--ro num-pcreq-sent?           yang:counter32
+ |           +--ro num-pcreq-rcvd?           yang:counter32
+ |           +--ro num-pcrep-sent?           yang:counter32
+ |           +--ro num-pcrep-rcvd?           yang:counter32
+ |           +--ro num-pcerr-sent?           yang:counter32
+ |           +--ro num-pcerr-rcvd?           yang:counter32
+ |           +--ro num-pcntf-sent?           yang:counter32
+ |           +--ro num-pcntf-rcvd?           yang:counter32
+ |           +--ro num-keepalive-sent?       yang:counter32
+ |           +--ro num-keepalive-rcvd?       yang:counter32
+ |           +--ro num-unknown-rcvd?         yang:counter32
+ |           +--ro num-corrupt-rcvd?         yang:counter32
+ |           +--ro num-req-sent?             yang:counter32
+ |           +--ro num-svec-sent?            yang:counter32
+ |           +--ro num-svec-req-sent?        yang:counter32
+ |           +--ro num-req-sent-pend-rep?    yang:counter32
+ |           +--ro num-req-sent-ero-rcvd?    yang:counter32
+ |           +--ro num-req-sent-nopath-rcvd? yang:counter32
+ |           +--ro num-req-sent-cancel-rcvd? yang:counter32
+ |           +--ro num-req-sent-error-rcvd?  yang:counter32
+ |           +--ro num-req-sent-timeout?     yang:counter32
+ |           +--ro num-req-sent-cancel-sent? yang:counter32
+ |           +--ro num-req-rcvd?             yang:counter32
+ |           +--ro num-svec-rcvd?            yang:counter32
+ |           +--ro num-svec-req-rcvd?        yang:counter32
+ |           +--ro num-req-rcvd-pend-rep?    yang:counter32
+ |           +--ro num-req-rcvd-ero-sent?    yang:counter32
+ |           +--ro num-req-rcvd-nopath-sent? yang:counter32
+ |           +--ro num-req-rcvd-cancel-sent? yang:counter32
+ |           +--ro num-req-rcvd-cancel-rcvd? yang:counter32
+ |           +--ro num-rep-rcvd-unknown?     yang:counter32
+ |           +--ro num-req-rcvd-unknown?     yang:counter32
+ |           +--ro num-req-sent-closed?      yang:counter32
+ |           +--ro num-req-rcvd-closed?      yang:counter32
+ |           +--ro sessions
+ |              +--ro session* [initiator]
+ |                 +--ro initiator                 pcep-initiator
+ |                 +--ro state-last-change?        yang:timestamp
+ |                 +--ro state?                    pcep-sess-state
+ |                 +--ro connect-retry?            yang:counter32
+ |                 +--ro local-id?                 uint32
+ |                 +--ro remote-id?                uint32
+ |                 +--ro keepalive-timer?          uint32
+ |                 +--ro peer-keepalive-timer?     uint32
+ |                 +--ro dead-timer?               uint32
+ |                 +--ro peer-dead-timer?          uint32
+ |                 +--ro ka-hold-time-rem?         uint32
+ |                 +--ro overloaded?               boolean
+ |                 +--ro overload-time?            uint32
+ |                 +--ro peer-overloaded?          boolean
+ |                 +--ro peer-overload-time?       uint32
+ |                 +--ro discontinuity-time?       yang:timestamp
+ |                 +--ro avg-rsp-time?             uint32
+ |                 +--ro lwm-rsp-time?             uint32
+ |                 +--ro hwm-rsp-time?             uint32
+ |                 +--ro num-pcreq-sent?           yang:counter32
+ |                 +--ro num-pcreq-rcvd?           yang:counter32
+ |                 +--ro num-pcrep-sent?           yang:counter32
+ |                 +--ro num-pcrep-rcvd?           yang:counter32
+ |                 +--ro num-pcerr-sent?           yang:counter32
+ |                 +--ro num-pcerr-rcvd?           yang:counter32
+ |                 +--ro num-pcntf-sent?           yang:counter32
+ |                 +--ro num-pcntf-rcvd?           yang:counter32
+ |                 +--ro num-keepalive-sent?       yang:counter32
+ |                 +--ro num-keepalive-rcvd?       yang:counter32
+ |                 +--ro num-unknown-rcvd?         yang:counter32
+ |                 +--ro num-corrupt-rcvd?         yang:counter32
+ |                 +--ro num-req-sent?             yang:counter32
+ |                 +--ro num-svec-sent?            yang:counter32
+ |                 +--ro num-svec-req-sent?        yang:counter32
+ |                 +--ro num-req-sent-pend-rep?    yang:counter32
+ |                 +--ro num-req-sent-ero-rcvd?    yang:counter32
+ |                 +--ro num-req-sent-nopath-rcvd? yang:counter32
+ |                 +--ro num-req-sent-cancel-rcvd? yang:counter32
+ |                 +--ro num-req-sent-error-rcvd?  yang:counter32
+ |                 +--ro num-req-sent-timeout?     yang:counter32
+ |                 +--ro num-req-sent-cancel-sent? yang:counter32
+ |                 +--ro num-req-rcvd?             yang:counter32
+ |                 +--ro num-svec-rcvd?            yang:counter32
+ |                 +--ro num-svec-req-rcvd?        yang:counter32
+ |                 +--ro num-req-rcvd-pend-rep?    yang:counter32
+ |                 +--ro num-req-rcvd-ero-sent?    yang:counter32
+ |                 +--ro num-req-rcvd-nopath-sent? yang:counter32
+ |                 +--ro num-req-rcvd-cancel-sent? yang:counter32
+ |                 +--ro num-req-rcvd-cancel-rcvd? yang:counter32
+ |                 +--ro num-rep-rcvd-unknown?     yang:counter32
+ |                 +--ro num-req-rcvd-unknown?     yang:counter32 
+ +--n pcep-state-change
+    +--TBD
+                  ]]></artwork>
         </figure>
       </t>     
     
@@ -460,6 +462,8 @@ module ietf-pcep
    <t> There is only one list for the operational state of all sessions
    ("/pcep-state/entity/peers/peer/sessions/session").
     </t>           
+    </section>
+    <section title="Notifications" toc="default">
     </section>
     </section>
     
