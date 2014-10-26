@@ -1,5 +1,5 @@
-    
-      
+
+
 module ietf-pcep {
     namespace "urn:ietf:params:xml:ns:yang:ietf-pcep";
     prefix pcep;
@@ -34,10 +34,10 @@ module ietf-pcep {
          vendor implementations.";
 
 
-    revision 2014-10-09 {
+    revision 2014-10-25 {
         description "Initial revision.";
-        reference 
-            "RFC XXXX:  A YANG Data Model for Path Computation 
+        reference
+            "RFC XXXX:  A YANG Data Model for Path Computation
                         Element Communications Protocol
                         (PCEP)";
     }
@@ -73,7 +73,7 @@ module ietf-pcep {
             enum pcc-and-pce {
                 value "3";
                 description
-                "The role of both Path Computation Client and 
+                "The role of both Path Computation Client and
                  Path Computation Element";
             }
         }
@@ -82,11 +82,11 @@ module ietf-pcep {
             "The role of a PCEP speaker.
              Takes one of the following values
              - unknown(0): the role is not known.
-             - pcc(1): the role is of a Path Computation 
+             - pcc(1): the role is of a Path Computation
                Client (PCC).
-             - pce(2): the role is of a Path Computation 
+             - pce(2): the role is of a Path Computation
                Server (PCE).
-             - pccAndPce(3): the role is of both a PCC and 
+             - pccAndPce(3): the role is of both a PCC and
                a PCE.";
 
     }
@@ -137,7 +137,7 @@ module ietf-pcep {
             enum oper-status-failed {
                 value "5";
                 description
-                "The PCEP entity has failed and will recover 
+                "The PCEP entity has failed and will recover
                  when possible.";
             }
             enum oper-status-failed-perm {
@@ -174,13 +174,13 @@ module ietf-pcep {
         }
         description
         "The initiator of the session, that is, whether the TCP
-         connection was initiated by the local PCEP entity or 
+         connection was initiated by the local PCEP entity or
          the remote peer.
          Takes one of the following values
              - local(1): Initiated locally
              - remote(2): Initiated remotely";
     }
-    
+
     typedef pcep-sess-state {
         type enumeration {
             enum tcp-pending {
@@ -194,7 +194,7 @@ module ietf-pcep {
                 description
                     "The open-wait state of PCEP session.";
             }
-            
+
             enum keep-wait {
                 value "3";
                 description
@@ -210,7 +210,7 @@ module ietf-pcep {
         description
             "The current state of the session.
 
-             The set of possible states excludes the idle state 
+             The set of possible states excludes the idle state
              since entries do not exist in the idle state.
              Takes one of the following values
                 - tcp-pending(1): PCEP TCP Pending state
@@ -218,14 +218,14 @@ module ietf-pcep {
                 - keep-wait(3): PCEP Keep Wait state
                 - session-up(4): PCEP Session Up state";
     }
-        
+
 
     /*
      * Features - TBD
      */
-    
-    /* 
-     * Groupings 
+
+    /*
+     * Groupings
      */
     grouping  pcep-entity-identifier{
         description
@@ -250,10 +250,10 @@ module ietf-pcep {
                  If operating as a PCC, the PCEP entity binds
                  outgoing TCP connections to this address.
 
-                 It is possible for the PCEP entity to operate 
-                 both as a PCC and a PCE Server, in which case it 
-                 uses this address both to listen for incoming 
-                 TCP connections and to bind outgoing TCP 
+                 It is possible for the PCEP entity to operate
+                 both as a PCC and a PCE Server, in which case it
+                 uses this address both to listen for incoming
+                 TCP connections and to bind outgoing TCP
                  connections.";
         }
     }
@@ -289,8 +289,8 @@ module ietf-pcep {
             default 60;
             description
                 "The time in seconds that the PCEP entity will wait
-                 to establish a TCP connection with a peer.  If a 
-                 TCP connection is not established within this time 
+                 to establish a TCP connection with a peer.  If a
+                 TCP connection is not established within this time
                  then PCEP aborts the session setup attempt.";
             reference
                 "RFC 5440: Path Computation Element (PCE)
@@ -319,8 +319,8 @@ module ietf-pcep {
                "The initial back-off time in seconds for retrying
                 a failed session setup attempt to a peer.
 
-                The back-off time increases for each failed 
-                session setup attempt, until a maximum back-off 
+                The back-off time increases for each failed
+                session setup attempt, until a maximum back-off
                 time is reached.  The maximum back-off time is
                 max-backoff-timer.";
         }
@@ -346,7 +346,7 @@ module ietf-pcep {
             default 60;
             description
                "The time in seconds that the PCEP entity will wait
-                to receive an Open message from a peer after the 
+                to receive an Open message from a peer after the
                 TCP connection has come up.
 
                 If no Open message is received within this time then
@@ -364,12 +364,12 @@ module ietf-pcep {
             units "seconds";
             default 60;
             description
-                "The time in seconds that the PCEP entity will wait 
+                "The time in seconds that the PCEP entity will wait
                  to receive a Keepalive or PCErr message from a peer
-                 during session initialization after receiving an 
-                 Open message.  If no Keepalive or PCErr message is 
-                 received within this time then PCEP terminates the 
-                 TCP connection and deletes the associated 
+                 during session initialization after receiving an
+                 Open message.  If no Keepalive or PCErr message is
+                 received within this time then PCEP terminates the
+                 TCP connection and deletes the associated
                  sessions.";
             reference
                 "RFC 5440: Path Computation Element (PCE)
@@ -385,15 +385,15 @@ module ietf-pcep {
             description
                 "The keep alive transmission timer that this PCEP
                  entity will propose in the initial OPEN message of
-                 each session it is involved in.  This is the 
-                 maximum time between two consecutive messages sent 
-                 to a peer. Zero means that the PCEP entity prefers 
+                 each session it is involved in.  This is the
+                 maximum time between two consecutive messages sent
+                 to a peer. Zero means that the PCEP entity prefers
                  not to send Keepalives at all.
 
-                 Note that the actual Keepalive transmission 
-                 intervals, in either direction of an active PCEP 
-                 session, are determined by negotiation between the 
-                 peers as specified by RFC 5440, and so may differ 
+                 Note that the actual Keepalive transmission
+                 intervals, in either direction of an active PCEP
+                 session, are determined by negotiation between the
+                 peers as specified by RFC 5440, and so may differ
                  from this configured value.";
             reference
                 "RFC 5440: Path Computation Element (PCE)
@@ -406,17 +406,19 @@ module ietf-pcep {
             }
             units "seconds";
             must ". >= ../keep-alive-timer" {
+                error-message "The dead timer must be "
+                       + "larger than the keep alive timer";
                 description
-                    "This value MUST be greater than 
+                    "This value MUST be greater than
                      keep-alive-timer.";
-                    
+
             }
-            default 120;            
+            default 120;
             description
                 "The dead timer that this PCEP entity will propose
                  in the initial OPEN message of each session it is
                  involved in. This is the time after which a peer
-                 should declare a session down if it does not 
+                 should declare a session down if it does not
                  receive any PCEP messages. Zero suggests that the
                  peer does not run a dead timer at all." ;
             reference
@@ -437,11 +439,11 @@ module ietf-pcep {
             }
             units "seconds";
             description
-                "In PCEP session parameter negotiation in seconds, 
-                 the maximum value that this PCEP entity will 
-                 accept from a peer for the interval between 
+                "In PCEP session parameter negotiation in seconds,
+                 the maximum value that this PCEP entity will
+                 accept from a peer for the interval between
                  Keepalive transmissions. Zero means that the PCEP
-                 entity will allow no Keepalive transmission at 
+                 entity will allow no Keepalive transmission at
                  all." ;
         }
 
@@ -451,10 +453,10 @@ module ietf-pcep {
             }
             units "seconds";
             description
-                "In PCEP session parameter negotiation in seconds, 
+                "In PCEP session parameter negotiation in seconds,
                  the maximum value that this PCEP entity will accept
-                 from a peer for the Dead timer.  Zero means that 
-                 the PCEP entity will allow not running a Dead 
+                 from a peer for the Dead timer.  Zero means that
+                 the PCEP entity will allow not running a Dead
                  timer.";
         }
 
@@ -464,10 +466,10 @@ module ietf-pcep {
             }
             units "seconds";
             description
-                "In PCEP session parameter negotiation in seconds, 
-                 the minimum value that this PCEP entity will 
-                 accept for the interval between Keepalive 
-                 transmissions. Zero means that the PCEP entity 
+                "In PCEP session parameter negotiation in seconds,
+                 the minimum value that this PCEP entity will
+                 accept for the interval between Keepalive
+                 transmissions. Zero means that the PCEP entity
                  insists on no Keepalive transmission at all.";
         }
 
@@ -477,10 +479,10 @@ module ietf-pcep {
             }
             units "seconds";
             description
-                 "In PCEP session parameter negotiationin in 
-                  seconds, the minimum value that this PCEP entity 
-                  will accept for the Dead timer.  Zero means that 
-                  the PCEP entity insists on not running a Dead 
+                 "In PCEP session parameter negotiationin in
+                  seconds, the minimum value that this PCEP entity
+                  will accept for the Dead timer.  Zero means that
+                  the PCEP entity insists on not running a Dead
                   timer.";
         }
 
@@ -492,19 +494,19 @@ module ietf-pcep {
             default 60;
             description
                 "The value of SyncTimer in seconds is used in the
-                 case of synchronized path computation request 
-                 using the SVEC object. Consider the case where a 
-                 PCReq message is received by a PCE that contains 
-                 the SVEC object referring to M synchronized path 
-                 computation requests.  If after the expiration of 
-                 the SyncTimer all the M path computation requests 
-                 have not been, received a protocol error is 
-                 triggered and the PCE MUST cancel the whole set 
+                 case of synchronized path computation request
+                 using the SVEC object. Consider the case where a
+                 PCReq message is received by a PCE that contains
+                 the SVEC object referring to M synchronized path
+                 computation requests.  If after the expiration of
+                 the SyncTimer all the M path computation requests
+                 have not been, received a protocol error is
+                 triggered and the PCE MUST cancel the whole set
                  of path computation  requests.
 
-                 The aim of the SyncTimer is to avoid the storage 
-                 of unused synchronized requests should one of 
-                 them get lost for some reasons (for example, a 
+                 The aim of the SyncTimer is to avoid the storage
+                 of unused synchronized requests should one of
+                 them get lost for some reasons (for example, a
                  misbehaving PCC).
 
                  Zero means that the PCEP entity does not use the
@@ -520,14 +522,14 @@ module ietf-pcep {
             }
             units "seconds";
             description
-                "The maximum time that the PCEP entity will wait 
+                "The maximum time that the PCEP entity will wait
                  for a response to a PCReq message.";
         }
 
         leaf max-sessions{
             type uint32;
             description
-               "Maximum number of sessions involving this PCEP 
+               "Maximum number of sessions involving this PCEP
                 entity that can exist at any time.";
         }
 
@@ -535,18 +537,18 @@ module ietf-pcep {
             type uint32;
             default 5;
             description
-              "The maximum number of unrecognized requests and 
-               replies that any session on this PCEP entity is 
-               willing to accept per minute before terminating 
+              "The maximum number of unrecognized requests and
+               replies that any session on this PCEP entity is
+               willing to accept per minute before terminating
                the session.
 
-               A PCRep message contains an unrecognized reply 
-               if it contains an RP object whose request ID 
-               does not correspond to any in-progress request 
+               A PCRep message contains an unrecognized reply
+               if it contains an RP object whose request ID
+               does not correspond to any in-progress request
                sent by this PCEP entity.
 
                A PCReq message contains an unrecognized request
-               if it contains an RP object whose request ID is 
+               if it contains an RP object whose request ID is
                zero.";
             reference
                 "RFC 5440: Path Computation Element (PCE)
@@ -557,8 +559,8 @@ module ietf-pcep {
             type uint32;
             default 5;
             description
-             "The maximum number of unknown messages that any 
-              session on this PCEP entity is willing to accept 
+             "The maximum number of unknown messages that any
+              session on this PCEP entity is willing to accept
               per minute before terminating the session.";
             reference
                 "RFC 5440: Path Computation Element (PCE)
@@ -573,40 +575,63 @@ module ietf-pcep {
         leaf avg-rsp-time{
             type uint32;
             units "milliseconds";
+            must "(/pcep-state/entity/peers/peer/role != 'pcc'" +
+                 " or " +
+                 "(/pcep-state/entity/peers/peer/role = 'pcc'" +
+                 " and avg-rsp-time = 0))" {
+                error-message
+                    "Invalid average response time";
+                description
+                    "If role is pcc then this leaf is meaningless 
+                     and is set to zero.";                
+            }
             description
               "The average response time.
 
-               If an average response time has not been  
-               calculated then this leaf has the value zero.
-
-               If role is pcc then this leaf is meaningless 
-               and is set to zero.";
+               If an average response time has not been
+               calculated then this leaf has the value zero.";
         }
 
         leaf lwm-rsp-time{
             type uint32;
             units "milliseconds";
+            must "(/pcep-state/entity/peers/peer/role != 'pcc'" +
+                 " or " +
+                 "(/pcep-state/entity/peers/peer/role = 'pcc'" +
+                 " and lwm-rsp-time = 0))" {
+                error-message
+                    "Invalid smallest (low-water mark) 
+                     response time";
+                description
+                    "If role is pcc then this leaf is meaningless 
+                     and is set to zero.";                
+            }
             description
              "The smallest (low-water mark) response time seen.
 
-              If no responses have been received then this   
-              leaf has the value zero.
-
-              If role is pcc then this leaf is meaningless 
-              and is set to zero.";
+              If no responses have been received then this
+              leaf has the value zero.";
         }
 
         leaf hwm-rsp-time{
             type uint32;
             units "milliseconds";
+            must "(/pcep-state/entity/peers/peer/role != 'pcc'" +
+                 " or " +
+                 "(/pcep-state/entity/peers/peer/role = 'pcc'" +
+                 " and hwm-rsp-time = 0))" {
+                error-message
+                    "Invalid greatest (high-water mark) 
+                     response time seen";
+                description
+                    "If role is pcc then this field is     
+                     meaningless and is set to zero.";
+            } 
             description
              "The greatest (high-water mark) response time seen.
 
-              If no responses have been received then this object  
-              has the value zero.
-
-              If role is pcc then this field is meaningless and   
-              is set to zero.";
+              If no responses have been received then this object
+              has the value zero.";
         }
 
         leaf num-pcreq-sent{
@@ -686,49 +711,49 @@ module ietf-pcep {
             description
               "The number of requests sent.  A request corresponds
                1:1 with an RP object in a PCReq message. This might
-               be greater than num-pcreq-sent because multiple 
-               requests can be batched into a single PCReq 
+               be greater than num-pcreq-sent because multiple
+               requests can be batched into a single PCReq
                message.";
         }
 
         leaf num-svec-sent{
             type yang:counter32;
             description
-              "The number of SVEC objects sent in PCReq messages.  
-               An SVEC object represents a set of synchronized 
+              "The number of SVEC objects sent in PCReq messages.
+               An SVEC object represents a set of synchronized
                requests.";
         }
 
         leaf num-svec-req-sent{
             type yang:counter32;
             description
-              "The number of requests sent that appeared in one   
+              "The number of requests sent that appeared in one
                or more SVEC objects.";
         }
 
         leaf num-req-sent-pend-rep{
             type yang:counter32;
             description
-              "The number of requests that have been sent for   
+              "The number of requests that have been sent for
                which a response is still pending.";
         }
 
         leaf num-req-sent-ero-rcvd{
             type yang:counter32;
             description
-               "The number of requests that have been sent for   
-                which a response with an ERO object was received.    
-                Such responses indicate that a path was  
+               "The number of requests that have been sent for
+                which a response with an ERO object was received.
+                Such responses indicate that a path was
                 successfully computed by the peer.";
         }
 
         leaf num-req-sent-nopath-rcvd{
             type yang:counter32;
             description
-              "The number of requests that have been sent for   
-               which a response with a NO-PATH object was    
+              "The number of requests that have been sent for
+               which a response with a NO-PATH object was
                received. Such responses indicate that the peer
-               could not  find a path to satisfy the 
+               could not  find a path to satisfy the
                request.";
         }
 
@@ -738,28 +763,28 @@ module ietf-pcep {
               "The number of requests that were cancelled with
                a PCNtf message.
 
-               This might be different than num-pcntf-rcvd because  
-               not all PCNtf messages are used to cancel requests, 
-               and a single PCNtf message can cancel multiple 
+               This might be different than num-pcntf-rcvd because
+               not all PCNtf messages are used to cancel requests,
+               and a single PCNtf message can cancel multiple
                requests.";
         }
 
         leaf num-req-sent-error-rcvd{
             type yang:counter32;
             description
-             "The number of requests that were rejected with a  
+             "The number of requests that were rejected with a
               PCErr message.
 
-              This might be different than num-pcerr-rcvd because  
-              not all PCErr messages are used to reject requests, 
-              and a single PCErr message can reject multiple 
+              This might be different than num-pcerr-rcvd because
+              not all PCErr messages are used to reject requests,
+              and a single PCErr message can reject multiple
               requests.";
         }
 
         leaf num-req-sent-timeout{
             type yang:counter32;
             description
-             "The number of requests that have been sent to a peer 
+             "The number of requests that have been sent to a peer
              and have been abandoned because the peer has taken too
              long to respond to them.";
         }
@@ -767,103 +792,156 @@ module ietf-pcep {
         leaf num-req-sent-cancel-sent{
             type yang:counter32;
             description
-             "The number of requests that were sent to the peer and 
-              explicitly cancelled by the local PCEP entity sending 
+             "The number of requests that were sent to the peer and
+              explicitly cancelled by the local PCEP entity sending
               a PCNtf.";
         }
 
         leaf num-req-rcvd{
             type yang:counter32;
             description
-             "The number of requests received.  A request  
-              corresponds 1:1 with an RP object in a PCReq 
+             "The number of requests received.  A request
+              corresponds 1:1 with an RP object in a PCReq
               message.
 
-              This might be greater than num-pcreq-rcvd because 
-              multiple requests can be batched into a single 
+              This might be greater than num-pcreq-rcvd because
+              multiple requests can be batched into a single
               PCReq message.";
         }
 
         leaf num-svec-rcvd{
             type yang:counter32;
             description
-             "The number of SVEC objects received in PCReq   
-              messages. An SVEC object represents a set of  
+             "The number of SVEC objects received in PCReq
+              messages. An SVEC object represents a set of
               synchronized requests.";
         }
 
         leaf num-svec-req-rcvd{
             type yang:counter32;
             description
-              "The number of requests received that appeared in one 
+              "The number of requests received that appeared in one
                or more SVEC objects.";
         }
 
         leaf num-req-rcvd-pend-rep{
             type yang:counter32;
             description
-             "The number of requests that have been received for 
+             "The number of requests that have been received for
               which a response is still pending.";
         }
 
         leaf num-req-rcvd-ero-sent{
             type yang:counter32;
             description
-             "The number of requests that have been received for 
-              which a response with an ERO object was sent.  Such  
-              responses indicate that a path was successfully 
+             "The number of requests that have been received for
+              which a response with an ERO object was sent.  Such
+              responses indicate that a path was successfully
               computed by the local PCEP entity.";
         }
 
         leaf num-req-rcvd-nopath-sent{
             type yang:counter32;
             description
-             "The number of requests that have been received for  
-              which a response with a NO-PATH object was sent. Such 
-              responses indicate that the local PCEP entity could 
+             "The number of requests that have been received for
+              which a response with a NO-PATH object was sent. Such
+              responses indicate that the local PCEP entity could
               not find a path to satisfy the request.";
         }
 
         leaf num-req-rcvd-cancel-sent{
             type yang:counter32;
             description
-             "The number of requests received that were cancelled  
+             "The number of requests received that were cancelled
               by the local PCEP entity sending a PCNtf message.
 
               This might be different than num-pcntf-sent because
               not all PCNtf messages are used to cancel requests,
-              and a single PCNtf message can cancel multiple 
+              and a single PCNtf message can cancel multiple
               requests.";
         }
 
         leaf  num-req-rcvd-cancel-rcvd{
             type yang:counter32;
             description
-             "The number of requests that were received from the  
-              peer and explicitly cancelled by the peer sending 
+             "The number of requests that were received from the
+              peer and explicitly cancelled by the peer sending
               a PCNtf.";
         }
 
         leaf  num-rep-rcvd-unknown{
             type yang:counter32;
             description
-              "The number of responses to unknown requests 
-               received. A response to an unknown request is a 
-               response whose RP object does not contain the 
-               request ID of any request that is currently 
+              "The number of responses to unknown requests
+               received. A response to an unknown request is a
+               response whose RP object does not contain the
+               request ID of any request that is currently
                outstanding on the session.";
         }
 
         leaf  num-req-rcvd-unknown{
             type yang:counter32;
             description
-              "The number of unknown requests that have been  
-               received. An unknown request is a request 
-               whose RP object contains a request ID of 
+              "The number of unknown requests that have been
+               received. An unknown request is a request
+               whose RP object contains a request ID of
                zero.";
         }
 
     }//pcep-stats
+
+    grouping notification-instance-hdr {
+        description
+            "This group describes common instance specific data
+             for notifications.";
+
+        leaf entity-addr {
+            type leafref {
+                path "/pcep-state/entity/addr";
+            }
+            description
+                "Reference to local entity address";
+        }
+
+        leaf entity-addr-type {
+            type leafref {
+                path "/pcep-state/entity/addr-type";
+            }
+            description
+                "Reference to local entity address type";
+        }
+
+        leaf peer-addr {
+            type leafref {
+                path "/pcep-state/entity/peers/peer/addr";
+            }
+            description
+                "Reference to peer address";
+        }
+
+        leaf peer-addr-type {
+            type leafref {
+                path "/pcep-state/entity/peers/peer/addr-type";
+            }
+            description
+                "Reference to peer address type";
+        }
+    }// notification-instance-hdr
+    
+    grouping notification-session-hdr {
+        description
+        "This group describes common session instance specific
+         data for notifications.";
+
+        leaf session-initiator {
+            type leafref {
+            path "/pcep-state/entity/peers/peer/sessions/" +
+                 "session/initiator";
+            }
+            description
+                "Reference to pcep session initiator leaf";
+        }
+    }// notification-session-hdr
 
     /*
      * Configuration data nodes
@@ -871,7 +949,7 @@ module ietf-pcep {
     container pcep{
 
         description
-            "Parameters for list of configured PCEP entities 
+            "Parameters for list of configured PCEP entities
              on the device.";
 
         list entity{
@@ -889,7 +967,7 @@ module ietf-pcep {
                 type boolean;
                 default true;
                 description
-                    "The administrative status of this PCEP 
+                    "The administrative status of this PCEP
                      Entity.";
             }
 
@@ -899,30 +977,44 @@ module ietf-pcep {
                 description
                     "The role that this entity can play.
                      Takes one of the following values.
-                     - unknown(0): this PCEP Entity role is not 
+                     - unknown(0): this PCEP Entity role is not
                        known.
                      - pcc(1): this PCEP Entity is a PCC.
                      - pce(2): this PCEP Entity is a PCE.
-                     - pcc-and-pce(3): this PCEP Entity is both 
+                     - pcc-and-pce(3): this PCEP Entity is both
                        a PCC and a PCE.";
             }
 
             leaf description {
                 type string;
                 description
-                    "Description of the PCEP entity configured 
+                    "Description of the PCEP entity configured
                      by the user";
             }
 
             uses pcep-entity-info {
                 description
-                    "The configuration related to the PCEP 
+                    "The configuration related to the PCEP
                      entity.";
+            }
+
+            leaf pcep-notification-max-rate {
+                type uint32;
+                mandatory true;
+                description
+                    "This variable indicates the maximum number of
+                     notifications issued per second. If events occur
+                     more rapidly, the implementation may simply fail
+                     to emit these notifications during that period,
+                     or may queue them until an appropriate time. A
+                     value of 0 means no notifications are emitted
+                     and all should be discarded (that is, not
+                     queued).";
             }
 
             container peers{
                 description
-                        "The list of configured peers for the 
+                        "The list of configured peers for the
                          entity";
 
                 list peer{
@@ -933,14 +1025,14 @@ module ietf-pcep {
 
                      uses pcep-peer-identifier{
                         description
-                            "The configured PCEP peer's 
+                            "The configured PCEP peer's
                              Identifier.";
                      }
 
                      leaf description {
                         type string;
                         description
-                            "Description of the PCEP peer 
+                            "Description of the PCEP peer
                              configured by the user";
                     }
                 }//peer
@@ -965,10 +1057,10 @@ module ietf-pcep {
             description
                 "The operational PCEP entity on the device.";
 
-            leaf index{ 
+            leaf index{
                 type uint32;
                 description
-                    "The index of the PECP operational 
+                    "The index of the PECP operational
                      entity";
             }
 
@@ -984,7 +1076,7 @@ module ietf-pcep {
                      This is the desired operational status as
                      currently set by an operator or by default in
                      the implementation.  The value of enabled
-                     represents the current status of an attempt 
+                     represents the current status of an attempt
                      to reach this desired status.";
             }
 
@@ -993,18 +1085,18 @@ module ietf-pcep {
                 description
                    "The operational status of the PCEP entity.
                     Takes one of the following values.
-                    - oper-status-up(1): the PCEP entity is 
+                    - oper-status-up(1): the PCEP entity is
                       active.
-                    - oper-status-down(2): the PCEP entity is 
+                    - oper-status-down(2): the PCEP entity is
                       inactive.
                     - oper-status-going-up(3): the PCEP entity is
                       activating.
                     - oper-status-going-down(4): the PCEP entity is
                       deactivating.
-                    - oper-status-failed(5): the PCEP entity has 
+                    - oper-status-failed(5): the PCEP entity has
                       failed and will recover when possible.
-                    - oper-status-failed-perm(6): the PCEP entity 
-                      has failed and will not recover without 
+                    - oper-status-failed-perm(6): the PCEP entity
+                      has failed and will not recover without
                       operator intervention.";
             }
 
@@ -1013,18 +1105,18 @@ module ietf-pcep {
                 description
                     "The role that this entity can play.
                      Takes one of the following values.
-                     - unknown(0): this PCEP entity role is 
+                     - unknown(0): this PCEP entity role is
                        not known.
                      - pcc(1): this PCEP entity is a PCC.
                      - pce(2): this PCEP entity is a PCE.
-                     - pcc-and-pce(3): this PCEP entity is 
+                     - pcc-and-pce(3): this PCEP entity is
                        both a PCC and a PCE.";
             }
 
 
             uses pcep-entity-info{
                 description
-                    "The operational information related to the 
+                    "The operational information related to the
                      PCEP entity.";
             }
 
@@ -1048,11 +1140,11 @@ module ietf-pcep {
                         description
                             "The role of the PCEP Peer.
                              Takes one of the following values.
-                             - unknown(0): this PCEP peer role 
+                             - unknown(0): this PCEP peer role
                                is not known.
                              - pcc(1): this PCEP peer is a PCC.
                              - pce(2): this PCEP peer is a PCE.
-                             - pcc-and-pce(3): this PCEP peer 
+                             - pcc-and-pce(3): this PCEP peer
                                is both a PCC and a PCE.";
                     }
 
@@ -1060,23 +1152,23 @@ module ietf-pcep {
                         type yang:timestamp;
                         description
                             "The timestamp of the time when the
-                             information and statistics were 
+                             information and statistics were
                              last reset.";
                     }
 
                     leaf initiate-session {
                         type boolean;
                         description
-                            "Indicates whether the local PCEP 
+                            "Indicates whether the local PCEP
                              entity initiates sessions to this peer,
-                             or waits for the peer to initiate a 
+                             or waits for the peer to initiate a
                              session.";
                     }
 
                     leaf session-exists{
                         type boolean;
                         description
-                            "Indicates whether a session with 
+                            "Indicates whether a session with
                              this peer currently exists.";
                     }
 
@@ -1084,10 +1176,10 @@ module ietf-pcep {
                         type yang:counter32;
                         description
                             "The number of PCEP sessions successfully
-                             successfully established with the peer, 
-                             including any current session.  This 
-                             counter is incremented each time a 
-                             session with this peer is successfully 
+                             successfully established with the peer,
+                             including any current session.  This
+                             counter is incremented each time a
+                             session with this peer is successfully
                              established.";
                     }
 
@@ -1095,69 +1187,89 @@ module ietf-pcep {
                         type yang:counter32;
                         description
                            "The number of PCEP sessions with the peer
-                            that have been attempted but failed 
-                            before being fully established. This 
-                            counter is incremented each time a 
+                            that have been attempted but failed
+                            before being fully established. This
+                            counter is incremented each time a
                             session retry to this peer fails.";
                     }
 
                     leaf session-up-time{
                         type yang:timestamp;
+                        must "(../num-sess-setup-ok != 0  or " +
+                            "(../num-sess-setup-ok = 0  and "  +
+                            "session-up-time = 0))" {
+                                error-message
+                                    "Invalid Session Up timestamp";
+                                description
+                                    "If num-sess-setup-ok is zero,
+                                     then this leaf contains zero.";
+                            }
                         description
                            "The timestamp value of the last time a
                             session with this peer was successfully
-                            established.
-
-                            If num-sess-setup-ok is zero, then this
-                            leaf contains zero.";
+                            established.";
                     }
 
                     leaf session-fail-time{
                         type yang:timestamp;
+                        must "(../num-sess-setup-fail != 0  or " +
+                            "(../num-sess-setup-fail = 0  and "  +
+                            "session-fail-time = 0))" {
+                                error-message
+                                    "Invalid Session Fail timestamp";
+                                description
+                                    "If num-sess-setup-fail is zero,
+                                     then this leaf contains zero.";
+                            }
                         description
                           "The timestamp value of the last time a
                            session with this peer failed to be
-                           established.
-
-                           If num-sess-setup-fail is zero, then 
-                           this leaf contains zero.";
+                           established.";
                     }
 
                     leaf session-fail-up-time{
                         type yang:timestamp;
+                        must "(../num-sess-setup-ok != 0  or "     +
+                            "(../num-sess-setup-ok = 0  and "     +
+                            "session-fail-up-time = 0))" {
+                                error-message
+                                    "Invalid Session Fail from 
+                                     Up timestamp";
+                                description     
+                                    "If num-sess-setup-ok is zero, 
+                                     then this leaf contains zero.";
+                            }
                         description
                           "The timestamp value of the last time a
-                          session with this peer failed from active.
-
-                          If num-sess-setup-ok is zero, then this
-                          leaf contains zero.";
+                           session with this peer failed from 
+                           active.";
                     }
 
                     uses pcep-stats{
                         description
-                            "Since PCEP sessions can be ephemeral, 
-                             the peer statistics tracks a peer even 
-                             when no PCEP session currently exists  
-                             to that peer. The statistics contained  
-                             are an aggregate of the statistics for  
+                            "Since PCEP sessions can be ephemeral,
+                             the peer statistics tracks a peer even
+                             when no PCEP session currently exists
+                             to that peer. The statistics contained
+                             are an aggregate of the statistics for
                              all successive sessions to that peer.";
                     }
 
                     leaf num-req-sent-closed{
                         type yang:counter32;
                         description
-                            "The number of requests that were sent  
-                             to the peer and implicitly cancelled  
-                             when the session they were sent over 
+                            "The number of requests that were sent
+                             to the peer and implicitly cancelled
+                             when the session they were sent over
                              was closed.";
                     }
 
                     leaf  num-req-rcvd-closed{
                         type yang:counter32;
                         description
-                            "The number of requests that were  
-                             received from the peer and implicitly 
-                             cancelled when the session they were 
+                            "The number of requests that were
+                             received from the peer and implicitly
+                             cancelled when the session they were
                              received over was closed.";
                     }
 
@@ -1169,34 +1281,34 @@ module ietf-pcep {
 
                              This entry exists only if the
                              corresponding PCEP session has been
-                             initialized by some event, such as 
+                             initialized by some event, such as
                              manual user configuration, auto-
-                             discovery of a peer, or an incoming 
+                             discovery of a peer, or an incoming
                              TCP connection.";
 
                         list session {
                             key "initiator";
-                            
+
                             description
                                 "The list of sessions, note that
                                  for a time being two sessions
                                  may exist for a peer";
-                                 
+
                             leaf initiator {
                                 type pcep-initiator;
                                 description
-                                    "The initiator of the session, 
-                                     that is, whether the TCP 
-                                     connection was initiated by 
+                                    "The initiator of the session,
+                                     that is, whether the TCP
+                                     connection was initiated by
                                      the local PCEP entity or the
                                      peer.
 
-                                     There is a window during 
-                                     session initialization where 
-                                     two sessions can exist between 
-                                     a pair of PCEP speakers, each 
-                                     initiated by one of the 
-                                     speakers. One of these 
+                                     There is a window during
+                                     session initialization where
+                                     two sessions can exist between
+                                     a pair of PCEP speakers, each
+                                     initiated by one of the
+                                     speakers. One of these
                                      sessions is always discarded
                                      before it leaves OpenWait state.
                                      However, before it is discarded,
@@ -1211,21 +1323,21 @@ module ietf-pcep {
                             leaf state-last-change {
                                 type yang:timestamp;
                                 description
-                                    "The timestamp value at the 
+                                    "The timestamp value at the
                                      time this session entered its
-                                     current state as denoted by 
+                                     current state as denoted by
                                      the state leaf.";
                             }
 
                             leaf state {
                                 type pcep-sess-state;
                                 description
-                                    "The current state of the 
+                                    "The current state of the
                                      session.
 
                                      The set of possible states
                                      excludes the idle state since
-                                     entries do not exist in the 
+                                     entries do not exist in the
                                      idle state.";
                             }
 
@@ -1233,10 +1345,10 @@ module ietf-pcep {
                                 type yang:counter32;
                                 description
                                      "The number of times that the
-                                      local PCEP entity has 
-                                      attempted to establish a TCP 
-                                      connection for this session 
-                                      without success. The PCEP 
+                                      local PCEP entity has
+                                      attempted to establish a TCP
+                                      connection for this session
+                                      without success. The PCEP
                                       entity gives up when this
                                       reaches connect-max-retry.";
                             }
@@ -1246,32 +1358,44 @@ module ietf-pcep {
                                   range "0..255";
                                 }
                                 description
-                                     "The value of the PCEP session 
-                                      ID used by the local PCEP 
-                                      entity in the Open message 
+                                     "The value of the PCEP session
+                                      ID used by the local PCEP
+                                      entity in the Open message
                                       for this session.
 
-                                      If state is tcp-pending then 
-                                      this is the session ID that 
-                                      will be used in the Open 
-                                      message. Otherwise, this is 
-                                      the session ID that was sent 
+                                      If state is tcp-pending then
+                                      this is the session ID that
+                                      will be used in the Open
+                                      message. Otherwise, this is
+                                      the session ID that was sent
                                       in the Open message.";
                             }
 
                             leaf remote-id {
                                 type uint32 {
-                                  range "0..255";
+                                    range "0..255";
                                 }
+                                must "((../state != 'tcp-pending'" +
+                                     "and " +
+                                     "../state != 'open-wait' )" +
+                                     "or " +
+                                     "((../state = 'tcp-pending'" +
+                                     " or " +
+                                     "../state = 'open-wait' )" +
+                                     "and remote-id = 0))" {
+                                        error-message
+                                            "Invalid remote-id";
+                                        description
+                                             "If state is tcp-pending
+                                              or open-wait then this 
+                                              leaf is not used and 
+                                              MUST be set to zero.";
+                                    }
                                 description
-                                     "The value of the PCEP session 
-                                      ID
- used by the peer in its 
-                                      Open message for this session.
-
-                                      If state is tcp-pending or
-                                      open-wait then this leaf is not
-                                      used and MUST be set to zero.";
+                                     "The value of the PCEP session
+                                      ID used by the peer in its
+                                      Open message for this 
+                                      session.";
                             }
 
                             leaf keepalive-timer {
@@ -1279,19 +1403,29 @@ module ietf-pcep {
                                   range "0..255";
                                 }
                                 units "seconds";
+                                must "(../state = 'session-up'" + 
+                                     "or " +
+                                     "(../state != 'session-up'" +
+                                     "and keepalive-timer = 0))" {
+                                        error-message
+                                            "Invalid keepalive 
+                                             timer";
+                                        description
+                                            "This field is used if 
+                                             and only if state is 
+                                             session-up. Otherwise,  
+                                             it is not used and   
+                                             MUST be set to 
+                                             zero.";
+                                    }
                                 description
                                      "The agreed maximum interval at
                                       which the local PCEP entity
                                       transmits PCEP messages on this
                                       PCEP session.  Zero means that
-                                      the local PCEP entity never 
-                                      sends Keepalives on this 
-                                      session.
-
-                                      This field is used if and only 
-                                      if state is session-up. 
-                                      Otherwise, it is not used and 
-                                      MUST be set to zero.";
+                                      the local PCEP entity never
+                                      sends Keepalives on this
+                                      session.";
                             }
 
                             leaf peer-keepalive-timer {
@@ -1299,18 +1433,28 @@ module ietf-pcep {
                                   range "0..255";
                                 }
                                 units "seconds";
+                                must "(../state = 'session-up'" +
+                                     "or "   +
+                                     "(../state != 'session-up'" +
+                                     "and " +
+                                     "peer-keepalive-timer = 0))" {
+                                        error-message
+                                            "Invalid Peer keepalive 
+                                             timer";
+                                        description
+                                            "This field is used if 
+                                             and only if state is 
+                                             session-up. Otherwise, 
+                                             it is not used and MUST
+                                             be set to zero.";
+                                    }
                                 description
                                      "The agreed maximum interval at
                                       which the peer transmits PCEP
                                       messages on this PCEP session.
                                       Zero means that the peer never
-                                      sends Keepalives on this 
-                                      session.
-
-                                      This field is used if and only 
-                                      if state is session-up. 
-                                      Otherwise, it is not used and
-                                      MUST be set to zero.";
+                                      sends Keepalives on this
+                                      session.";
                             }
 
                             leaf dead-timer {
@@ -1319,7 +1463,7 @@ module ietf-pcep {
                                 }
                                 units "seconds";
                                 description
-                                     "The dead timer interval for 
+                                     "The dead timer interval for
                                       this PCEP session.";
                             }
 
@@ -1328,14 +1472,28 @@ module ietf-pcep {
                                   range "0..255";
                                 }
                                 units "seconds";
+                                must "((../state != 'tcp-pending'" + 
+                                     "and " +
+                                     "../state != 'open-wait' )" + 
+                                     "or " +
+                                     "((../state = 'tcp-pending'" + 
+                                     " or " +
+                                     "../state = 'open-wait' )" +
+                                     "and " +
+                                     "peer-dead-timer = 0))" {
+                                        error-message
+                                            "Invalid Peer Dead 
+                                             timer";
+                                        description
+                                            "If state is tcp- 
+                                             pending or open-wait 
+                                             then this leaf is not 
+                                             used and MUST be set to
+                                             zero.";
+                                    }
                                 description
                                      "The peer's dead-timer interval
-                                      for this PCEP session.
-
-                                      If state is tcp-pending or
-                                      open-wait then this leaf is 
-                                      not used and MUST be set to
-                                      zero.";
+                                      for this PCEP session.";
                             }
 
                             leaf ka-hold-time-rem {
@@ -1343,14 +1501,27 @@ module ietf-pcep {
                                   range "0..255";
                                 }
                                 units "seconds";
+                                must "((../state != 'tcp-pending'" +
+                                     "and " +
+                                     "../state != 'open-wait' ) " +
+                                     "or " +
+                                     "((../state = 'tcp-pending'" +
+                                     "or " +
+                                     "../state = 'open-wait' )" +
+                                     "and " +
+                                     "ka-hold-time-rem = 0))" {
+                                        error-message
+                                            "Invalid Keepalive hold 
+                                             time remaining";
+                                        description
+                                            "If state is tcp-pending
+                                             or open-wait then this 
+                                             field is not used and  
+                                             MUST be set to zero.";
+                                    }
                                 description
                                      "The keep alive hold time
-                                      remaining for this session.
-
-                                      If state is tcp-pending or
-                                      open-wait then this field is
-                                      not used and MUST be set to 
-                                      zero.";
+                                      remaining for this session.";
                             }
 
                             leaf overloaded {
@@ -1359,23 +1530,30 @@ module ietf-pcep {
                                      "If the local PCEP entity has
                                       informed the peer that it is
                                       currently overloaded, then this
-                                      is set to true.  Otherwise, it 
+                                      is set to true.  Otherwise, it
                                       is set to false.";
                             }
 
                             leaf overload-time {
                                 type uint32;
                                 units "seconds";
+                                must "(../overloaded = true or" +
+                                    "(../overloaded != true and" +
+                                    " overload-time = 0))" {
+                                        error-message
+                                            "Invalid overload-time";
+                                        description    
+                                            "This field is only used 
+                                             if overloaded is set to 
+                                             true. Otherwise, it is 
+                                             not used and MUST be set
+                                             to zero.";
+                                    }
                                 description
                                      "The interval of time that is
                                       remaining until the local PCEP
                                       entity will cease to be
-                                      overloaded on this session.
-
-                                      This field is only used if
-                                      overloaded is set to true.
-                                      Otherwise, it is not used and
-                                      MUST be set to zero.";
+                                      overloaded on this session.";
                             }
 
                             leaf peer-overloaded {
@@ -1384,25 +1562,35 @@ module ietf-pcep {
                                      "If the peer has informed the
                                       local PCEP entity that it is
                                       currently overloaded, then this
-                                      is set to true. Otherwise, it 
+                                      is set to true. Otherwise, it
                                       is set to false.";
                             }
 
                             leaf peer-overload-time {
                                 type uint32;
                                 units "seconds";
+                                must "(../peer-overloaded = true" +
+                                     " or " +
+                                     "(../peer-overloaded != true" +
+                                     " and " +
+                                     "peer-overload-time = 0))" {
+                                        error-message
+                                            "Invalid peer overload 
+                                             time";
+                                        description
+                                            "This field is only used
+                                             if peer-overloaded is 
+                                             set to true. Otherwise, 
+                                             it is not used and MUST 
+                                             be set to zero.";
+                                    }
                                 description
                                      "The interval of time that is
                                       remaining until the peer will
                                       cease to be overloaded.  If it
                                       is not known how long the peer
                                       will stay in overloaded state,
-                                      this leaf is set to zero.
-
-                                      This field is only used if
-                                      peer-overloaded is set to true.
-                                      Otherwise, it is not used and
-                                      MUST be set to zero.";
+                                      this leaf is set to zero.";
                             }
 
                             leaf discontinuity-time {
@@ -1415,9 +1603,9 @@ module ietf-pcep {
 
                             uses pcep-stats{
                                 description
-                                    "The statistics contained are  
+                                    "The statistics contained are
                                      for the current sessions to that
-                                     peer. These are lost when the 
+                                     peer. These are lost when the
                                      session goes down.";
 
                             }
@@ -1428,4 +1616,169 @@ module ietf-pcep {
             }//peers
         }//entity
     }//pcep-state
+
+    /*
+     * Notifications
+     */
+    notification pcep-session-up {
+        description
+            "This notification is sent when the value of
+             '/pcep/pcep-state/peers/peer/sessions/session/state'
+             enters the 'session-up' state.";
+
+        uses notification-instance-hdr;
+
+        uses notification-session-hdr;
+
+        leaf state-last-change {
+            type yang:timestamp;
+            description
+                "The timestamp value at the time this session entered
+                its current state as denoted by the state leaf.";
+        }
+
+        leaf state {
+            type pcep-sess-state;
+            description
+                "The current state of the session.
+
+                 The set of possible states excludes the idle state
+                 since entries do not exist in the idle state.";
+        }
+    } //notification
+
+    notification pcep-session-down {
+        description
+            "This notification is sent when the value of
+             '/pcep/pcep-state/peers/peer/sessions/session/state'
+             leaves the 'session-up' state.";
+
+        uses notification-instance-hdr;
+
+        uses notification-session-hdr;
+
+        leaf state-last-change {
+            type yang:timestamp;
+            description
+                "The timestamp value at the time this session entered
+                its current state as denoted by the state leaf.";
+        }
+
+        leaf state {
+            type pcep-sess-state;
+            description
+                "The current state of the session.
+
+                 The set of possible states excludes the idle state
+                 since entries do not exist in the idle state.";
+        }
+    } //notification
+
+    notification pcep-session-local-overload {
+        description
+            "This notification is sent when the local PCEP entity
+            enters overload state for a peer.";
+
+        uses notification-instance-hdr;
+
+        uses notification-session-hdr;
+
+        leaf overloaded {
+            type boolean;
+            description
+                 "If the local PCEP entity has informed the peer that
+                 it is currently overloaded, then this is set to
+                 true. Otherwise, it is set to false.";
+        }
+
+        leaf overload-time {
+            type uint32;
+            units "seconds";
+            must "(../overloaded = true or "    +
+                "(../overloaded != true  and "  +
+                "overload-time = 0))" {
+                    error-message
+                        "Invalid overload-time";
+                    description
+                        "This field is only used if overloaded is
+                         set to true. Otherwise, it is not used
+                         and MUST be set to zero.";
+                }
+            description
+                 "The interval of time that is remaining until the
+                 local PCEP entity will cease to be overloaded on
+                 this session.";
+        }
+    } //notification
+
+    notification pcep-session-local-overload-clear {
+        description
+            "This notification is sent when the local PCEP entity
+            leaves overload state for a peer.";
+
+        uses notification-instance-hdr;
+
+        leaf overloaded {
+            type boolean;
+            description
+                 "If the local PCEP entity has informed the peer
+                 that it is currently overloaded, then this is set
+                 to true.  Otherwise, it is set to false.";
+        }
+    } //notification
+
+    notification pcep-session-peer-overload {
+        description
+            "This notification is sent when a peer enters overload
+            state.";
+
+        uses notification-instance-hdr;
+
+        uses notification-session-hdr;
+
+        leaf peer-overloaded {
+            type boolean;
+            description
+                "If the peer has informed the local PCEP entity that
+                it is currently overloaded, then this is set to true.
+                Otherwise, it is set to false.";
+        }
+
+        leaf peer-overload-time {
+            type uint32;
+            units "seconds";
+            must "(../peer-overloaded = true or "    +
+                "(../peer-overloaded != true  and "  +
+                "peer-overload-time = 0))" {
+                    error-message
+                        "Invalid peer-overload-time";
+                    description
+                        "This field is only used if 
+                         peer-overloaded is set to true. 
+                         Otherwise, it is not used and MUST 
+                         be set to zero.";                    
+                }
+            description
+                "The interval of time that is remaining until the
+                peer will cease to be overloaded.  If it is not known
+                how long the peer will stay in overloaded state, this
+                leaf is set to zero.";
+        }
+    } //notification
+
+    notification pcep-session-peer-overload-clear {
+        description
+            "This notification is sent when a peer leaves overload
+            state.";
+
+        uses notification-instance-hdr;
+        
+        leaf peer-overloaded {
+            type boolean;
+            description
+                "If the peer has informed the local PCEP entity that
+                it is currently overloaded, then this is set to true.
+                Otherwise, it is set to false.";
+        }
+    } //notification
 }//module
