@@ -5,10 +5,10 @@
 PCE Working Group                                            R. Pobbathi
 Internet-Draft                                                 V. KumarS
 Intended status: Standards Track                           D. Dhody, Ed.
-Expires: April 17, 2015                              Huawei Technologies
+Expires: April 28, 2015                              Huawei Technologies
                                                              J. Hardwick
                                                               Metaswitch
-                                                        October 14, 2014
+                                                        October 25, 2014
 
 
  A YANG Data Model for Path Computation Element Communications Protocol
@@ -39,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 17, 2015.
+   This Internet-Draft will expire on April 28, 2015.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Pobbathi, et al.         Expires April 17, 2015                 [Page 1]
+Pobbathi, et al.         Expires April 28, 2015                 [Page 1]
 
 Internet-Draft                  PCE-YANG                    October 2014
 
@@ -74,25 +74,25 @@ Table of Contents
    4.  Objectives  . . . . . . . . . . . . . . . . . . . . . . . . .   4
    5.  The Design of PCEP Data Model . . . . . . . . . . . . . . . .   5
      5.1.  The Entity Lists  . . . . . . . . . . . . . . . . . . . .   9
-     5.2.  The Peer Lists  . . . . . . . . . . . . . . . . . . . . .   9
+     5.2.  The Peer Lists  . . . . . . . . . . . . . . . . . . . . .  10
      5.3.  The Session Lists . . . . . . . . . . . . . . . . . . . .  10
-     5.4.  Notifications . . . . . . . . . . . . . . . . . . . . . .  10
-   6.  Advanced PCE Features . . . . . . . . . . . . . . . . . . . .  10
-   7.  PCEP YANG Module  . . . . . . . . . . . . . . . . . . . . . .  11
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  41
-   9.  Manageability Considerations  . . . . . . . . . . . . . . . .  41
-     9.1.  Control of Function and Policy  . . . . . . . . . . . . .  41
-     9.2.  Information and Data Models . . . . . . . . . . . . . . .  41
-     9.3.  Liveness Detection and Monitoring . . . . . . . . . . . .  41
-     9.4.  Verify Correct Operations . . . . . . . . . . . . . . . .  41
-     9.5.  Requirements On Other Protocols . . . . . . . . . . . . .  41
-     9.6.  Impact On Network Operations  . . . . . . . . . . . . . .  41
-   10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  41
-   11. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  41
-   12. References  . . . . . . . . . . . . . . . . . . . . . . . . .  41
-     12.1.  Normative References . . . . . . . . . . . . . . . . . .  41
-     12.2.  Informative References . . . . . . . . . . . . . . . . .  42
-   Appendix A.  Contributor Addresses  . . . . . . . . . . . . . . .  43
+     5.4.  Notifications . . . . . . . . . . . . . . . . . . . . . .  11
+   6.  Advanced PCE Features . . . . . . . . . . . . . . . . . . . .  11
+   7.  PCEP YANG Module  . . . . . . . . . . . . . . . . . . . . . .  12
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  49
+   9.  Manageability Considerations  . . . . . . . . . . . . . . . .  49
+     9.1.  Control of Function and Policy  . . . . . . . . . . . . .  49
+     9.2.  Information and Data Models . . . . . . . . . . . . . . .  49
+     9.3.  Liveness Detection and Monitoring . . . . . . . . . . . .  49
+     9.4.  Verify Correct Operations . . . . . . . . . . . . . . . .  49
+     9.5.  Requirements On Other Protocols . . . . . . . . . . . . .  49
+     9.6.  Impact On Network Operations  . . . . . . . . . . . . . .  49
+   10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  49
+   11. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  49
+   12. References  . . . . . . . . . . . . . . . . . . . . . . . . .  49
+     12.1.  Normative References . . . . . . . . . . . . . . . . . .  50
+     12.2.  Informative References . . . . . . . . . . . . . . . . .  50
+   Appendix A.  Contributor Addresses  . . . . . . . . . . . . . . .  51
 
 1.  Introduction
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Pobbathi, et al.         Expires April 17, 2015                 [Page 2]
+Pobbathi, et al.         Expires April 28, 2015                 [Page 2]
 
 Internet-Draft                  PCE-YANG                    October 2014
 
@@ -165,7 +165,7 @@ Internet-Draft                  PCE-YANG                    October 2014
 
 
 
-Pobbathi, et al.         Expires April 17, 2015                 [Page 3]
+Pobbathi, et al.         Expires April 28, 2015                 [Page 3]
 
 Internet-Draft                  PCE-YANG                    October 2014
 
@@ -221,7 +221,7 @@ Internet-Draft                  PCE-YANG                    October 2014
 
 
 
-Pobbathi, et al.         Expires April 17, 2015                 [Page 4]
+Pobbathi, et al.         Expires April 28, 2015                 [Page 4]
 
 Internet-Draft                  PCE-YANG                    October 2014
 
@@ -251,204 +251,244 @@ Internet-Draft                  PCE-YANG                    October 2014
    The module, "ietf-pcep", defines the basic components of a PCE
    speaker.
 
-   module ietf-pcep
-    +--rw pcep
-    |  +--rw entity* [addr-type addr]
-    |     +--rw addr-type             inet:ip-version
-    |     +--rw addr                  inet:ip-address
-    |     +--rw enabled?              boolean
-    |     +--rw role                  pcep-role
-    |     +--rw description?          string
-    |     +--rw connect-timer?        uint32
-    |     +--rw connect-max-retry?    uint32
-    |     +--rw init-backoff-timer?   uint32
-    |     +--rw max-backoff-timer?    uint32
-    |     +--rw open-wait-timer?      uint32
-    |     +--rw keep-wait-timer?      uint32
-    |     +--rw keep-alive-timer?     uint32
-    |     +--rw dead-timer?           uint32
-    |     +--rw allow-negotiation?    boolean
-    |     +--rw max-keep-alive-timer? uint32
-    |     +--rw max-dead-timer?       uint32
-    |     +--rw min-keep-alive-timer? uint32
-    |     +--rw min-dead-timer?       uint32
-    |     +--rw sync-timer?           uint32
-    |     +--rw request-timer?        uint32
+  module: ietf-pcep
+     +--rw pcep
+     |  +--rw entity* [addr-type addr]
+     |     +--rw addr-type                     inet:ip-version
+     |     +--rw addr                          inet:ip-address
+     |     +--rw enabled?                      boolean
+     |     +--rw role                          pcep-role
+     |     +--rw description?                  string
+     |     +--rw connect-timer?                uint32
+     |     +--rw connect-max-retry?            uint32
+     |     +--rw init-backoff-timer?           uint32
+     |     +--rw max-backoff-timer?            uint32
+     |     +--rw open-wait-timer?              uint32
+     |     +--rw keep-wait-timer?              uint32
+     |     +--rw keep-alive-timer?             uint32
+     |     +--rw dead-timer?                   uint32
+     |     +--rw allow-negotiation?            boolean
+     |     +--rw max-keep-alive-timer?         uint32
+     |     +--rw max-dead-timer?               uint32
+     |     +--rw min-keep-alive-timer?         uint32
+     |     +--rw min-dead-timer?               uint32
+     |     +--rw sync-timer?                   uint32
+     |     +--rw request-timer?                uint32
 
 
 
-Pobbathi, et al.         Expires April 17, 2015                 [Page 5]
+Pobbathi, et al.         Expires April 28, 2015                 [Page 5]
 
 Internet-Draft                  PCE-YANG                    October 2014
 
 
-    |     +--rw max-sessions?         uint32
-    |     +--rw max-unknown-reqs?     uint32
-    |     +--rw max-unknown-msgs?     uint32
-    |     +--rw peers
-    |        +--rw peer* [addr-type addr]
-    |           +--rw addr-type    inet:ip-version
-    |           +--rw addr         inet:ip-address
-    |           +--rw description? string
-    +--ro pcep-state
-    |  +--ro entity* [addr-type addr]
-    |     +--ro index?                uint32
-    |     +--ro addr-type             inet:ip-version
-    |     +--ro addr                  inet:ip-address
-    |     +--ro admin-status?         pcep-admin-status
-    |     +--ro oper-status?          pcep-admin-status
-    |     +--ro role?                 pcep-role
-    |     +--ro connect-timer?        uint32
-    |     +--ro connect-max-retry?    uint32
-    |     +--ro init-backoff-timer?   uint32
-    |     +--ro max-backoff-timer?    uint32
-    |     +--ro open-wait-timer?      uint32
-    |     +--ro keep-wait-timer?      uint32
-    |     +--ro keep-alive-timer?     uint32
-    |     +--ro dead-timer?           uint32
-    |     +--ro allow-negotiation?    boolean
-    |     +--ro max-keep-alive-timer? uint32
-    |     +--ro max-dead-timer?       uint32
-    |     +--ro min-keep-alive-timer? uint32
-    |     +--ro min-dead-timer?       uint32
-    |     +--ro sync-timer?           uint32
-    |     +--ro request-timer?        uint32
-    |     +--ro max-sessions?         uint32
-    |     +--ro max-unknown-reqs?     uint32
-    |     +--ro max-unknown-msgs?     uint32
-    |     +--ro peers
-    |        +--ro peer* [addr-type addr]
-    |           +--ro addr-type                 inet:ip-version
-    |           +--ro addr                      inet:ip-address
-    |           +--ro role?                     pcep-role
-    |           +--ro discontinuity-time?       yang:timestamp
-    |           +--ro initiate-session?         boolean
-    |           +--ro session-exists?           boolean
-    |           +--ro num-sess-setup-ok?        yang:counter32
-    |           +--ro num-sess-setup-fail?      yang:counter32
-    |           +--ro session-up-time?          yang:timestamp
-    |           +--ro session-fail-time?        yang:timestamp
-    |           +--ro session-fail-up-time?     yang:timestamp
-    |           +--ro avg-rsp-time?             uint32
+     |     +--rw max-sessions?                 uint32
+     |     +--rw max-unknown-reqs?             uint32
+     |     +--rw max-unknown-msgs?             uint32
+     |     +--rw pcep-notification-max-rate    uint32
+     |     +--rw peers
+     |        +--rw peer* [addr-type addr]
+     |           +--rw addr-type      inet:ip-version
+     |           +--rw addr           inet:ip-address
+     |           +--rw description?   string
+     +--ro pcep-state
+        +--ro entity* [addr-type addr]
+           +--ro index?                  uint32
+           +--ro addr-type               inet:ip-version
+           +--ro addr                    inet:ip-address
+           +--ro admin-status?           pcep-admin-status
+           +--ro oper-status?            pcep-admin-status
+           +--ro role?                   pcep-role
+           +--ro connect-timer?          uint32
+           +--ro connect-max-retry?      uint32
+           +--ro init-backoff-timer?     uint32
+           +--ro max-backoff-timer?      uint32
+           +--ro open-wait-timer?        uint32
+           +--ro keep-wait-timer?        uint32
+           +--ro keep-alive-timer?       uint32
+           +--ro dead-timer?             uint32
+           +--ro allow-negotiation?      boolean
+           +--ro max-keep-alive-timer?   uint32
+           +--ro max-dead-timer?         uint32
+           +--ro min-keep-alive-timer?   uint32
+           +--ro min-dead-timer?         uint32
+           +--ro sync-timer?             uint32
+           +--ro request-timer?          uint32
+           +--ro max-sessions?           uint32
+           +--ro max-unknown-reqs?       uint32
+           +--ro max-unknown-msgs?       uint32
+           +--ro peers
+              +--ro peer* [addr-type addr]
+                 +--ro addr-type                   inet:ip-version
+                 +--ro addr                        inet:ip-address
+                 +--ro role?                       pcep-role
+                 +--ro discontinuity-time?         yang:timestamp
+                 +--ro initiate-session?           boolean
+                 +--ro session-exists?             boolean
+                 +--ro num-sess-setup-ok?          yang:counter32
+                 +--ro num-sess-setup-fail?        yang:counter32
+                 +--ro session-up-time?            yang:timestamp
+                 +--ro session-fail-time?          yang:timestamp
+                 +--ro session-fail-up-time?       yang:timestamp
 
 
 
-Pobbathi, et al.         Expires April 17, 2015                 [Page 6]
+Pobbathi, et al.         Expires April 28, 2015                 [Page 6]
 
 Internet-Draft                  PCE-YANG                    October 2014
 
 
-    |           +--ro lwm-rsp-time?             uint32
-    |           +--ro hwm-rsp-time?             uint32
-    |           +--ro num-pcreq-sent?           yang:counter32
-    |           +--ro num-pcreq-rcvd?           yang:counter32
-    |           +--ro num-pcrep-sent?           yang:counter32
-    |           +--ro num-pcrep-rcvd?           yang:counter32
-    |           +--ro num-pcerr-sent?           yang:counter32
-    |           +--ro num-pcerr-rcvd?           yang:counter32
-    |           +--ro num-pcntf-sent?           yang:counter32
-    |           +--ro num-pcntf-rcvd?           yang:counter32
-    |           +--ro num-keepalive-sent?       yang:counter32
-    |           +--ro num-keepalive-rcvd?       yang:counter32
-    |           +--ro num-unknown-rcvd?         yang:counter32
-    |           +--ro num-corrupt-rcvd?         yang:counter32
-    |           +--ro num-req-sent?             yang:counter32
-    |           +--ro num-svec-sent?            yang:counter32
-    |           +--ro num-svec-req-sent?        yang:counter32
-    |           +--ro num-req-sent-pend-rep?    yang:counter32
-    |           +--ro num-req-sent-ero-rcvd?    yang:counter32
-    |           +--ro num-req-sent-nopath-rcvd? yang:counter32
-    |           +--ro num-req-sent-cancel-rcvd? yang:counter32
-    |           +--ro num-req-sent-error-rcvd?  yang:counter32
-    |           +--ro num-req-sent-timeout?     yang:counter32
-    |           +--ro num-req-sent-cancel-sent? yang:counter32
-    |           +--ro num-req-rcvd?             yang:counter32
-    |           +--ro num-svec-rcvd?            yang:counter32
-    |           +--ro num-svec-req-rcvd?        yang:counter32
-    |           +--ro num-req-rcvd-pend-rep?    yang:counter32
-    |           +--ro num-req-rcvd-ero-sent?    yang:counter32
-    |           +--ro num-req-rcvd-nopath-sent? yang:counter32
-    |           +--ro num-req-rcvd-cancel-sent? yang:counter32
-    |           +--ro num-req-rcvd-cancel-rcvd? yang:counter32
-    |           +--ro num-rep-rcvd-unknown?     yang:counter32
-    |           +--ro num-req-rcvd-unknown?     yang:counter32
-    |           +--ro num-req-sent-closed?      yang:counter32
-    |           +--ro num-req-rcvd-closed?      yang:counter32
-    |           +--ro sessions
-    |              +--ro session* [initiator]
-    |                 +--ro initiator                 pcep-initiator
-    |                 +--ro state-last-change?        yang:timestamp
-    |                 +--ro state?                    pcep-sess-state
-    |                 +--ro connect-retry?            yang:counter32
-    |                 +--ro local-id?                 uint32
-    |                 +--ro remote-id?                uint32
-    |                 +--ro keepalive-timer?          uint32
-    |                 +--ro peer-keepalive-timer?     uint32
-    |                 +--ro dead-timer?               uint32
-    |                 +--ro peer-dead-timer?          uint32
+                 +--ro avg-rsp-time?               uint32
+                 +--ro lwm-rsp-time?               uint32
+                 +--ro hwm-rsp-time?               uint32
+                 +--ro num-pcreq-sent?             yang:counter32
+                 +--ro num-pcreq-rcvd?             yang:counter32
+                 +--ro num-pcrep-sent?             yang:counter32
+                 +--ro num-pcrep-rcvd?             yang:counter32
+                 +--ro num-pcerr-sent?             yang:counter32
+                 +--ro num-pcerr-rcvd?             yang:counter32
+                 +--ro num-pcntf-sent?             yang:counter32
+                 +--ro num-pcntf-rcvd?             yang:counter32
+                 +--ro num-keepalive-sent?         yang:counter32
+                 +--ro num-keepalive-rcvd?         yang:counter32
+                 +--ro num-unknown-rcvd?           yang:counter32
+                 +--ro num-corrupt-rcvd?           yang:counter32
+                 +--ro num-req-sent?               yang:counter32
+                 +--ro num-svec-sent?              yang:counter32
+                 +--ro num-svec-req-sent?          yang:counter32
+                 +--ro num-req-sent-pend-rep?      yang:counter32
+                 +--ro num-req-sent-ero-rcvd?      yang:counter32
+                 +--ro num-req-sent-nopath-rcvd?   yang:counter32
+                 +--ro num-req-sent-cancel-rcvd?   yang:counter32
+                 +--ro num-req-sent-error-rcvd?    yang:counter32
+                 +--ro num-req-sent-timeout?       yang:counter32
+                 +--ro num-req-sent-cancel-sent?   yang:counter32
+                 +--ro num-req-rcvd?               yang:counter32
+                 +--ro num-svec-rcvd?              yang:counter32
+                 +--ro num-svec-req-rcvd?          yang:counter32
+                 +--ro num-req-rcvd-pend-rep?      yang:counter32
+                 +--ro num-req-rcvd-ero-sent?      yang:counter32
+                 +--ro num-req-rcvd-nopath-sent?   yang:counter32
+                 +--ro num-req-rcvd-cancel-sent?   yang:counter32
+                 +--ro num-req-rcvd-cancel-rcvd?   yang:counter32
+                 +--ro num-rep-rcvd-unknown?       yang:counter32
+                 +--ro num-req-rcvd-unknown?       yang:counter32
+                 +--ro num-req-sent-closed?        yang:counter32
+                 +--ro num-req-rcvd-closed?        yang:counter32
+                 +--ro sessions
+                    +--ro session* [initiator]
+                       +--ro initiator                   pcep-initiator
+                       +--ro state-last-change?          yang:timestamp
+                       +--ro state?                      pcep-sess-state
+                       +--ro connect-retry?              yang:counter32
+                       +--ro local-id?                   uint32
+                       +--ro remote-id?                  uint32
+                       +--ro keepalive-timer?            uint32
+                       +--ro peer-keepalive-timer?       uint32
+                       +--ro dead-timer?                 uint32
 
 
 
-Pobbathi, et al.         Expires April 17, 2015                 [Page 7]
+Pobbathi, et al.         Expires April 28, 2015                 [Page 7]
 
 Internet-Draft                  PCE-YANG                    October 2014
 
 
-    |                 +--ro ka-hold-time-rem?         uint32
-    |                 +--ro overloaded?               boolean
-    |                 +--ro overload-time?            uint32
-    |                 +--ro peer-overloaded?          boolean
-    |                 +--ro peer-overload-time?       uint32
-    |                 +--ro discontinuity-time?       yang:timestamp
-    |                 +--ro avg-rsp-time?             uint32
-    |                 +--ro lwm-rsp-time?             uint32
-    |                 +--ro hwm-rsp-time?             uint32
-    |                 +--ro num-pcreq-sent?           yang:counter32
-    |                 +--ro num-pcreq-rcvd?           yang:counter32
-    |                 +--ro num-pcrep-sent?           yang:counter32
-    |                 +--ro num-pcrep-rcvd?           yang:counter32
-    |                 +--ro num-pcerr-sent?           yang:counter32
-    |                 +--ro num-pcerr-rcvd?           yang:counter32
-    |                 +--ro num-pcntf-sent?           yang:counter32
-    |                 +--ro num-pcntf-rcvd?           yang:counter32
-    |                 +--ro num-keepalive-sent?       yang:counter32
-    |                 +--ro num-keepalive-rcvd?       yang:counter32
-    |                 +--ro num-unknown-rcvd?         yang:counter32
-    |                 +--ro num-corrupt-rcvd?         yang:counter32
-    |                 +--ro num-req-sent?             yang:counter32
-    |                 +--ro num-svec-sent?            yang:counter32
-    |                 +--ro num-svec-req-sent?        yang:counter32
-    |                 +--ro num-req-sent-pend-rep?    yang:counter32
-    |                 +--ro num-req-sent-ero-rcvd?    yang:counter32
-    |                 +--ro num-req-sent-nopath-rcvd? yang:counter32
-    |                 +--ro num-req-sent-cancel-rcvd? yang:counter32
-    |                 +--ro num-req-sent-error-rcvd?  yang:counter32
-    |                 +--ro num-req-sent-timeout?     yang:counter32
-    |                 +--ro num-req-sent-cancel-sent? yang:counter32
-    |                 +--ro num-req-rcvd?             yang:counter32
-    |                 +--ro num-svec-rcvd?            yang:counter32
-    |                 +--ro num-svec-req-rcvd?        yang:counter32
-    |                 +--ro num-req-rcvd-pend-rep?    yang:counter32
-    |                 +--ro num-req-rcvd-ero-sent?    yang:counter32
-    |                 +--ro num-req-rcvd-nopath-sent? yang:counter32
-    |                 +--ro num-req-rcvd-cancel-sent? yang:counter32
-    |                 +--ro num-req-rcvd-cancel-rcvd? yang:counter32
-    |                 +--ro num-rep-rcvd-unknown?     yang:counter32
-    |                 +--ro num-req-rcvd-unknown?     yang:counter32
-    +--n pcep-state-change
-       +--TBD
+                       +--ro peer-dead-timer?            uint32
+                       +--ro ka-hold-time-rem?           uint32
+                       +--ro overloaded?                 boolean
+                       +--ro overload-time?              uint32
+                       +--ro peer-overloaded?            boolean
+                       +--ro peer-overload-time?         uint32
+                       +--ro discontinuity-time?         yang:timestamp
+                       +--ro avg-rsp-time?               uint32
+                       +--ro lwm-rsp-time?               uint32
+                       +--ro hwm-rsp-time?               uint32
+                       +--ro num-pcreq-sent?             yang:counter32
+                       +--ro num-pcreq-rcvd?             yang:counter32
+                       +--ro num-pcrep-sent?             yang:counter32
+                       +--ro num-pcrep-rcvd?             yang:counter32
+                       +--ro num-pcerr-sent?             yang:counter32
+                       +--ro num-pcerr-rcvd?             yang:counter32
+                       +--ro num-pcntf-sent?             yang:counter32
+                       +--ro num-pcntf-rcvd?             yang:counter32
+                       +--ro num-keepalive-sent?         yang:counter32
+                       +--ro num-keepalive-rcvd?         yang:counter32
+                       +--ro num-unknown-rcvd?           yang:counter32
+                       +--ro num-corrupt-rcvd?           yang:counter32
+                       +--ro num-req-sent?               yang:counter32
+                       +--ro num-svec-sent?              yang:counter32
+                       +--ro num-svec-req-sent?          yang:counter32
+                       +--ro num-req-sent-pend-rep?      yang:counter32
+                       +--ro num-req-sent-ero-rcvd?      yang:counter32
+                       +--ro num-req-sent-nopath-rcvd?   yang:counter32
+                       +--ro num-req-sent-cancel-rcvd?   yang:counter32
+                       +--ro num-req-sent-error-rcvd?    yang:counter32
+                       +--ro num-req-sent-timeout?       yang:counter32
+                       +--ro num-req-sent-cancel-sent?   yang:counter32
+                       +--ro num-req-rcvd?               yang:counter32
+                       +--ro num-svec-rcvd?              yang:counter32
+                       +--ro num-svec-req-rcvd?          yang:counter32
+                       +--ro num-req-rcvd-pend-rep?      yang:counter32
+                       +--ro num-req-rcvd-ero-sent?      yang:counter32
+                       +--ro num-req-rcvd-nopath-sent?   yang:counter32
+                       +--ro num-req-rcvd-cancel-sent?   yang:counter32
+                       +--ro num-req-rcvd-cancel-rcvd?   yang:counter32
+                       +--ro num-rep-rcvd-unknown?       yang:counter32
+                       +--ro num-req-rcvd-unknown?       yang:counter32
+  notifications:
+     +---n pcep-session-up
+     |  +--ro entity-addr?         leafref
+     |  +--ro entity-addr-type?    leafref
+     |  +--ro peer-addr?           leafref
+     |  +--ro peer-addr-type?      leafref
 
 
 
-
-
-
-
-
-Pobbathi, et al.         Expires April 17, 2015                 [Page 8]
+Pobbathi, et al.         Expires April 28, 2015                 [Page 8]
 
 Internet-Draft                  PCE-YANG                    October 2014
 
+
+     |  +--ro session-initiator?   leafref
+     |  +--ro state-last-change?   yang:timestamp
+     |  +--ro state?               pcep-sess-state
+     +---n pcep-session-down
+     |  +--ro entity-addr?         leafref
+     |  +--ro entity-addr-type?    leafref
+     |  +--ro peer-addr?           leafref
+     |  +--ro peer-addr-type?      leafref
+     |  +--ro session-initiator?   leafref
+     |  +--ro state-last-change?   yang:timestamp
+     |  +--ro state?               pcep-sess-state
+     +---n pcep-session-local-overload
+     |  +--ro entity-addr?         leafref
+     |  +--ro entity-addr-type?    leafref
+     |  +--ro peer-addr?           leafref
+     |  +--ro peer-addr-type?      leafref
+     |  +--ro session-initiator?   leafref
+     |  +--ro overloaded?          boolean
+     |  +--ro overload-time?       uint32
+     +---n pcep-session-local-overload-clear
+     |  +--ro entity-addr?        leafref
+     |  +--ro entity-addr-type?   leafref
+     |  +--ro peer-addr?          leafref
+     |  +--ro peer-addr-type?     leafref
+     |  +--ro overloaded?         boolean
+     +---n pcep-session-peer-overload
+     |  +--ro entity-addr?          leafref
+     |  +--ro entity-addr-type?     leafref
+     |  +--ro peer-addr?            leafref
+     |  +--ro peer-addr-type?       leafref
+     |  +--ro session-initiator?    leafref
+     |  +--ro peer-overloaded?      boolean
+     |  +--ro peer-overload-time?   uint32
+     +---n pcep-session-peer-overload-clear
+        +--ro entity-addr?        leafref
+        +--ro entity-addr-type?   leafref
+        +--ro peer-addr?          leafref
+        +--ro peer-addr-type?     leafref
+        +--ro peer-overloaded?    boolean
 
 5.1.  The Entity Lists
 
@@ -456,6 +496,15 @@ Internet-Draft                  PCE-YANG                    October 2014
    logical local PCEP entities.  There are several scenarios in which
    there may be more than one local PCEP entity, it is listed in
    [I-D.ietf-pce-pcep-mib].
+
+
+
+
+
+Pobbathi, et al.         Expires April 28, 2015                 [Page 9]
+
+Internet-Draft                  PCE-YANG                    October 2014
+
 
    The data model for PCEP presented in this document uses a flat list
    of entities.  Each entity in the list is identified by its IP address
@@ -497,15 +546,6 @@ Internet-Draft                  PCE-YANG                    October 2014
    peers"), and a separate list for the operational state of all peers
    (i.e.  static as well as discovered)("/pcep-state/entity/peers").
 
-
-
-
-
-Pobbathi, et al.         Expires April 17, 2015                 [Page 9]
-
-Internet-Draft                  PCE-YANG                    October 2014
-
-
 5.3.  The Session Lists
 
    The session list contains PCEP session that the PCEP entity (PCE or
@@ -513,6 +553,14 @@ Internet-Draft                  PCE-YANG                    October 2014
    semantically different from those in peer since the former apply to
    the current session only, whereas the latter are the aggregate for
    all sessions that have existed to that peer.
+
+
+
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 10]
+
+Internet-Draft                  PCE-YANG                    October 2014
+
 
    Although [RFC5440] forbids there from being more than one active PCEP
    session between a given pair of PCEP entities at any one time, there
@@ -531,6 +579,10 @@ Internet-Draft                  PCE-YANG                    October 2014
    ("/pcep-state/entity/peers/peer/sessions/session").
 
 5.4.  Notifications
+
+   This YANG model defines a list of notifications to inform client of
+   important events detected during the protocol operation.  The
+   notifications defined cover the PCEP MIB notifications.
 
 6.  Advanced PCE Features
 
@@ -554,17 +606,17 @@ Internet-Draft                  PCE-YANG                    October 2014
 
    o  GMPLS
 
-
-
-
-Pobbathi, et al.         Expires April 17, 2015                [Page 10]
-
-Internet-Draft                  PCE-YANG                    October 2014
-
-
    o  Inter-Layer
 
    o  Stateful PCE
+
+
+
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 11]
+
+Internet-Draft                  PCE-YANG                    October 2014
+
 
 7.  PCEP YANG Module
 
@@ -573,7 +625,8 @@ Internet-Draft                  PCE-YANG                    October 2014
    the date of RFC publication (and remove this note).
 
 
-   <CODE BEGINS> file "ietf-pcep@2014-10-09.yang"
+   <CODE BEGINS> file "ietf-pcep@2014-10-25.yang"
+
 
    module ietf-pcep {
        namespace "urn:ietf:params:xml:ns:yang:ietf-pcep";
@@ -609,18 +662,18 @@ Internet-Draft                  PCE-YANG                    October 2014
             vendor implementations.";
 
 
-       revision 2014-10-09 {
+       revision 2014-10-25 {
+           description "Initial revision.";
+           reference
+               "RFC XXXX:  A YANG Data Model for Path Computation
 
 
 
-Pobbathi, et al.         Expires April 17, 2015                [Page 11]
+Pobbathi, et al.         Expires April 28, 2015                [Page 12]
 
 Internet-Draft                  PCE-YANG                    October 2014
 
 
-           description "Initial revision.";
-           reference
-               "RFC XXXX:  A YANG Data Model for Path Computation
                            Element Communications Protocol
                            (PCEP)";
        }
@@ -666,17 +719,17 @@ Internet-Draft                  PCE-YANG                    October 2014
                 Takes one of the following values
                 - unknown(0): the role is not known.
                 - pcc(1): the role is of a Path Computation
+                  Client (PCC).
+                - pce(2): the role is of a Path Computation
+                  Server (PCE).
 
 
 
-Pobbathi, et al.         Expires April 17, 2015                [Page 12]
+Pobbathi, et al.         Expires April 28, 2015                [Page 13]
 
 Internet-Draft                  PCE-YANG                    October 2014
 
 
-                  Client (PCC).
-                - pce(2): the role is of a Path Computation
-                  Server (PCE).
                 - pccAndPce(3): the role is of both a PCC and
                   a PCE.";
 
@@ -722,17 +775,17 @@ Internet-Draft                  PCE-YANG                    October 2014
                }
                enum oper-status-going-down {
                    value "4";
+                   description
+                   "The PCEP entity is deactivating";
+               }
 
 
 
-Pobbathi, et al.         Expires April 17, 2015                [Page 13]
+Pobbathi, et al.         Expires April 28, 2015                [Page 14]
 
 Internet-Draft                  PCE-YANG                    October 2014
 
 
-                   description
-                   "The PCEP entity is deactivating";
-               }
                enum oper-status-failed {
                    value "5";
                    description
@@ -778,17 +831,17 @@ Internet-Draft                  PCE-YANG                    October 2014
             Takes one of the following values
                 - local(1): Initiated locally
                 - remote(2): Initiated remotely";
+       }
+
+       typedef pcep-sess-state {
 
 
 
-Pobbathi, et al.         Expires April 17, 2015                [Page 14]
+Pobbathi, et al.         Expires April 28, 2015                [Page 15]
 
 Internet-Draft                  PCE-YANG                    October 2014
 
 
-       }
-
-       typedef pcep-sess-state {
            type enumeration {
                enum tcp-pending {
                    value "1";
@@ -834,17 +887,17 @@ Internet-Draft                  PCE-YANG                    October 2014
        /*
         * Groupings
         */
+       grouping  pcep-entity-identifier{
+           description
+               "This grouping defines the identifier for PCEP entity.";
 
 
 
-Pobbathi, et al.         Expires April 17, 2015                [Page 15]
+Pobbathi, et al.         Expires April 28, 2015                [Page 16]
 
 Internet-Draft                  PCE-YANG                    October 2014
 
 
-       grouping  pcep-entity-identifier{
-           description
-               "This grouping defines the identifier for PCEP entity.";
            leaf addr-type {
                type inet:ip-version;
                description
@@ -890,15 +943,15 @@ Internet-Draft                  PCE-YANG                    October 2014
                    "The local Internet address of this PCEP peer.
                     The type is given by addr-type.";
            }
+       }
 
 
 
-Pobbathi, et al.         Expires April 17, 2015                [Page 16]
+
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 17]
 
 Internet-Draft                  PCE-YANG                    October 2014
-
-
-       }
 
 
        grouping pcep-entity-info{
@@ -946,17 +999,17 @@ Internet-Draft                  PCE-YANG                    October 2014
                    session setup attempt, until a maximum back-off
                    time is reached.  The maximum back-off time is
                    max-backoff-timer.";
+           }
+
+           leaf max-backoff-timer {
 
 
 
-Pobbathi, et al.         Expires April 17, 2015                [Page 17]
+Pobbathi, et al.         Expires April 28, 2015                [Page 18]
 
 Internet-Draft                  PCE-YANG                    October 2014
 
 
-           }
-
-           leaf max-backoff-timer {
                type uint32;
                units "seconds";
                description
@@ -1002,17 +1055,17 @@ Internet-Draft                  PCE-YANG                    October 2014
                     received within this time then PCEP terminates the
                     TCP connection and deletes the associated
                     sessions.";
+               reference
+                   "RFC 5440: Path Computation Element (PCE)
+                              Communication Protocol (PCEP)";
 
 
 
-Pobbathi, et al.         Expires April 17, 2015                [Page 18]
+Pobbathi, et al.         Expires April 28, 2015                [Page 19]
 
 Internet-Draft                  PCE-YANG                    October 2014
 
 
-               reference
-                   "RFC 5440: Path Computation Element (PCE)
-                              Communication Protocol (PCEP)";
            }
 
            leaf keep-alive-timer {
@@ -1045,6 +1098,8 @@ Internet-Draft                  PCE-YANG                    October 2014
                }
                units "seconds";
                must ". >= ../keep-alive-timer" {
+                   error-message "The dead timer must be "
+                          + "larger than the keep alive timer";
                    description
                        "This value MUST be greater than
                         keep-alive-timer.";
@@ -1058,15 +1113,15 @@ Internet-Draft                  PCE-YANG                    October 2014
                     should declare a session down if it does not
                     receive any PCEP messages. Zero suggests that the
                     peer does not run a dead timer at all." ;
+               reference
 
 
 
-Pobbathi, et al.         Expires April 17, 2015                [Page 19]
+Pobbathi, et al.         Expires April 28, 2015                [Page 20]
 
 Internet-Draft                  PCE-YANG                    October 2014
 
 
-               reference
                    "RFC 5440: Path Computation Element (PCE)
                               Communication Protocol (PCEP)";
            }
@@ -1114,15 +1169,15 @@ Internet-Draft                  PCE-YANG                    October 2014
                    "In PCEP session parameter negotiation in seconds,
                     the minimum value that this PCEP entity will
                     accept for the interval between Keepalive
+                    transmissions. Zero means that the PCEP entity
 
 
 
-Pobbathi, et al.         Expires April 17, 2015                [Page 20]
+Pobbathi, et al.         Expires April 28, 2015                [Page 21]
 
 Internet-Draft                  PCE-YANG                    October 2014
 
 
-                    transmissions. Zero means that the PCEP entity
                     insists on no Keepalive transmission at all.";
            }
 
@@ -1170,15 +1225,15 @@ Internet-Draft                  PCE-YANG                    October 2014
            }
 
            leaf request-timer{
+               type uint32 {
 
 
 
-Pobbathi, et al.         Expires April 17, 2015                [Page 21]
+Pobbathi, et al.         Expires April 28, 2015                [Page 22]
 
 Internet-Draft                  PCE-YANG                    October 2014
 
 
-               type uint32 {
                    range "1..65535";
                }
                units "seconds";
@@ -1226,15 +1281,15 @@ Internet-Draft                  PCE-YANG                    October 2014
                reference
                    "RFC 5440: Path Computation Element (PCE)
                               Communication Protocol (PCEP)";
+           }
 
 
 
-Pobbathi, et al.         Expires April 17, 2015                [Page 22]
+Pobbathi, et al.         Expires April 28, 2015                [Page 23]
 
 Internet-Draft                  PCE-YANG                    October 2014
 
 
-           }
        }//pcep-entity-info
 
        grouping  pcep-stats{
@@ -1244,52 +1299,75 @@ Internet-Draft                  PCE-YANG                    October 2014
            leaf avg-rsp-time{
                type uint32;
                units "milliseconds";
+               must "(/pcep-state/entity/peers/peer/role != 'pcc'" +
+                    " or " +
+                    "(/pcep-state/entity/peers/peer/role = 'pcc'" +
+                    " and avg-rsp-time = 0))" {
+                   error-message
+                       "Invalid average response time";
+                   description
+                       "If role is pcc then this leaf is meaningless
+                        and is set to zero.";
+               }
                description
                  "The average response time.
 
                   If an average response time has not been
-                  calculated then this leaf has the value zero.
-
-                  If role is pcc then this leaf is meaningless
-                  and is set to zero.";
+                  calculated then this leaf has the value zero.";
            }
 
            leaf lwm-rsp-time{
                type uint32;
                units "milliseconds";
+               must "(/pcep-state/entity/peers/peer/role != 'pcc'" +
+                    " or " +
+                    "(/pcep-state/entity/peers/peer/role = 'pcc'" +
+                    " and lwm-rsp-time = 0))" {
+                   error-message
+                       "Invalid smallest (low-water mark)
+                        response time";
+                   description
+                       "If role is pcc then this leaf is meaningless
+                        and is set to zero.";
+               }
                description
                 "The smallest (low-water mark) response time seen.
 
                  If no responses have been received then this
-                 leaf has the value zero.
-
-                 If role is pcc then this leaf is meaningless
-                 and is set to zero.";
+                 leaf has the value zero.";
            }
 
            leaf hwm-rsp-time{
-               type uint32;
-               units "milliseconds";
-               description
-                "The greatest (high-water mark) response time seen.
-
-                 If no responses have been received then this object
-                 has the value zero.
-
-                 If role is pcc then this field is meaningless and
-                 is set to zero.";
-           }
-
-           leaf num-pcreq-sent{
-               type yang:counter32;
 
 
 
-Pobbathi, et al.         Expires April 17, 2015                [Page 23]
+Pobbathi, et al.         Expires April 28, 2015                [Page 24]
 
 Internet-Draft                  PCE-YANG                    October 2014
 
 
+               type uint32;
+               units "milliseconds";
+               must "(/pcep-state/entity/peers/peer/role != 'pcc'" +
+                    " or " +
+                    "(/pcep-state/entity/peers/peer/role = 'pcc'" +
+                    " and hwm-rsp-time = 0))" {
+                   error-message
+                       "Invalid greatest (high-water mark)
+                        response time seen";
+                   description
+                       "If role is pcc then this field is
+                        meaningless and is set to zero.";
+               }
+               description
+                "The greatest (high-water mark) response time seen.
+
+                 If no responses have been received then this object
+                 has the value zero.";
+           }
+
+           leaf num-pcreq-sent{
+               type yang:counter32;
                description
                 "The number of PCReq messages sent.";
            }
@@ -1316,6 +1394,14 @@ Internet-Draft                  PCE-YANG                    October 2014
                type yang:counter32;
                description
                  "The number of PCErr messages sent.";
+
+
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 25]
+
+Internet-Draft                  PCE-YANG                    October 2014
+
+
            }
 
            leaf num-pcerr-rcvd{
@@ -1338,14 +1424,6 @@ Internet-Draft                  PCE-YANG                    October 2014
 
            leaf num-keepalive-sent{
                type yang:counter32;
-
-
-
-Pobbathi, et al.         Expires April 17, 2015                [Page 24]
-
-Internet-Draft                  PCE-YANG                    October 2014
-
-
                description
                  "The number of Keepalive messages sent.";
            }
@@ -1372,6 +1450,14 @@ Internet-Draft                  PCE-YANG                    October 2014
                type yang:counter32;
                description
                  "The number of requests sent.  A request corresponds
+
+
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 26]
+
+Internet-Draft                  PCE-YANG                    October 2014
+
+
                   1:1 with an RP object in a PCReq message. This might
                   be greater than num-pcreq-sent because multiple
                   requests can be batched into a single PCReq
@@ -1394,14 +1480,6 @@ Internet-Draft                  PCE-YANG                    October 2014
            }
 
            leaf num-req-sent-pend-rep{
-
-
-
-Pobbathi, et al.         Expires April 17, 2015                [Page 25]
-
-Internet-Draft                  PCE-YANG                    October 2014
-
-
                type yang:counter32;
                description
                  "The number of requests that have been sent for
@@ -1428,6 +1506,14 @@ Internet-Draft                  PCE-YANG                    October 2014
            }
 
            leaf num-req-sent-cancel-rcvd{
+
+
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 27]
+
+Internet-Draft                  PCE-YANG                    October 2014
+
+
                type yang:counter32;
                description
                  "The number of requests that were cancelled with
@@ -1450,13 +1536,6 @@ Internet-Draft                  PCE-YANG                    October 2014
                  and a single PCErr message can reject multiple
                  requests.";
            }
-
-
-
-Pobbathi, et al.         Expires April 17, 2015                [Page 26]
-
-Internet-Draft                  PCE-YANG                    October 2014
-
 
            leaf num-req-sent-timeout{
                type yang:counter32;
@@ -1483,6 +1562,14 @@ Internet-Draft                  PCE-YANG                    October 2014
 
                  This might be greater than num-pcreq-rcvd because
                  multiple requests can be batched into a single
+
+
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 28]
+
+Internet-Draft                  PCE-YANG                    October 2014
+
+
                  PCReq message.";
            }
 
@@ -1506,14 +1593,6 @@ Internet-Draft                  PCE-YANG                    October 2014
                description
                 "The number of requests that have been received for
                  which a response is still pending.";
-
-
-
-Pobbathi, et al.         Expires April 17, 2015                [Page 27]
-
-Internet-Draft                  PCE-YANG                    October 2014
-
-
            }
 
            leaf num-req-rcvd-ero-sent{
@@ -1540,6 +1619,13 @@ Internet-Draft                  PCE-YANG                    October 2014
                 "The number of requests received that were cancelled
                  by the local PCEP entity sending a PCNtf message.
 
+
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 29]
+
+Internet-Draft                  PCE-YANG                    October 2014
+
+
                  This might be different than num-pcntf-sent because
                  not all PCNtf messages are used to cancel requests,
                  and a single PCNtf message can cancel multiple
@@ -1562,14 +1648,6 @@ Internet-Draft                  PCE-YANG                    October 2014
                   response whose RP object does not contain the
                   request ID of any request that is currently
                   outstanding on the session.";
-
-
-
-Pobbathi, et al.         Expires April 17, 2015                [Page 28]
-
-Internet-Draft                  PCE-YANG                    October 2014
-
-
            }
 
            leaf  num-req-rcvd-unknown{
@@ -1583,6 +1661,67 @@ Internet-Draft                  PCE-YANG                    October 2014
 
        }//pcep-stats
 
+       grouping notification-instance-hdr {
+           description
+               "This group describes common instance specific data
+                for notifications.";
+
+           leaf entity-addr {
+               type leafref {
+                   path "/pcep-state/entity/addr";
+               }
+               description
+                   "Reference to local entity address";
+           }
+
+
+
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 30]
+
+Internet-Draft                  PCE-YANG                    October 2014
+
+
+           leaf entity-addr-type {
+               type leafref {
+                   path "/pcep-state/entity/addr-type";
+               }
+               description
+                   "Reference to local entity address type";
+           }
+
+           leaf peer-addr {
+               type leafref {
+                   path "/pcep-state/entity/peers/peer/addr";
+               }
+               description
+                   "Reference to peer address";
+           }
+
+           leaf peer-addr-type {
+               type leafref {
+                   path "/pcep-state/entity/peers/peer/addr-type";
+               }
+               description
+                   "Reference to peer address type";
+           }
+       }// notification-instance-hdr
+
+       grouping notification-session-hdr {
+           description
+           "This group describes common session instance specific
+            data for notifications.";
+
+           leaf session-initiator {
+               type leafref {
+               path "/pcep-state/entity/peers/peer/sessions/" +
+                    "session/initiator";
+               }
+               description
+                   "Reference to pcep session initiator leaf";
+           }
+       }// notification-session-hdr
+
        /*
         * Configuration data nodes
         */
@@ -1591,6 +1730,13 @@ Internet-Draft                  PCE-YANG                    October 2014
            description
                "Parameters for list of configured PCEP entities
                 on the device.";
+
+
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 31]
+
+Internet-Draft                  PCE-YANG                    October 2014
+
 
            list entity{
                key "addr-type addr";
@@ -1618,14 +1764,6 @@ Internet-Draft                  PCE-YANG                    October 2014
                        "The role that this entity can play.
                         Takes one of the following values.
                         - unknown(0): this PCEP Entity role is not
-
-
-
-Pobbathi, et al.         Expires April 17, 2015                [Page 29]
-
-Internet-Draft                  PCE-YANG                    October 2014
-
-
                           known.
                         - pcc(1): this PCEP Entity is a PCC.
                         - pce(2): this PCEP Entity is a PCE.
@@ -1644,6 +1782,28 @@ Internet-Draft                  PCE-YANG                    October 2014
                    description
                        "The configuration related to the PCEP
                         entity.";
+               }
+
+               leaf pcep-notification-max-rate {
+                   type uint32;
+
+
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 32]
+
+Internet-Draft                  PCE-YANG                    October 2014
+
+
+                   mandatory true;
+                   description
+                       "This variable indicates the maximum number of
+                        notifications issued per second. If events occur
+                        more rapidly, the implementation may simply fail
+                        to emit these notifications during that period,
+                        or may queue them until an appropriate time. A
+                        value of 0 means no notifications are emitted
+                        and all should be discarded (that is, not
+                        queued).";
                }
 
                container peers{
@@ -1674,14 +1834,6 @@ Internet-Draft                  PCE-YANG                    October 2014
            }//entity
        }//pcep
 
-
-
-
-Pobbathi, et al.         Expires April 17, 2015                [Page 30]
-
-Internet-Draft                  PCE-YANG                    October 2014
-
-
        /*
         * Operational data nodes
         */
@@ -1690,6 +1842,14 @@ Internet-Draft                  PCE-YANG                    October 2014
            config false;
            description
                "The list of operational PCEP entities on the
+
+
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 33]
+
+Internet-Draft                  PCE-YANG                    October 2014
+
+
                 device.";
 
            list entity{
@@ -1730,14 +1890,6 @@ Internet-Draft                  PCE-YANG                    October 2014
                        - oper-status-up(1): the PCEP entity is
                          active.
                        - oper-status-down(2): the PCEP entity is
-
-
-
-Pobbathi, et al.         Expires April 17, 2015                [Page 31]
-
-Internet-Draft                  PCE-YANG                    October 2014
-
-
                          inactive.
                        - oper-status-going-up(3): the PCEP entity is
                          activating.
@@ -1746,6 +1898,14 @@ Internet-Draft                  PCE-YANG                    October 2014
                        - oper-status-failed(5): the PCEP entity has
                          failed and will recover when possible.
                        - oper-status-failed-perm(6): the PCEP entity
+
+
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 34]
+
+Internet-Draft                  PCE-YANG                    October 2014
+
+
                          has failed and will not recover without
                          operator intervention.";
                }
@@ -1786,14 +1946,6 @@ Internet-Draft                  PCE-YANG                    October 2014
                         }
 
                         leaf role {
-
-
-
-Pobbathi, et al.         Expires April 17, 2015                [Page 32]
-
-Internet-Draft                  PCE-YANG                    October 2014
-
-
                            type pcep-role;
                            description
                                "The role of the PCEP Peer.
@@ -1802,6 +1954,14 @@ Internet-Draft                  PCE-YANG                    October 2014
                                   is not known.
                                 - pcc(1): this PCEP peer is a PCC.
                                 - pce(2): this PCEP peer is a PCE.
+
+
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 35]
+
+Internet-Draft                  PCE-YANG                    October 2014
+
+
                                 - pcc-and-pce(3): this PCEP peer
                                   is both a PCC and a PCE.";
                        }
@@ -1842,14 +2002,6 @@ Internet-Draft                  PCE-YANG                    October 2014
                        }
 
                        leaf num-sess-setup-fail{
-
-
-
-Pobbathi, et al.         Expires April 17, 2015                [Page 33]
-
-Internet-Draft                  PCE-YANG                    October 2014
-
-
                            type yang:counter32;
                            description
                               "The number of PCEP sessions with the peer
@@ -1859,36 +2011,71 @@ Internet-Draft                  PCE-YANG                    October 2014
                                session retry to this peer fails.";
                        }
 
+
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 36]
+
+Internet-Draft                  PCE-YANG                    October 2014
+
+
                        leaf session-up-time{
                            type yang:timestamp;
+                           must "(../num-sess-setup-ok != 0  or " +
+                               "(../num-sess-setup-ok = 0  and "  +
+                               "session-up-time = 0))" {
+                                   error-message
+                                       "Invalid Session Up timestamp";
+                                   description
+                                       "If num-sess-setup-ok is zero,
+                                        then this leaf contains zero.";
+                               }
                            description
                               "The timestamp value of the last time a
                                session with this peer was successfully
-                               established.
-
-                               If num-sess-setup-ok is zero, then this
-                               leaf contains zero.";
+                               established.";
                        }
 
                        leaf session-fail-time{
                            type yang:timestamp;
+                           must "(../num-sess-setup-fail != 0  or " +
+                               "(../num-sess-setup-fail = 0  and "  +
+                               "session-fail-time = 0))" {
+                                   error-message
+                                       "Invalid Session Fail timestamp";
+                                   description
+                                       "If num-sess-setup-fail is zero,
+                                        then this leaf contains zero.";
+                               }
                            description
                              "The timestamp value of the last time a
                               session with this peer failed to be
-                              established.
-
-                              If num-sess-setup-fail is zero, then
-                              this leaf contains zero.";
+                              established.";
                        }
 
                        leaf session-fail-up-time{
                            type yang:timestamp;
+                           must "(../num-sess-setup-ok != 0  or "     +
+                               "(../num-sess-setup-ok = 0  and "     +
+                               "session-fail-up-time = 0))" {
+                                   error-message
+                                       "Invalid Session Fail from
+                                        Up timestamp";
+                                   description
+                                       "If num-sess-setup-ok is zero,
+                                        then this leaf contains zero.";
+                               }
                            description
                              "The timestamp value of the last time a
-                             session with this peer failed from active.
 
-                             If num-sess-setup-ok is zero, then this
-                             leaf contains zero.";
+
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 37]
+
+Internet-Draft                  PCE-YANG                    October 2014
+
+
+                              session with this peer failed from
+                              active.";
                        }
 
                        uses pcep-stats{
@@ -1898,14 +2085,6 @@ Internet-Draft                  PCE-YANG                    October 2014
                                 when no PCEP session currently exists
                                 to that peer. The statistics contained
                                 are an aggregate of the statistics for
-
-
-
-Pobbathi, et al.         Expires April 17, 2015                [Page 34]
-
-Internet-Draft                  PCE-YANG                    October 2014
-
-
                                 all successive sessions to that peer.";
                        }
 
@@ -1943,6 +2122,14 @@ Internet-Draft                  PCE-YANG                    October 2014
                            list session {
                                key "initiator";
 
+
+
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 38]
+
+Internet-Draft                  PCE-YANG                    October 2014
+
+
                                description
                                    "The list of sessions, note that
                                     for a time being two sessions
@@ -1954,14 +2141,6 @@ Internet-Draft                  PCE-YANG                    October 2014
                                        "The initiator of the session,
                                         that is, whether the TCP
                                         connection was initiated by
-
-
-
-Pobbathi, et al.         Expires April 17, 2015                [Page 35]
-
-Internet-Draft                  PCE-YANG                    October 2014
-
-
                                         the local PCEP entity or the
                                         peer.
 
@@ -1999,6 +2178,14 @@ Internet-Draft                  PCE-YANG                    October 2014
 
                                         The set of possible states
                                         excludes the idle state since
+
+
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 39]
+
+Internet-Draft                  PCE-YANG                    October 2014
+
+
                                         entries do not exist in the
                                         idle state.";
                                }
@@ -2010,14 +2197,6 @@ Internet-Draft                  PCE-YANG                    October 2014
                                          local PCEP entity has
                                          attempted to establish a TCP
                                          connection for this session
-
-
-
-Pobbathi, et al.         Expires April 17, 2015                [Page 36]
-
-Internet-Draft                  PCE-YANG                    October 2014
-
-
                                          without success. The PCEP
                                          entity gives up when this
                                          reaches connect-max-retry.";
@@ -2043,17 +2222,37 @@ Internet-Draft                  PCE-YANG                    October 2014
 
                                leaf remote-id {
                                    type uint32 {
-                                     range "0..255";
+                                       range "0..255";
                                    }
+                                   must "((../state != 'tcp-pending'" +
+                                        "and " +
+                                        "../state != 'open-wait' )" +
+                                        "or " +
+                                        "((../state = 'tcp-pending'" +
+                                        " or " +
+                                        "../state = 'open-wait' )" +
+                                        "and remote-id = 0))" {
+                                           error-message
+                                               "Invalid remote-id";
+
+
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 40]
+
+Internet-Draft                  PCE-YANG                    October 2014
+
+
+                                           description
+                                                "If state is tcp-pending
+                                                 or open-wait then this
+                                                 leaf is not used and
+                                                 MUST be set to zero.";
+                                       }
                                    description
                                         "The value of the PCEP session
-                                         ID
-    used by the peer in its
-                                         Open message for this session.
-
-                                         If state is tcp-pending or
-                                         open-wait then this leaf is not
-                                         used and MUST be set to zero.";
+                                         ID used by the peer in its
+                                         Open message for this
+                                         session.";
                                }
 
                                leaf keepalive-timer {
@@ -2061,27 +2260,29 @@ Internet-Draft                  PCE-YANG                    October 2014
                                      range "0..255";
                                    }
                                    units "seconds";
+                                   must "(../state = 'session-up'" +
+                                        "or " +
+                                        "(../state != 'session-up'" +
+                                        "and keepalive-timer = 0))" {
+                                           error-message
+                                               "Invalid keepalive
+                                                timer";
+                                           description
+                                               "This field is used if
+                                                and only if state is
+                                                session-up. Otherwise,
+                                                it is not used and
+                                                MUST be set to
+                                                zero.";
+                                       }
                                    description
                                         "The agreed maximum interval at
                                          which the local PCEP entity
                                          transmits PCEP messages on this
                                          PCEP session.  Zero means that
-
-
-
-Pobbathi, et al.         Expires April 17, 2015                [Page 37]
-
-Internet-Draft                  PCE-YANG                    October 2014
-
-
                                          the local PCEP entity never
                                          sends Keepalives on this
-                                         session.
-
-                                         This field is used if and only
-                                         if state is session-up.
-                                         Otherwise, it is not used and
-                                         MUST be set to zero.";
+                                         session.";
                                }
 
                                leaf peer-keepalive-timer {
@@ -2089,18 +2290,36 @@ Internet-Draft                  PCE-YANG                    October 2014
                                      range "0..255";
                                    }
                                    units "seconds";
+
+
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 41]
+
+Internet-Draft                  PCE-YANG                    October 2014
+
+
+                                   must "(../state = 'session-up'" +
+                                        "or "   +
+                                        "(../state != 'session-up'" +
+                                        "and " +
+                                        "peer-keepalive-timer = 0))" {
+                                           error-message
+                                               "Invalid Peer keepalive
+                                                timer";
+                                           description
+                                               "This field is used if
+                                                and only if state is
+                                                session-up. Otherwise,
+                                                it is not used and MUST
+                                                be set to zero.";
+                                       }
                                    description
                                         "The agreed maximum interval at
                                          which the peer transmits PCEP
                                          messages on this PCEP session.
                                          Zero means that the peer never
                                          sends Keepalives on this
-                                         session.
-
-                                         This field is used if and only
-                                         if state is session-up.
-                                         Otherwise, it is not used and
-                                         MUST be set to zero.";
+                                         session.";
                                }
 
                                leaf dead-timer {
@@ -2118,22 +2337,36 @@ Internet-Draft                  PCE-YANG                    October 2014
                                      range "0..255";
                                    }
                                    units "seconds";
-                                   description
-                                        "The peer's dead-timer interval
-                                         for this PCEP session.
+                                   must "((../state != 'tcp-pending'" +
+                                        "and " +
+                                        "../state != 'open-wait' )" +
+                                        "or " +
+                                        "((../state = 'tcp-pending'" +
+                                        " or " +
+                                        "../state = 'open-wait' )" +
+                                        "and " +
+                                        "peer-dead-timer = 0))" {
 
 
 
-
-Pobbathi, et al.         Expires April 17, 2015                [Page 38]
+Pobbathi, et al.         Expires April 28, 2015                [Page 42]
 
 Internet-Draft                  PCE-YANG                    October 2014
 
 
-                                         If state is tcp-pending or
-                                         open-wait then this leaf is
-                                         not used and MUST be set to
-                                         zero.";
+                                           error-message
+                                               "Invalid Peer Dead
+                                                timer";
+                                           description
+                                               "If state is tcp-
+                                                pending or open-wait
+                                                then this leaf is not
+                                                used and MUST be set to
+                                                zero.";
+                                       }
+                                   description
+                                        "The peer's dead-timer interval
+                                         for this PCEP session.";
                                }
 
                                leaf ka-hold-time-rem {
@@ -2141,14 +2374,27 @@ Internet-Draft                  PCE-YANG                    October 2014
                                      range "0..255";
                                    }
                                    units "seconds";
+                                   must "((../state != 'tcp-pending'" +
+                                        "and " +
+                                        "../state != 'open-wait' ) " +
+                                        "or " +
+                                        "((../state = 'tcp-pending'" +
+                                        "or " +
+                                        "../state = 'open-wait' )" +
+                                        "and " +
+                                        "ka-hold-time-rem = 0))" {
+                                           error-message
+                                               "Invalid Keepalive hold
+                                                time remaining";
+                                           description
+                                               "If state is tcp-pending
+                                                or open-wait then this
+                                                field is not used and
+                                                MUST be set to zero.";
+                                       }
                                    description
                                         "The keep alive hold time
-                                         remaining for this session.
-
-                                         If state is tcp-pending or
-                                         open-wait then this field is
-                                         not used and MUST be set to
-                                         zero.";
+                                         remaining for this session.";
                                }
 
                                leaf overloaded {
@@ -2156,6 +2402,14 @@ Internet-Draft                  PCE-YANG                    October 2014
                                    description
                                         "If the local PCEP entity has
                                          informed the peer that it is
+
+
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 43]
+
+Internet-Draft                  PCE-YANG                    October 2014
+
+
                                          currently overloaded, then this
                                          is set to true.  Otherwise, it
                                          is set to false.";
@@ -2164,28 +2418,27 @@ Internet-Draft                  PCE-YANG                    October 2014
                                leaf overload-time {
                                    type uint32;
                                    units "seconds";
+                                   must "(../overloaded = true or" +
+                                       "(../overloaded != true and" +
+                                       " overload-time = 0))" {
+                                           error-message
+                                               "Invalid overload-time";
+                                           description
+                                               "This field is only used
+                                                if overloaded is set to
+                                                true. Otherwise, it is
+                                                not used and MUST be set
+                                                to zero.";
+                                       }
                                    description
                                         "The interval of time that is
                                          remaining until the local PCEP
                                          entity will cease to be
-                                         overloaded on this session.
-
-                                         This field is only used if
-                                         overloaded is set to true.
-                                         Otherwise, it is not used and
-                                         MUST be set to zero.";
+                                         overloaded on this session.";
                                }
 
                                leaf peer-overloaded {
                                    type boolean;
-
-
-
-Pobbathi, et al.         Expires April 17, 2015                [Page 39]
-
-Internet-Draft                  PCE-YANG                    October 2014
-
-
                                    description
                                         "If the peer has informed the
                                          local PCEP entity that it is
@@ -2197,18 +2450,36 @@ Internet-Draft                  PCE-YANG                    October 2014
                                leaf peer-overload-time {
                                    type uint32;
                                    units "seconds";
+                                   must "(../peer-overloaded = true" +
+                                        " or " +
+                                        "(../peer-overloaded != true" +
+                                        " and " +
+                                        "peer-overload-time = 0))" {
+                                           error-message
+                                               "Invalid peer overload
+                                                time";
+
+
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 44]
+
+Internet-Draft                  PCE-YANG                    October 2014
+
+
+                                           description
+                                               "This field is only used
+                                                if peer-overloaded is
+                                                set to true. Otherwise,
+                                                it is not used and MUST
+                                                be set to zero.";
+                                       }
                                    description
                                         "The interval of time that is
                                          remaining until the peer will
                                          cease to be overloaded.  If it
                                          is not known how long the peer
                                          will stay in overloaded state,
-                                         this leaf is set to zero.
-
-                                         This field is only used if
-                                         peer-overloaded is set to true.
-                                         Otherwise, it is not used and
-                                         MUST be set to zero.";
+                                         this leaf is set to zero.";
                                }
 
                                leaf discontinuity-time {
@@ -2235,16 +2506,203 @@ Internet-Draft                  PCE-YANG                    October 2014
            }//entity
        }//pcep-state
 
+       /*
+        * Notifications
+        */
+       notification pcep-session-up {
+           description
+               "This notification is sent when the value of
+                '/pcep/pcep-state/peers/peer/sessions/session/state'
+                enters the 'session-up' state.";
 
 
-Pobbathi, et al.         Expires April 17, 2015                [Page 40]
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 45]
 
 Internet-Draft                  PCE-YANG                    October 2014
 
 
+           uses notification-instance-hdr;
+
+           uses notification-session-hdr;
+
+           leaf state-last-change {
+               type yang:timestamp;
+               description
+                   "The timestamp value at the time this session entered
+                   its current state as denoted by the state leaf.";
+           }
+
+           leaf state {
+               type pcep-sess-state;
+               description
+                   "The current state of the session.
+
+                    The set of possible states excludes the idle state
+                    since entries do not exist in the idle state.";
+           }
+       } //notification
+
+       notification pcep-session-down {
+           description
+               "This notification is sent when the value of
+                '/pcep/pcep-state/peers/peer/sessions/session/state'
+                leaves the 'session-up' state.";
+
+           uses notification-instance-hdr;
+
+           uses notification-session-hdr;
+
+           leaf state-last-change {
+               type yang:timestamp;
+               description
+                   "The timestamp value at the time this session entered
+                   its current state as denoted by the state leaf.";
+           }
+
+           leaf state {
+               type pcep-sess-state;
+               description
+                   "The current state of the session.
+
+                    The set of possible states excludes the idle state
+                    since entries do not exist in the idle state.";
+           }
+       } //notification
+
+
+
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 46]
+
+Internet-Draft                  PCE-YANG                    October 2014
+
+
+       notification pcep-session-local-overload {
+           description
+               "This notification is sent when the local PCEP entity
+               enters overload state for a peer.";
+
+           uses notification-instance-hdr;
+
+           uses notification-session-hdr;
+
+           leaf overloaded {
+               type boolean;
+               description
+                    "If the local PCEP entity has informed the peer that
+                    it is currently overloaded, then this is set to
+                    true. Otherwise, it is set to false.";
+           }
+
+           leaf overload-time {
+               type uint32;
+               units "seconds";
+               must "(../overloaded = true or "    +
+                   "(../overloaded != true  and "  +
+                   "overload-time = 0))" {
+                       error-message
+                           "Invalid overload-time";
+                       description
+                           "This field is only used if overloaded is
+                            set to true. Otherwise, it is not used
+                            and MUST be set to zero.";
+                   }
+               description
+                    "The interval of time that is remaining until the
+                    local PCEP entity will cease to be overloaded on
+                    this session.";
+           }
+       } //notification
+
+       notification pcep-session-local-overload-clear {
+           description
+               "This notification is sent when the local PCEP entity
+               leaves overload state for a peer.";
+
+           uses notification-instance-hdr;
+
+           leaf overloaded {
+               type boolean;
+               description
+                    "If the local PCEP entity has informed the peer
+
+
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 47]
+
+Internet-Draft                  PCE-YANG                    October 2014
+
+
+                    that it is currently overloaded, then this is set
+                    to true.  Otherwise, it is set to false.";
+           }
+       } //notification
+
+       notification pcep-session-peer-overload {
+           description
+               "This notification is sent when a peer enters overload
+               state.";
+
+           uses notification-instance-hdr;
+
+           uses notification-session-hdr;
+
+           leaf peer-overloaded {
+               type boolean;
+               description
+                   "If the peer has informed the local PCEP entity that
+                   it is currently overloaded, then this is set to true.
+                   Otherwise, it is set to false.";
+           }
+
+           leaf peer-overload-time {
+               type uint32;
+               units "seconds";
+               must "(../peer-overloaded = true or "    +
+                   "(../peer-overloaded != true  and "  +
+                   "peer-overload-time = 0))" {
+                       error-message
+                           "Invalid peer-overload-time";
+                       description
+                           "This field is only used if
+                            peer-overloaded is set to true.
+                            Otherwise, it is not used and MUST
+                            be set to zero.";
+                   }
+               description
+                   "The interval of time that is remaining until the
+                   peer will cease to be overloaded.  If it is not known
+                   how long the peer will stay in overloaded state, this
+                   leaf is set to zero.";
+           }
+       } //notification
+
+       notification pcep-session-peer-overload-clear {
+           description
+               "This notification is sent when a peer leaves overload
+               state.";
+
+
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 48]
+
+Internet-Draft                  PCE-YANG                    October 2014
+
+
+           uses notification-instance-hdr;
+
+           leaf peer-overloaded {
+               type boolean;
+               description
+                   "If the peer has informed the local PCEP entity that
+                   it is currently overloaded, then this is set to true.
+                   Otherwise, it is set to false.";
+           }
+       } //notification
    }//module
+
    <CODE ENDS>
-   /* To Do - Notifications, rpc (if any) */
 
 8.  Security Considerations
 
@@ -2276,6 +2734,18 @@ Internet-Draft                  PCE-YANG                    October 2014
 
 12.  References
 
+
+
+
+
+
+
+
+Pobbathi, et al.         Expires April 28, 2015                [Page 49]
+
+Internet-Draft                  PCE-YANG                    October 2014
+
+
 12.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
@@ -2289,15 +2759,6 @@ Internet-Draft                  PCE-YANG                    October 2014
               Network Configuration Protocol (NETCONF)", RFC 6020,
               October 2010.
 
-
-
-
-
-Pobbathi, et al.         Expires April 17, 2015                [Page 41]
-
-Internet-Draft                  PCE-YANG                    October 2014
-
-
    [RFC6991]  Schoenwaelder, J., "Common YANG Data Types", RFC 6991,
               July 2013.
 
@@ -2310,7 +2771,7 @@ Internet-Draft                  PCE-YANG                    October 2014
               Sreenivasa, K., Emile, S., Zhao, Q., King, D., and J.
               Hardwick, "Path Computation Element Communications
               Protocol (PCEP) Management Information Base (MIB) Module",
-              draft-ietf-pce-pcep-mib-10 (work in progress), September
+              draft-ietf-pce-pcep-mib-11 (work in progress), October
               2014.
 
    [I-D.ietf-netmod-routing-cfg]
@@ -2320,8 +2781,8 @@ Internet-Draft                  PCE-YANG                    October 2014
 
    [I-D.ietf-netmod-rfc6087bis]
               Bierman, A., "Guidelines for Authors and Reviewers of YANG
-              Data Model Documents", draft-ietf-netmod-rfc6087bis-00
-              (work in progress), June 2014.
+              Data Model Documents", draft-ietf-netmod-rfc6087bis-01
+              (work in progress), October 2014.
 
 
 
@@ -2336,20 +2797,7 @@ Internet-Draft                  PCE-YANG                    October 2014
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-Pobbathi, et al.         Expires April 17, 2015                [Page 42]
+Pobbathi, et al.         Expires April 28, 2015                [Page 50]
 
 Internet-Draft                  PCE-YANG                    October 2014
 
@@ -2405,7 +2853,7 @@ Authors' Addresses
 
 
 
-Pobbathi, et al.         Expires April 17, 2015                [Page 43]
+Pobbathi, et al.         Expires April 28, 2015                [Page 51]
 
 Internet-Draft                  PCE-YANG                    October 2014
 
@@ -2461,4 +2909,4 @@ Internet-Draft                  PCE-YANG                    October 2014
 
 
 
-Pobbathi, et al.         Expires April 17, 2015                [Page 44]
+Pobbathi, et al.         Expires April 28, 2015                [Page 52]
