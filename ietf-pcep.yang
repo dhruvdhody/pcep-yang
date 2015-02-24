@@ -11,7 +11,7 @@ module ietf-pcep {
     import ietf-yang-types {
         prefix yang;
     }
-
+    
     organization
         "IETF PCE (Path Computation Element) Working Group";
 
@@ -34,7 +34,7 @@ module ietf-pcep {
          vendor implementations.";
 
 
-    revision 2014-10-25 {
+    revision 2015-02-23 {
         description "Initial revision.";
         reference
             "RFC XXXX:  A YANG Data Model for Path Computation
@@ -218,8 +218,65 @@ module ietf-pcep {
                 - keep-wait(3): PCEP Keep Wait state
                 - session-up(4): PCEP Session Up state";
     }
+    
+    typedef pce-domain-type {
+        type enumeration {
+            enum ospf-area {
+                value "1";
+                description
+                    "The OSPF area.";
+            }
+            enum isis-area {
+                value "2";
+                description
+                    "The IS-IS area.";
+            }
+            enum as {
+                value "3";
+                description
+                    "The Autonomous System (AS).";
+            }
+        }
+		description
+            "The PCE Domain Type";
+    }
+    
+    typedef domain-ospf-area {
+        type union {
+            type uint32;
+            type yang:dotted-quad;
+       }
+       description
+            "OSPF Area ID.";
+    }
+
+    typedef domain-isis-area {
+        type string {
+            pattern '[0-9A-Fa-f]{2}\.([0-9A-Fa-f]{4}\.){0,3}';
+        }
+        description
+            "IS-IS Area ID.";
+    }
+    
+    typedef domain-as {
+        type uint32;
+        description
+            "Autonomous System number.";
+        
+    }
+
+    typedef pce-domain {
+		type union {
+			type domain-ospf-area;
+			type domain-isis-area;
+			type domain-as;
+		}
+		description
+            "The PCE Domain";
+	}
 
 
+    
     /*
      * Features - TBD
      */
@@ -227,55 +284,7 @@ module ietf-pcep {
     /*
      * Groupings
      */
-    grouping  pcep-entity-identifier{
-        description
-            "This grouping defines the identifier for PCEP entity.";
-        leaf addr-type {
-            type inet:ip-version;
-            description
-                "The type of the PCEP entity's Internet address.
-                 This object specifies how the value of the
-                 addr leaf should be interpreted.";
-        }
-
-        leaf addr {
-            type inet:ip-address;
-            description
-                "The local Internet address of this PCEP entity.
-                 The type is given by addr-type.
-
-                 If operating as a PCE server, the PCEP entity
-                 listens on this address.
-
-                 If operating as a PCC, the PCEP entity binds
-                 outgoing TCP connections to this address.
-
-                 It is possible for the PCEP entity to operate
-                 both as a PCC and a PCE Server, in which case it
-                 uses this address both to listen for incoming
-                 TCP connections and to bind outgoing TCP
-                 connections.";
-        }
-    }
-
-    grouping  pcep-peer-identifier{
-        description
-            "This grouping defines the identifier for PCEP peer.";
-        leaf addr-type {
-            type inet:ip-version;
-            description
-                "The type of the PCEP peer's Internet address.
-                 This object specifies how the value of the
-                 addr leaf should be interpreted.";
-        }
-
-        leaf addr {
-            type inet:ip-address;
-            description
-                "The local Internet address of this PCEP peer.
-                 The type is given by addr-type.";
-        }
-    }
+    
 
 
     grouping pcep-entity-info{
@@ -568,6 +577,227 @@ module ietf-pcep {
         }
     }//pcep-entity-info
 
+    grouping  pce-scope{
+        description
+            "This grouping defines PCE path computation scope 
+             information which maybe relevant to PCE selection. 
+             This information corresponds to PCE auto-discovery 
+             information.";
+        reference
+            "RFC 5088: OSPF Protocol Extensions for Path 
+                       Computation Element (PCE) 
+                       Discovery
+             RFC 5089: IS-IS Protocol Extensions for Path 
+                       Computation Element (PCE) 
+                       Discovery";                            
+        leaf intra-area-scope{
+            type boolean;
+            default true;
+            description
+                "PCE can compute intra-area paths.";
+        }
+        leaf intra-area-pref{
+            type uint8{
+                range "0..7";
+            }
+            description
+              "The PCE's preference for intra-area TE LSP 
+              computation.";
+        }  
+        leaf inter-area-scope{
+            type boolean;
+            default false;
+            description
+                "PCE can compute inter-area paths.";
+        }
+        leaf inter-area-scope-default{
+            type boolean;
+            default false;
+            description
+                "PCE can act as a default PCE for inter-area 
+                 path computation.";
+        }
+        leaf inter-area-pref{
+            type uint8{
+                range "0..7";
+            }
+            description
+              "The PCE's preference for inter-area TE LSP 
+              computation.";
+        }          
+        leaf inter-as-scope{
+            type boolean;
+            default false;
+            description
+                "PCE can compute inter-AS paths.";
+        }
+        leaf inter-as-scope-default{
+            type boolean;
+            default false;
+            description
+                "PCE can act as a default PCE for inter-AS 
+                 path computation.";
+        }
+        leaf inter-as-pref{
+            type uint8{
+                range "0..7";
+            }
+            description
+              "The PCE's preference for inter-AS TE LSP 
+              computation.";
+        }        
+        leaf inter-layer-scope{
+            type boolean;
+            default false;
+            description
+                "PCE can compute inter-layer paths.";
+        }
+        leaf inter-layer-pref{
+            type uint8{
+                range "0..7";
+            }
+            description
+              "The PCE's preference for inter-layer TE LSP 
+              computation.";
+        }         
+    }//pce-scope 
+    
+    grouping  pce-domain{
+        description
+            "This grouping specifies a PCE-Domain where the
+             PCE has topology visibility and through which 
+             the PCE can compute paths.";
+        leaf domain-type{
+            type pce-domain-type;
+            description
+              "The PCE domain type.";
+        }
+        leaf domain{
+            type pce-domain;
+            description
+              "The PCE domain.";
+        }          
+    }//pce-domain 
+    
+    grouping  pce-capability{
+        description
+            "This grouping specifies a PCE-capability 
+             information which maybe relevant to PCE selection. 
+             This information corresponds to PCE auto-discovery 
+             information.";
+        reference
+            "RFC 5088: OSPF Protocol Extensions for Path 
+                       Computation Element (PCE) 
+                       Discovery
+             RFC 5089: IS-IS Protocol Extensions for Path 
+                       Computation Element (PCE) 
+                       Discovery";
+        leaf gmpls{
+            type boolean;
+            description
+              "Path computation with GMPLS link 
+               constraints.";
+        }                       
+        leaf bi-dir{
+            type boolean;
+            description
+              "Bidirectional path computation.";
+        }               
+        leaf diverse{
+            type boolean;
+            description
+              "Diverse path computation.";
+        }
+        leaf load-balance{
+            type boolean;
+            description
+              "Load-balanced path computation.";
+        }
+        leaf synchronize{
+            type boolean;
+            description
+              "Synchronized paths computation.";
+        }
+        leaf objective-function{
+            type boolean;
+            description
+              "Support for multiple objective functions.";
+        }
+        leaf add-path-constraint{
+            type boolean;
+            description
+              "Support for additive path constraints (max 
+               hop count, etc.).";
+        }
+        leaf prioritization{
+            type boolean;
+            description
+              "Support for request prioritization.";
+        } 
+        leaf multi-request{
+            type boolean;
+            description
+              "Support for multiple requests per message.";
+        } 
+        leaf gco{
+            type boolean;
+            description
+              "Support for Global Concurrent Optimization 
+               (GCO).";
+        }
+        leaf p2mp{
+            type boolean;
+            description
+              "Support for P2MP path computation.";
+        }                
+    }//pce-capability
+    
+    grouping  pce-info{
+	    description
+            "This grouping specifies all PCE information
+             which maybe relevant to the PCE selection. 
+             This information corresponds to PCE auto-discovery 
+             information.";
+		container scope{
+			description
+                "The path computation scope";
+			uses pce-scope;	
+		}	 
+        container domain{
+			description
+                "The PCE domain";
+			uses pce-domain{
+				description
+					"The PCE local domain.";
+			}
+        }
+        container neigh-domains{
+            description
+                "The list of neighbour PCE-Domain 
+                 toward which a PCE can compute 
+                 paths";
+            list domain{
+                key "domain-type domain";
+
+                description
+                    "The neighbour domain.";
+                uses pce-domain{
+                    description
+                        "The PCE neighbour domain.";
+                }
+            }
+        }
+		container capability{
+			description
+                "The PCE capability";
+			uses pce-capability{
+				description
+					"The PCE entity supported 
+					capabilities.";
+			}
+		}
+    }//pce-info
+    
     grouping  pcep-stats{
         description
             "This grouping defines statistics for PCEP. It is used
@@ -860,6 +1090,18 @@ module ietf-pcep {
               and a single PCNtf message can cancel multiple
               requests.";
         }
+		
+		leaf num-req-rcvd-error-sent{
+            type yang:counter32;
+            description
+             "The number of requests received that were cancelled
+              by the local PCEP entity sending a PCErr message.
+
+              This might be different than num-pcerr-sent because
+              not all PCErr messages are used to cancel requests,
+              and a single PCErr message can cancel multiple
+              requests.";
+        }
 
         leaf  num-req-rcvd-cancel-rcvd{
             type yang:counter32;
@@ -903,14 +1145,6 @@ module ietf-pcep {
                 "Reference to local entity address";
         }
 
-        leaf entity-addr-type {
-            type leafref {
-                path "/pcep-state/entity/addr-type";
-            }
-            description
-                "Reference to local entity address type";
-        }
-
         leaf peer-addr {
             type leafref {
                 path "/pcep-state/entity/peers/peer/addr";
@@ -919,13 +1153,6 @@ module ietf-pcep {
                 "Reference to peer address";
         }
 
-        leaf peer-addr-type {
-            type leafref {
-                path "/pcep-state/entity/peers/peer/addr-type";
-            }
-            description
-                "Reference to peer address type";
-        }
     }// notification-instance-hdr
     
     grouping notification-session-hdr {
@@ -953,15 +1180,30 @@ module ietf-pcep {
              on the device.";
 
         list entity{
-            key "addr-type addr";
+            key "addr";
 
             description
                 "The configured PCEP entity on the device.";
 
-            uses  pcep-entity-identifier {
-                description
-                    "The configured PCEP entity Identifier.";
-            }
+            leaf addr {
+				type inet:ip-address;
+				description
+					"The local Internet address of this PCEP 
+					entity.
+
+					If operating as a PCE server, the PCEP 
+					entity listens on this address.
+
+					If operating as a PCC, the PCEP entity 
+					binds outgoing TCP connections to this 
+					address.
+
+					It is possible for the PCEP entity to 
+					operate both as a PCC and a PCE Server, in 
+					which case it uses this address both to 
+					listen for incoming TCP connections and to 
+					bind outgoing TCP connections.";
+			}
 
             leaf enabled {
                 type boolean;
@@ -991,12 +1233,31 @@ module ietf-pcep {
                     "Description of the PCEP entity configured
                      by the user";
             }
-
+			
+			container pce-info {
+                must "((../role == 'pce')" +
+                     " or " +
+					 "(../role == 'pcc-and-pce'))"
+				{
+					error-message "The PCEP entity must be PCE";
+                    description
+                        "When PCEP entity is PCE";
+                }            
+                uses pce-info {
+                    description
+                        "Local PCE information";
+                } 
+				description
+                    "The Local PCE Entity PCE information";
+            }
+			
             uses pcep-entity-info {
                 description
                     "The configuration related to the PCEP
                      entity.";
             }
+            
+            
 
             leaf pcep-notification-max-rate {
                 type uint32;
@@ -1018,16 +1279,16 @@ module ietf-pcep {
                          entity";
 
                 list peer{
-                    key "addr-type addr";
+                    key "addr";
 
                     description
                         "The peer configured for the entity.";
 
-                     uses pcep-peer-identifier{
-                        description
-                            "The configured PCEP peer's
-                             Identifier.";
-                     }
+                    leaf addr {
+						type inet:ip-address;
+						description
+							"The local Internet address of this PCEP peer.";
+					}
 
                      leaf description {
                         type string;
@@ -1035,6 +1296,14 @@ module ietf-pcep {
                             "Description of the PCEP peer
                              configured by the user";
                     }
+					container pce-info {
+						uses pce-info {
+							description
+								"PCE Peer information";
+						} 
+					description
+						"The Local PCE Entity PCE information";
+					}
                 }//peer
             }//peers
         }//entity
@@ -1051,7 +1320,7 @@ module ietf-pcep {
              device.";
 
         list entity{
-            key "addr-type addr";
+            key "addr";
             unique "index";
 
             description
@@ -1060,14 +1329,29 @@ module ietf-pcep {
             leaf index{
                 type uint32;
                 description
-                    "The index of the PECP operational
+                    "The index of the operational PECP 
                      entity";
             }
 
-            uses  pcep-entity-identifier {
-                description
-                    "The PCEP entity Identifier.";
-            }
+			leaf addr {
+				type inet:ip-address;
+				description
+					"The local Internet address of this PCEP 
+					entity. 
+
+					If operating as a PCE server, the PCEP 
+					entity listens on this address.
+
+					If operating as a PCC, the PCEP entity 
+					binds outgoing TCP connections to this 
+					address.
+
+					It is possible for the PCEP entity to 
+					operate both as a PCC and a PCE Server, in 
+					which case it uses this address both to 
+					listen for incoming TCP connections and to 
+					bind outgoing TCP connections.";
+			}
 
             leaf admin-status {
                 type pcep-admin-status;
@@ -1113,29 +1397,47 @@ module ietf-pcep {
                        both a PCC and a PCE.";
             }
 
+			container pce-info {
+                when "((../role == 'pce')" +
+                     " or " +
+					 "(../role == 'pcc-and-pce'))"
+				{
+                    description
+                        "When PCEP entity is PCE";
+                }            
+                uses pce-info {
+                    description
+                        "Local PCE information";
+                } 
+				description
+                    "The Local PCE Entity PCE information";
+            }
 
             uses pcep-entity-info{
                 description
                     "The operational information related to the
                      PCEP entity.";
             }
+			
+			
 
             container peers{
                 description
                         "The list of peers for the entity";
 
                 list peer{
-                    key "addr-type addr";
+                    key "addr";
 
                     description
                         "The peer for the entity.";
 
-                     uses pcep-peer-identifier{
-                        description
-                            "The PCEP peer's Identifier.";
-                     }
+					leaf addr {
+						type inet:ip-address;
+						description
+							"The local Internet address of this PCEP peer.";
+					}
 
-                     leaf role {
+                    leaf role {
                         type pcep-role;
                         description
                             "The role of the PCEP Peer.
@@ -1147,6 +1449,15 @@ module ietf-pcep {
                              - pcc-and-pce(3): this PCEP peer
                                is both a PCC and a PCE.";
                     }
+					
+					container pce-info {
+						uses pce-info {
+							description
+								"PCE Peer information";
+						} 
+					description
+						"The Local PCE Entity PCE information";
+					}
 
                     leaf discontinuity-time {
                         type yang:timestamp;
@@ -1655,7 +1966,11 @@ module ietf-pcep {
 
         uses notification-instance-hdr;
 
-        uses notification-session-hdr;
+		leaf session-initiator {
+            type pcep-initiator;
+            description
+                "The initiator of the session.";
+        }
 
         leaf state-last-change {
             type yang:timestamp;
