@@ -11,17 +11,17 @@
 <?rfc compact="yes" ?>
 <?rfc iprnotified="Yes" ?>
 <?rfc strict="no" ?>
-<rfc ipr="trust200902" category="std" docName="draft-pkd-pce-pcep-yang-01" obsoletes="" updates="" submissionType="IETF" xml:lang="en">
+<rfc ipr="trust200902" category="std" docName="draft-pkd-pce-pcep-yang-02" obsoletes="" updates="" submissionType="IETF" xml:lang="en">
   <front>
     <title abbrev="PCE-YANG">A YANG Data Model for Path Computation Element Communications Protocol (PCEP)</title>
     <author initials="R" surname="Pobbathi" fullname="Rohit Pobbathi">
       <organization>Huawei Technologies</organization>
       <address>
         <postal>
-          <street>Leela Palace</street>
+          <street>Divyashree Techno Park, Whitefield</street>
           <city>Bangalore</city>
           <region>Karnataka</region>
-          <code>560008</code>
+          <code>560037</code>
           <country>India</country>
         </postal>
         <email>rohit.pobbathi@huawei.com</email>
@@ -31,10 +31,10 @@
       <organization>Huawei Technologies</organization>
       <address>
         <postal>
-          <street>Leela Palace</street>
+          <street>Divyashree Techno Park, Whitefield</street>
           <city>Bangalore</city>
           <region>Karnataka</region>
-          <code>560008</code>
+          <code>560037</code>
           <country>India</country>
         </postal>
         <email>vinods.kumar@huawei.com</email>
@@ -44,10 +44,10 @@
       <organization>Huawei Technologies</organization>
       <address>
         <postal>
-          <street>Leela Palace</street>
+          <street>Divyashree Techno Park, Whitefield</street>
           <city>Bangalore</city>
           <region>Karnataka</region>
-          <code>560008</code>
+          <code>560037</code>
           <country>India</country>
         </postal>
         <email>dhruv.ietf@gmail.com</email>
@@ -65,7 +65,7 @@
         <email> jonathan.hardwick@metaswitch.com </email>
       </address>
     </author>
-    <date month="October" year="2014" />
+    <date month="February" year="2015" />
     <area>Routing</area>
     <workgroup>PCE Working Group</workgroup>
     <abstract>
@@ -142,8 +142,8 @@
           </list>
         </t>
         <t>
-          This document also uses the following term defined in 
-          <xref target="I-D.ietf-pce-pcep-mib"/>: 
+          This document also uses the following terms defined in 
+          <xref target="RFC7420"/>: 
           <list style='symbols'>
             <t>          
             PCEP entity: a local PCEP speaker.
@@ -210,7 +210,7 @@
       gather statistics for sent and received PCEP messages,
       received messages with errors, and messages that could not be sent
       due to errors.</t>    
-    <t>It should be fairly straight forward to augment the base data model
+    <t>It should be fairly straightforward to augment the base data model
     for advanced PCE features.</t>  
     </list>
     </t>
@@ -222,12 +222,42 @@
           <artwork xml:space="preserve" name="" type="" align="left" alt="" width="" height=""><![CDATA[    
 module: ietf-pcep
    +--rw pcep
-   |  +--rw entity* [addr-type addr]
-   |     +--rw addr-type                     inet:ip-version
+   |  +--rw entity* [addr]
    |     +--rw addr                          inet:ip-address
    |     +--rw enabled?                      boolean
    |     +--rw role                          pcep-role
    |     +--rw description?                  string
+   |     +--rw pce-info
+   |     |  +--rw scope
+   |     |  |  +--rw intra-area-scope?           boolean
+   |     |  |  +--rw intra-area-pref?            uint8
+   |     |  |  +--rw inter-area-scope?           boolean
+   |     |  |  +--rw inter-area-scope-default?   boolean
+   |     |  |  +--rw inter-area-pref?            uint8
+   |     |  |  +--rw inter-as-scope?             boolean
+   |     |  |  +--rw inter-as-scope-default?     boolean
+   |     |  |  +--rw inter-as-pref?              uint8
+   |     |  |  +--rw inter-layer-scope?          boolean
+   |     |  |  +--rw inter-layer-pref?           uint8
+   |     |  +--rw domain
+   |     |  |  +--rw domain-type?   pce-domain-type
+   |     |  |  +--rw domain?        pce-domain
+   |     |  +--rw neigh-domains
+   |     |  |  +--rw domain* [domain-type domain]
+   |     |  |     +--rw domain-type    pce-domain-type
+   |     |  |     +--rw domain         pce-domain
+   |     |  +--rw capability
+   |     |     +--rw gmpls?                 boolean
+   |     |     +--rw bi-dir?                boolean
+   |     |     +--rw diverse?               boolean
+   |     |     +--rw load-balance?          boolean
+   |     |     +--rw synchronize?           boolean
+   |     |     +--rw objective-function?    boolean
+   |     |     +--rw add-path-constraint?   boolean
+   |     |     +--rw prioritization?        boolean
+   |     |     +--rw multi-request?         boolean
+   |     |     +--rw gco?                   boolean
+   |     |     +--rw p2mp?                  boolean
    |     +--rw connect-timer?                uint32
    |     +--rw connect-max-retry?            uint32
    |     +--rw init-backoff-timer?           uint32
@@ -248,18 +278,78 @@ module: ietf-pcep
    |     +--rw max-unknown-msgs?             uint32
    |     +--rw pcep-notification-max-rate    uint32
    |     +--rw peers
-   |        +--rw peer* [addr-type addr]
-   |           +--rw addr-type      inet:ip-version
+   |        +--rw peer* [addr]
    |           +--rw addr           inet:ip-address
    |           +--rw description?   string
+   |           +--rw pce-info
+   |              +--rw scope
+   |              |  +--rw intra-area-scope?           boolean
+   |              |  +--rw intra-area-pref?            uint8
+   |              |  +--rw inter-area-scope?           boolean
+   |              |  +--rw inter-area-scope-default?   boolean
+   |              |  +--rw inter-area-pref?            uint8
+   |              |  +--rw inter-as-scope?             boolean
+   |              |  +--rw inter-as-scope-default?     boolean
+   |              |  +--rw inter-as-pref?              uint8
+   |              |  +--rw inter-layer-scope?          boolean
+   |              |  +--rw inter-layer-pref?           uint8
+   |              +--rw domain
+   |              |  +--rw domain-type?   pce-domain-type
+   |              |  +--rw domain?        pce-domain
+   |              +--rw neigh-domains
+   |              |  +--rw domain* [domain-type domain]
+   |              |     +--rw domain-type    pce-domain-type
+   |              |     +--rw domain         pce-domain
+   |              +--rw capability
+   |                 +--rw gmpls?                 boolean
+   |                 +--rw bi-dir?                boolean
+   |                 +--rw diverse?               boolean
+   |                 +--rw load-balance?          boolean
+   |                 +--rw synchronize?           boolean
+   |                 +--rw objective-function?    boolean
+   |                 +--rw add-path-constraint?   boolean
+   |                 +--rw prioritization?        boolean
+   |                 +--rw multi-request?         boolean
+   |                 +--rw gco?                   boolean
+   |                 +--rw p2mp?                  boolean
    +--ro pcep-state
-      +--ro entity* [addr-type addr]
+      +--ro entity* [addr]
          +--ro index?                  uint32
-         +--ro addr-type               inet:ip-version
          +--ro addr                    inet:ip-address
          +--ro admin-status?           pcep-admin-status
          +--ro oper-status?            pcep-admin-status
          +--ro role?                   pcep-role
+         +--ro pce-info
+         |  +--ro scope
+         |  |  +--ro intra-area-scope?           boolean
+         |  |  +--ro intra-area-pref?            uint8
+         |  |  +--ro inter-area-scope?           boolean
+         |  |  +--ro inter-area-scope-default?   boolean
+         |  |  +--ro inter-area-pref?            uint8
+         |  |  +--ro inter-as-scope?             boolean
+         |  |  +--ro inter-as-scope-default?     boolean
+         |  |  +--ro inter-as-pref?              uint8
+         |  |  +--ro inter-layer-scope?          boolean
+         |  |  +--ro inter-layer-pref?           uint8
+         |  +--ro domain
+         |  |  +--ro domain-type?   pce-domain-type
+         |  |  +--ro domain?        pce-domain
+         |  +--ro neigh-domains
+         |  |  +--ro domain* [domain-type domain]
+         |  |     +--ro domain-type    pce-domain-type
+         |  |     +--ro domain         pce-domain
+         |  +--ro capability
+         |     +--ro gmpls?                 boolean
+         |     +--ro bi-dir?                boolean
+         |     +--ro diverse?               boolean
+         |     +--ro load-balance?          boolean
+         |     +--ro synchronize?           boolean
+         |     +--ro objective-function?    boolean
+         |     +--ro add-path-constraint?   boolean
+         |     +--ro prioritization?        boolean
+         |     +--ro multi-request?         boolean
+         |     +--ro gco?                   boolean
+         |     +--ro p2mp?                  boolean
          +--ro connect-timer?          uint32
          +--ro connect-max-retry?      uint32
          +--ro init-backoff-timer?     uint32
@@ -279,10 +369,40 @@ module: ietf-pcep
          +--ro max-unknown-reqs?       uint32
          +--ro max-unknown-msgs?       uint32
          +--ro peers
-            +--ro peer* [addr-type addr]
-               +--ro addr-type                   inet:ip-version
+            +--ro peer* [addr]
                +--ro addr                        inet:ip-address
                +--ro role?                       pcep-role
+               +--ro pce-info
+               |  +--ro scope
+               |  |  +--ro intra-area-scope?           boolean
+               |  |  +--ro intra-area-pref?            uint8
+               |  |  +--ro inter-area-scope?           boolean
+               |  |  +--ro inter-area-scope-default?   boolean
+               |  |  +--ro inter-area-pref?            uint8
+               |  |  +--ro inter-as-scope?             boolean
+               |  |  +--ro inter-as-scope-default?     boolean
+               |  |  +--ro inter-as-pref?              uint8
+               |  |  +--ro inter-layer-scope?          boolean
+               |  |  +--ro inter-layer-pref?           uint8
+               |  +--ro domain
+               |  |  +--ro domain-type?   pce-domain-type
+               |  |  +--ro domain?        pce-domain
+               |  +--ro neigh-domains
+               |  |  +--ro domain* [domain-type domain]
+               |  |     +--ro domain-type    pce-domain-type
+               |  |     +--ro domain         pce-domain
+               |  +--ro capability
+               |     +--ro gmpls?                 boolean
+               |     +--ro bi-dir?                boolean
+               |     +--ro diverse?               boolean
+               |     +--ro load-balance?          boolean
+               |     +--ro synchronize?           boolean
+               |     +--ro objective-function?    boolean
+               |     +--ro add-path-constraint?   boolean
+               |     +--ro prioritization?        boolean
+               |     +--ro multi-request?         boolean
+               |     +--ro gco?                   boolean
+               |     +--ro p2mp?                  boolean
                +--ro discontinuity-time?         yang:timestamp
                +--ro initiate-session?           boolean
                +--ro session-exists?             boolean
@@ -323,6 +443,7 @@ module: ietf-pcep
                +--ro num-req-rcvd-ero-sent?      yang:counter32
                +--ro num-req-rcvd-nopath-sent?   yang:counter32
                +--ro num-req-rcvd-cancel-sent?   yang:counter32
+               +--ro num-req-rcvd-error-sent?    yang:counter32
                +--ro num-req-rcvd-cancel-rcvd?   yang:counter32
                +--ro num-rep-rcvd-unknown?       yang:counter32
                +--ro num-req-rcvd-unknown?       yang:counter32
@@ -378,54 +499,44 @@ module: ietf-pcep
                      +--ro num-req-rcvd-ero-sent?      yang:counter32
                      +--ro num-req-rcvd-nopath-sent?   yang:counter32
                      +--ro num-req-rcvd-cancel-sent?   yang:counter32
+                     +--ro num-req-rcvd-error-sent?    yang:counter32
                      +--ro num-req-rcvd-cancel-rcvd?   yang:counter32
                      +--ro num-rep-rcvd-unknown?       yang:counter32
                      +--ro num-req-rcvd-unknown?       yang:counter32
 notifications:
-   +---n pcep-session-up
+   +---n pcep-session-up                      
    |  +--ro entity-addr?         leafref
-   |  +--ro entity-addr-type?    leafref
    |  +--ro peer-addr?           leafref
-   |  +--ro peer-addr-type?      leafref
    |  +--ro session-initiator?   leafref
    |  +--ro state-last-change?   yang:timestamp
    |  +--ro state?               pcep-sess-state
-   +---n pcep-session-down
+   +---n pcep-session-down                    
    |  +--ro entity-addr?         leafref
-   |  +--ro entity-addr-type?    leafref
    |  +--ro peer-addr?           leafref
-   |  +--ro peer-addr-type?      leafref
-   |  +--ro session-initiator?   leafref
+   |  +--ro session-initiator?   pcep-initiator
    |  +--ro state-last-change?   yang:timestamp
    |  +--ro state?               pcep-sess-state
-   +---n pcep-session-local-overload
+   +---n pcep-session-local-overload          
    |  +--ro entity-addr?         leafref
-   |  +--ro entity-addr-type?    leafref
    |  +--ro peer-addr?           leafref
-   |  +--ro peer-addr-type?      leafref
    |  +--ro session-initiator?   leafref
    |  +--ro overloaded?          boolean
    |  +--ro overload-time?       uint32
-   +---n pcep-session-local-overload-clear
-   |  +--ro entity-addr?        leafref
-   |  +--ro entity-addr-type?   leafref
-   |  +--ro peer-addr?          leafref
-   |  +--ro peer-addr-type?     leafref
-   |  +--ro overloaded?         boolean
-   +---n pcep-session-peer-overload
+   +---n pcep-session-local-overload-clear    
+   |  +--ro entity-addr?   leafref
+   |  +--ro peer-addr?     leafref
+   |  +--ro overloaded?    boolean
+   +---n pcep-session-peer-overload           
    |  +--ro entity-addr?          leafref
-   |  +--ro entity-addr-type?     leafref
    |  +--ro peer-addr?            leafref
-   |  +--ro peer-addr-type?       leafref
    |  +--ro session-initiator?    leafref
    |  +--ro peer-overloaded?      boolean
    |  +--ro peer-overload-time?   uint32
-   +---n pcep-session-peer-overload-clear
-      +--ro entity-addr?        leafref
-      +--ro entity-addr-type?   leafref
-      +--ro peer-addr?          leafref
-      +--ro peer-addr-type?     leafref
-      +--ro peer-overloaded?    boolean
+   +---n pcep-session-peer-overload-clear     
+      +--ro entity-addr?       leafref
+      +--ro peer-addr?         leafref
+      +--ro peer-overloaded?   boolean
+
                   ]]></artwork>
         </figure>
       </t>     
@@ -434,7 +545,7 @@ notifications:
     <t>The PCEP yang module may contain status information for multiple
     logical local PCEP entities.  There are several scenarios in which
     there may be more than one local PCEP entity, it is listed in 
-    <xref target="I-D.ietf-pce-pcep-mib"/>.</t>
+    <xref target="RFC7420"/>.</t>
     <t>The data model for PCEP presented in this document uses a flat
    list of entities.  Each entity in the list is identified by its
    IP address (addr-type, addr). Furthermore, each entity has a mandatory "role" 
@@ -444,14 +555,14 @@ notifications:
    and a separate list for the operational state of all entities
    ("/pcep-state/entity").
     </t>
-    <t>The PCEP MIB module <xref target="I-D.ietf-pce-pcep-mib"/> uses
+    <t>The PCEP MIB module <xref target="RFC7420"/> uses
     a system generated entity index as a primary index to the read only entity 
     table. If the device implements the PCEP MIB, the "index" leaf MUST contain 
     the value of the corresponding pcePcepEntityIndex.</t>
     </section>
     <section title="The Peer Lists" toc="default">
         <t>
-          The peer list contains peer that the
+          The peer list contains peer(s) that the
           local PCEP entity knows about. A PCEP speaker is identified by its 
           IP address.  If there is a PCEP
           speaker in the network that uses multiple IP addresses
@@ -485,19 +596,19 @@ notifications:
           PCEP entity (PCE or PCC) is currently participating in.  
           The statistics in
           session are semantically different from those in
-          peer since the former apply to the current session only,
-          whereas the latter are the aggregate for all sessions that have
+          peer since the former applies to the current session only,
+          whereas the latter is the aggregate for all sessions that have
           existed to that peer.
         </t>
         <t>
-          Although <xref target="RFC5440"/> forbids there from being more than
-          one active PCEP session between a given pair of PCEP entities at any
-          one time, there is a window during session establishment where two 
-          sessions may exist for a given peer, one
-          representing a session initiated by the local PCEP entity and one
-          representing a session initiated by the peer.  If
-          either of these sessions reaches active state, then the other is
-          discarded.
+          Although <xref target="RFC5440"/> forbids more than one 
+          active PCEP session between a given pair of PCEP entities 
+          at any given time, there is a window during session 
+          establishment where two sessions may exist for a given pair, 
+          one representing a session initiated by the local PCEP 
+          entity and the other representing a session initiated by 
+          the peer.  If either of these sessions reaches active state 
+          first, then the other is discarded.
         </t>
 <t>The data model for PCEP session presented in this document uses a flat
    list of sessions.  Each session in the list is identified by its
@@ -543,7 +654,11 @@ notifications:
     <figure title="" suppress-title="false" align="left" alt="" width="" height="">
           <artwork xml:space="preserve" name="" type="" align="left" alt="" width="" height="">
           <![CDATA[ 
-<CODE BEGINS> file "ietf-pcep@2014-10-25.yang"    
+<CODE BEGINS> file "ietf-pcep@2015-02-xx.yang"    
+
+
+
+
 
 
 module ietf-pcep {
@@ -557,7 +672,7 @@ module ietf-pcep {
     import ietf-yang-types {
         prefix yang;
     }
-
+    
     organization
         "IETF PCE (Path Computation Element) Working Group";
 
@@ -580,7 +695,7 @@ module ietf-pcep {
          vendor implementations.";
 
 
-    revision 2014-10-25 {
+    revision 2015-02-23 {
         description "Initial revision.";
         reference
             "RFC XXXX:  A YANG Data Model for Path Computation
@@ -764,8 +879,65 @@ module ietf-pcep {
                 - keep-wait(3): PCEP Keep Wait state
                 - session-up(4): PCEP Session Up state";
     }
+    
+    typedef pce-domain-type {
+        type enumeration {
+            enum ospf-area {
+                value "1";
+                description
+                    "The OSPF area.";
+            }
+            enum isis-area {
+                value "2";
+                description
+                    "The IS-IS area.";
+            }
+            enum as {
+                value "3";
+                description
+                    "The Autonomous System (AS).";
+            }
+        }
+		description
+            "The PCE Domain Type";
+    }
+    
+    typedef domain-ospf-area {
+        type union {
+            type uint32;
+            type yang:dotted-quad;
+       }
+       description
+            "OSPF Area ID.";
+    }
+
+    typedef domain-isis-area {
+        type string {
+            pattern '[0-9A-Fa-f]{2}\.([0-9A-Fa-f]{4}\.){0,3}';
+        }
+        description
+            "IS-IS Area ID.";
+    }
+    
+    typedef domain-as {
+        type uint32;
+        description
+            "Autonomous System number.";
+        
+    }
+
+    typedef pce-domain {
+		type union {
+			type domain-ospf-area;
+			type domain-isis-area;
+			type domain-as;
+		}
+		description
+            "The PCE Domain";
+	}
 
 
+    
     /*
      * Features - TBD
      */
@@ -773,55 +945,7 @@ module ietf-pcep {
     /*
      * Groupings
      */
-    grouping  pcep-entity-identifier{
-        description
-            "This grouping defines the identifier for PCEP entity.";
-        leaf addr-type {
-            type inet:ip-version;
-            description
-                "The type of the PCEP entity's Internet address.
-                 This object specifies how the value of the
-                 addr leaf should be interpreted.";
-        }
-
-        leaf addr {
-            type inet:ip-address;
-            description
-                "The local Internet address of this PCEP entity.
-                 The type is given by addr-type.
-
-                 If operating as a PCE server, the PCEP entity
-                 listens on this address.
-
-                 If operating as a PCC, the PCEP entity binds
-                 outgoing TCP connections to this address.
-
-                 It is possible for the PCEP entity to operate
-                 both as a PCC and a PCE Server, in which case it
-                 uses this address both to listen for incoming
-                 TCP connections and to bind outgoing TCP
-                 connections.";
-        }
-    }
-
-    grouping  pcep-peer-identifier{
-        description
-            "This grouping defines the identifier for PCEP peer.";
-        leaf addr-type {
-            type inet:ip-version;
-            description
-                "The type of the PCEP peer's Internet address.
-                 This object specifies how the value of the
-                 addr leaf should be interpreted.";
-        }
-
-        leaf addr {
-            type inet:ip-address;
-            description
-                "The local Internet address of this PCEP peer.
-                 The type is given by addr-type.";
-        }
-    }
+    
 
 
     grouping pcep-entity-info{
@@ -1114,6 +1238,227 @@ module ietf-pcep {
         }
     }//pcep-entity-info
 
+    grouping  pce-scope{
+        description
+            "This grouping defines PCE path computation scope 
+             information which maybe relevant to PCE selection. 
+             This information corresponds to PCE auto-discovery 
+             information.";
+        reference
+            "RFC 5088: OSPF Protocol Extensions for Path 
+                       Computation Element (PCE) 
+                       Discovery
+             RFC 5089: IS-IS Protocol Extensions for Path 
+                       Computation Element (PCE) 
+                       Discovery";                            
+        leaf intra-area-scope{
+            type boolean;
+            default true;
+            description
+                "PCE can compute intra-area paths.";
+        }
+        leaf intra-area-pref{
+            type uint8{
+                range "0..7";
+            }
+            description
+              "The PCE's preference for intra-area TE LSP 
+              computation.";
+        }  
+        leaf inter-area-scope{
+            type boolean;
+            default false;
+            description
+                "PCE can compute inter-area paths.";
+        }
+        leaf inter-area-scope-default{
+            type boolean;
+            default false;
+            description
+                "PCE can act as a default PCE for inter-area 
+                 path computation.";
+        }
+        leaf inter-area-pref{
+            type uint8{
+                range "0..7";
+            }
+            description
+              "The PCE's preference for inter-area TE LSP 
+              computation.";
+        }          
+        leaf inter-as-scope{
+            type boolean;
+            default false;
+            description
+                "PCE can compute inter-AS paths.";
+        }
+        leaf inter-as-scope-default{
+            type boolean;
+            default false;
+            description
+                "PCE can act as a default PCE for inter-AS 
+                 path computation.";
+        }
+        leaf inter-as-pref{
+            type uint8{
+                range "0..7";
+            }
+            description
+              "The PCE's preference for inter-AS TE LSP 
+              computation.";
+        }        
+        leaf inter-layer-scope{
+            type boolean;
+            default false;
+            description
+                "PCE can compute inter-layer paths.";
+        }
+        leaf inter-layer-pref{
+            type uint8{
+                range "0..7";
+            }
+            description
+              "The PCE's preference for inter-layer TE LSP 
+              computation.";
+        }         
+    }//pce-scope 
+    
+    grouping  pce-domain{
+        description
+            "This grouping specifies a PCE-Domain where the
+             PCE has topology visibility and through which 
+             the PCE can compute paths.";
+        leaf domain-type{
+            type pce-domain-type;
+            description
+              "The PCE domain type.";
+        }
+        leaf domain{
+            type pce-domain;
+            description
+              "The PCE domain.";
+        }          
+    }//pce-domain 
+    
+    grouping  pce-capability{
+        description
+            "This grouping specifies a PCE-capability 
+             information which maybe relevant to PCE selection. 
+             This information corresponds to PCE auto-discovery 
+             information.";
+        reference
+            "RFC 5088: OSPF Protocol Extensions for Path 
+                       Computation Element (PCE) 
+                       Discovery
+             RFC 5089: IS-IS Protocol Extensions for Path 
+                       Computation Element (PCE) 
+                       Discovery";
+        leaf gmpls{
+            type boolean;
+            description
+              "Path computation with GMPLS link 
+               constraints.";
+        }                       
+        leaf bi-dir{
+            type boolean;
+            description
+              "Bidirectional path computation.";
+        }               
+        leaf diverse{
+            type boolean;
+            description
+              "Diverse path computation.";
+        }
+        leaf load-balance{
+            type boolean;
+            description
+              "Load-balanced path computation.";
+        }
+        leaf synchronize{
+            type boolean;
+            description
+              "Synchronized paths computation.";
+        }
+        leaf objective-function{
+            type boolean;
+            description
+              "Support for multiple objective functions.";
+        }
+        leaf add-path-constraint{
+            type boolean;
+            description
+              "Support for additive path constraints (max 
+               hop count, etc.).";
+        }
+        leaf prioritization{
+            type boolean;
+            description
+              "Support for request prioritization.";
+        } 
+        leaf multi-request{
+            type boolean;
+            description
+              "Support for multiple requests per message.";
+        } 
+        leaf gco{
+            type boolean;
+            description
+              "Support for Global Concurrent Optimization 
+               (GCO).";
+        }
+        leaf p2mp{
+            type boolean;
+            description
+              "Support for P2MP path computation.";
+        }                
+    }//pce-capability
+    
+    grouping  pce-info{
+	    description
+            "This grouping specifies all PCE information
+             which maybe relevant to the PCE selection. 
+             This information corresponds to PCE auto-discovery 
+             information.";
+		container scope{
+			description
+                "The path computation scope";
+			uses pce-scope;	
+		}	 
+        container domain{
+			description
+                "The PCE domain";
+			uses pce-domain{
+				description
+					"The PCE local domain.";
+			}
+        }
+        container neigh-domains{
+            description
+                "The list of neighbour PCE-Domain 
+                 toward which a PCE can compute 
+                 paths";
+            list domain{
+                key "domain-type domain";
+
+                description
+                    "The neighbour domain.";
+                uses pce-domain{
+                    description
+                        "The PCE neighbour domain.";
+                }
+            }
+        }
+		container capability{
+			description
+                "The PCE capability";
+			uses pce-capability{
+				description
+					"The PCE entity supported 
+					capabilities.";
+			}
+		}
+    }//pce-info
+    
     grouping  pcep-stats{
         description
             "This grouping defines statistics for PCEP. It is used
@@ -1406,6 +1751,18 @@ module ietf-pcep {
               and a single PCNtf message can cancel multiple
               requests.";
         }
+		
+		leaf num-req-rcvd-error-sent{
+            type yang:counter32;
+            description
+             "The number of requests received that were cancelled
+              by the local PCEP entity sending a PCErr message.
+
+              This might be different than num-pcerr-sent because
+              not all PCErr messages are used to cancel requests,
+              and a single PCErr message can cancel multiple
+              requests.";
+        }
 
         leaf  num-req-rcvd-cancel-rcvd{
             type yang:counter32;
@@ -1449,14 +1806,6 @@ module ietf-pcep {
                 "Reference to local entity address";
         }
 
-        leaf entity-addr-type {
-            type leafref {
-                path "/pcep-state/entity/addr-type";
-            }
-            description
-                "Reference to local entity address type";
-        }
-
         leaf peer-addr {
             type leafref {
                 path "/pcep-state/entity/peers/peer/addr";
@@ -1465,13 +1814,6 @@ module ietf-pcep {
                 "Reference to peer address";
         }
 
-        leaf peer-addr-type {
-            type leafref {
-                path "/pcep-state/entity/peers/peer/addr-type";
-            }
-            description
-                "Reference to peer address type";
-        }
     }// notification-instance-hdr
     
     grouping notification-session-hdr {
@@ -1499,15 +1841,30 @@ module ietf-pcep {
              on the device.";
 
         list entity{
-            key "addr-type addr";
+            key "addr";
 
             description
                 "The configured PCEP entity on the device.";
 
-            uses  pcep-entity-identifier {
-                description
-                    "The configured PCEP entity Identifier.";
-            }
+            leaf addr {
+				type inet:ip-address;
+				description
+					"The local Internet address of this PCEP 
+					entity.
+
+					If operating as a PCE server, the PCEP 
+					entity listens on this address.
+
+					If operating as a PCC, the PCEP entity 
+					binds outgoing TCP connections to this 
+					address.
+
+					It is possible for the PCEP entity to 
+					operate both as a PCC and a PCE Server, in 
+					which case it uses this address both to 
+					listen for incoming TCP connections and to 
+					bind outgoing TCP connections.";
+			}
 
             leaf enabled {
                 type boolean;
@@ -1537,12 +1894,31 @@ module ietf-pcep {
                     "Description of the PCEP entity configured
                      by the user";
             }
-
+			
+			container pce-info {
+                must "((../role == 'pce')" +
+                     " or " +
+					 "(../role == 'pcc-and-pce'))"
+				{
+					error-message "The PCEP entity must be PCE";
+                    description
+                        "When PCEP entity is PCE";
+                }            
+                uses pce-info {
+                    description
+                        "Local PCE information";
+                } 
+				description
+                    "The Local PCE Entity PCE information";
+            }
+			
             uses pcep-entity-info {
                 description
                     "The configuration related to the PCEP
                      entity.";
             }
+            
+            
 
             leaf pcep-notification-max-rate {
                 type uint32;
@@ -1564,16 +1940,16 @@ module ietf-pcep {
                          entity";
 
                 list peer{
-                    key "addr-type addr";
+                    key "addr";
 
                     description
                         "The peer configured for the entity.";
 
-                     uses pcep-peer-identifier{
-                        description
-                            "The configured PCEP peer's
-                             Identifier.";
-                     }
+                    leaf addr {
+						type inet:ip-address;
+						description
+							"The local Internet address of this PCEP peer.";
+					}
 
                      leaf description {
                         type string;
@@ -1581,6 +1957,14 @@ module ietf-pcep {
                             "Description of the PCEP peer
                              configured by the user";
                     }
+					container pce-info {
+						uses pce-info {
+							description
+								"PCE Peer information";
+						} 
+					description
+						"The Local PCE Entity PCE information";
+					}
                 }//peer
             }//peers
         }//entity
@@ -1597,7 +1981,7 @@ module ietf-pcep {
              device.";
 
         list entity{
-            key "addr-type addr";
+            key "addr";
             unique "index";
 
             description
@@ -1606,14 +1990,29 @@ module ietf-pcep {
             leaf index{
                 type uint32;
                 description
-                    "The index of the PECP operational
+                    "The index of the operational PECP 
                      entity";
             }
 
-            uses  pcep-entity-identifier {
-                description
-                    "The PCEP entity Identifier.";
-            }
+			leaf addr {
+				type inet:ip-address;
+				description
+					"The local Internet address of this PCEP 
+					entity. 
+
+					If operating as a PCE server, the PCEP 
+					entity listens on this address.
+
+					If operating as a PCC, the PCEP entity 
+					binds outgoing TCP connections to this 
+					address.
+
+					It is possible for the PCEP entity to 
+					operate both as a PCC and a PCE Server, in 
+					which case it uses this address both to 
+					listen for incoming TCP connections and to 
+					bind outgoing TCP connections.";
+			}
 
             leaf admin-status {
                 type pcep-admin-status;
@@ -1659,29 +2058,47 @@ module ietf-pcep {
                        both a PCC and a PCE.";
             }
 
+			container pce-info {
+                when "((../role == 'pce')" +
+                     " or " +
+					 "(../role == 'pcc-and-pce'))"
+				{
+                    description
+                        "When PCEP entity is PCE";
+                }            
+                uses pce-info {
+                    description
+                        "Local PCE information";
+                } 
+				description
+                    "The Local PCE Entity PCE information";
+            }
 
             uses pcep-entity-info{
                 description
                     "The operational information related to the
                      PCEP entity.";
             }
+			
+			
 
             container peers{
                 description
                         "The list of peers for the entity";
 
                 list peer{
-                    key "addr-type addr";
+                    key "addr";
 
                     description
                         "The peer for the entity.";
 
-                     uses pcep-peer-identifier{
-                        description
-                            "The PCEP peer's Identifier.";
-                     }
+					leaf addr {
+						type inet:ip-address;
+						description
+							"The local Internet address of this PCEP peer.";
+					}
 
-                     leaf role {
+                    leaf role {
                         type pcep-role;
                         description
                             "The role of the PCEP Peer.
@@ -1693,6 +2110,15 @@ module ietf-pcep {
                              - pcc-and-pce(3): this PCEP peer
                                is both a PCC and a PCE.";
                     }
+					
+					container pce-info {
+						uses pce-info {
+							description
+								"PCE Peer information";
+						} 
+					description
+						"The Local PCE Entity PCE information";
+					}
 
                     leaf discontinuity-time {
                         type yang:timestamp;
@@ -2201,7 +2627,11 @@ module ietf-pcep {
 
         uses notification-instance-hdr;
 
-        uses notification-session-hdr;
+		leaf session-initiator {
+            type pcep-initiator;
+            description
+                "The initiator of the session.";
+        }
 
         leaf state-last-change {
             type yang:timestamp;
@@ -2337,8 +2767,23 @@ module ietf-pcep {
     
     
     <section title="Security Considerations" toc="default">
-      <t>This document does not add any new 
-      security concerns beyond those discussed in <xref target="RFC5440"/>.</t>
+      <t>The YANG module defined in this memo is designed to be accessed via
+   the NETCONF protocol <xref target="RFC6241"/>.  The lowest NETCONF layer
+   is the secure transport layer and the mandatory-to-implement secure
+   transport is SSH <xref target="RFC6242"/>.  The NETCONF access control
+   model <xref target="RFC6536"/> provides the means to restrict access for
+   particular NETCONF users to a pre-configured subset of all available
+   NETCONF protocol operations and content.</t>
+
+   <t>There are a number of data nodes defined in the YANG module which are
+   writable/creatable/deletable (i.e., config true, which is the
+   default).  These data nodes may be considered sensitive or vulnerable
+   in some network environments.  Write operations (e.g.,  &lt;edit-config&gt;)
+   to these data nodes without proper protection can have a negative
+   effect on network operations.</t>
+
+   <t>TBD: List specific Subtrees and data nodes and their sensitivity/
+   vulnerability.</t>
     </section>
     
     <section title="Manageability Considerations" toc="default">
@@ -2362,12 +2807,35 @@ module ietf-pcep {
       </section>
     </section>    
     <section title="IANA Considerations" toc="default">
-    <t></t>
+    <t>This document registers a URI in the "IETF XML Registry" 
+    <xref target="RFC3688"/>.
+   Following the format in RFC 3688, the following registration has been
+   made.
+   <list style="hanging">
+
+       <t hangText="URI:">urn:ietf:params:xml:ns:yang:ietf-pcep</t>
+
+       <t hangText="Registrant Contact:">The PCE WG of the IETF.</t>
+
+       <t hangText="XML:">N/A; the requested URI is an XML namespace.</t>
+       </list>
+   </t>
+   <t>This document registers a YANG module in the "YANG Module Names"
+   registry <xref target="RFC6020"/>.
+    <figure title="" suppress-title="false" align="left" alt="" width="" height="">
+          <artwork xml:space="preserve" name="" type="" align="left" alt="" width="" height=""><![CDATA[
+    Name:         ietf-pcep
+    Namespace:    urn:ietf:params:xml:ns:yang:ietf-pcep
+    Prefix:       pcep
+    Reference:    This I-D 
+        ]]></artwork>
+        </figure>    
+    </t>
     </section>
     
     <section title="Acknowledgements" toc="default">
       <t>The initial document is based on the PCEP MIB 
-      <xref target="I-D.ietf-pce-pcep-mib"/>. Further this document 
+      <xref target="RFC7420"/>. Further this document 
       structure is based on Routing Yang Module 
       <xref target="I-D.ietf-netmod-routing-cfg"/>. We would
       like to thank the authors of aforementioned documents.</t>
@@ -2376,13 +2844,17 @@ module ietf-pcep {
   <back>
     <references title="Normative References">
     <?rfc include="reference.RFC.2119.xml" ?>
+    <?rfc include="reference.RFC.3688.xml" ?>
     <?rfc include="reference.RFC.5440.xml" ?>
     <?rfc include="reference.RFC.6020.xml" ?>
     <?rfc include="reference.RFC.6991.xml" ?>
     </references>
     <references title="Informative References">
       <?rfc include="reference.RFC.4655.xml" ?>
-      <?rfc include="reference.I-D.ietf-pce-pcep-mib.xml" ?>
+      <?rfc include="reference.RFC.6241.xml" ?>
+      <?rfc include="reference.RFC.6242.xml" ?>
+      <?rfc include="reference.RFC.6536.xml" ?>
+      <?rfc include="reference.RFC.7420.xml" ?>
       <?rfc include="reference.I-D.ietf-netmod-routing-cfg.xml" ?>
       <?rfc include="reference.I-D.ietf-netmod-rfc6087bis.xml" ?>
       
@@ -2401,8 +2873,8 @@ EMail: leeyoung@huawei.com
 
 Udayasree Palle
 Huawei Technologies
-Leela Palace
-Bangalore, Karnataka  560008
+Divyashree Techno Park, Whitefield
+Bangalore, Karnataka  560037
 India
 
 EMail: udayasree.palle@huawei.com      
@@ -2412,6 +2884,14 @@ Juniper Networks
 USA
 
 EMail: vbeeram@juniper.net    
+
+Xian Zhang
+Huawei Technologies
+Bantian, Longgang District
+Shenzhen  518129
+P.R.China
+
+EMail: zhang.xian@huawei.com
         ]]></artwork>
         </figure>
       </t>
