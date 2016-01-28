@@ -1,5 +1,3 @@
-
-
 module ietf-pcep {
     namespace "urn:ietf:params:xml:ns:yang:ietf-pcep";
     prefix pcep;
@@ -25,6 +23,9 @@ module ietf-pcep {
          WG Chair: Julien Meuric
                    <mailto:julien.meuric@orange.com>
 
+        WG Chair: Jonathan Hardwick
+                   <mailto:Jonathan.Hardwick@metaswitch.com>
+
          Editor:   Dhruv Dhody
                    <mailto:dhruv.ietf@gmail.com>";
 
@@ -34,7 +35,7 @@ module ietf-pcep {
          vendor implementations.";
 
 
-    revision 2015-07-03 {
+    revision 2016-01-28 {
         description "Initial revision.";
         reference
             "RFC XXXX:  A YANG Data Model for Path Computation
@@ -632,7 +633,7 @@ module ietf-pcep {
             }
             units "seconds";
             description
-                 "In PCEP session parameter negotiationin in
+                 "In PCEP session parameter negotiation in
                   seconds, the minimum value that this PCEP entity
                   will accept for the Dead timer.  Zero means that
                   the PCEP entity insists on not running a Dead
@@ -902,6 +903,7 @@ module ietf-pcep {
             description
               "Support for P2MP path computation.";
         }
+
         container stateful{
             if-feature stateful;
             description
@@ -935,12 +937,12 @@ module ietf-pcep {
                 "The local domain for the PCEP entity";
             list domain{
                 key "domain-type domain";
-				description
+                description
                     "The local domain.";
-				uses domain{
-					description
-						"The local domain for the PCEP entity.";
-				}
+                uses domain{
+                    description
+                        "The local domain for the PCEP entity.";
+                }
             }
         }
         container capability{
@@ -1516,14 +1518,6 @@ module ietf-pcep {
             "This group describes common instance specific data
              for notifications.";
 
-        leaf entity-addr {
-            type leafref {
-                path "/pcep-state/entity/addr";
-            }
-            description
-                "Reference to local entity address";
-        }
-
         leaf peer-addr {
             type leafref {
                 path "/pcep-state/entity/peers/peer/addr";
@@ -1548,6 +1542,58 @@ module ietf-pcep {
                 "Reference to pcep session initiator leaf";
         }
     }// notification-session-hdr
+
+    grouping stateful-pce-parameter {
+        description
+        "This group describes stateful PCE specific
+         parameters.";
+        leaf state-timeout{
+            type uint32;
+            units "seconds";
+            description
+                "When a PCEP session is terminated, a PCC
+                 waits for this time period before flushing
+                 LSP state associated with that PCEP session
+                 and reverting to operator-defined default
+                 parameters or behaviours.";
+        }
+        leaf redelegation-timeout{
+            type uint32;
+            units "seconds";
+            must "((../role == 'pcc')" +
+                 " or " +
+                 "(../role == 'pcc-and-pce'))"
+            {
+                error-message "The PCEP entity must be PCC";
+                description
+                    "When PCEP entity is PCC";
+            }
+            description
+                "When a PCEP session is terminated, a PCC
+                 waits for this time period before revoking
+                 LSP delegation to a PCE and attempting to
+                 redelegate LSPs associated with the
+                 terminated PCEP session to an alternate
+                 PCE.";
+        }
+        leaf rpt-non-pcep-lsp{
+            type boolean;
+            must "((../role == 'pcc')" +
+                 " or " +
+                 "(../role == 'pcc-and-pce'))"
+            {
+                error-message "The PCEP entity must be PCC";
+                description
+                    "When PCEP entity is PCC";
+            }
+            description
+                "If set, a PCC reports LSPs that are not
+                controlled by any PCE (for example, LSPs
+                that are statically configured at the
+                PCC). ";
+        }
+
+    }
 
     /*
      * Configuration data nodes
@@ -1658,7 +1704,7 @@ module ietf-pcep {
                      queued).";
             }
 
-            container stateful-timer{
+            container stateful-parameter{
                 if-feature stateful;
                 must "(../info/capability/stateful/active == true)"
                 {
@@ -1668,54 +1714,12 @@ module ietf-pcep {
                         "When PCEP entity is active stateful
                          enabled";
                 }
-                leaf state-timeout{
-                    type uint32;
-                    units "seconds";
-                    description
-                        "When a PCEP session is terminated, a PCC
-                         waits for this time period before flushing
-                         LSP state associated with that PCEP session
-                         and reverting to operator-defined default
-                         parameters or behaviours.";
-                }
-                leaf redelegation-timeout{
-                    type uint32;
-                    units "seconds";
-                    must "((../role == 'pcc')" +
-                         " or " +
-                         "(../role == 'pcc-and-pce'))"
-                    {
-                        error-message "The PCEP entity must be PCC";
-                        description
-                            "When PCEP entity is PCC";
-                    }
-                    description
-                        "When a PCEP session is terminated, a PCC
-                         waits for this time period before revoking
-                         LSP delegation to a PCE and attempting to
-                         redelegate LSPs associated with the
-                         terminated PCEP session to an alternate
-                         PCE.";
-                }
-                leaf rpt-non-pcep-lsp{
-                    type boolean;
-                    must "((../role == 'pcc')" +
-                         " or " +
-                         "(../role == 'pcc-and-pce'))"
-                    {
-                        error-message "The PCEP entity must be PCC";
-                        description
-                            "When PCEP entity is PCC";
-                    }
-                    description
-                        "If set, a PCC reports LSPs that are not
-                        controlled by any PCE (for example, LSPs
-                        that are statically configured at the
-                        PCC). ";
-                }
+                uses stateful-pce-parameter;
+
                 description
                     "The configured stateful parameters";
             }
+
 
             container peers{
                 must "((../role == 'pcc')" +
@@ -1896,7 +1900,7 @@ module ietf-pcep {
                      PCEP entity.";
             }
 
-            container stateful-timer{
+            container stateful-parameter{
                 if-feature stateful;
                 must "(../info/capability/stateful/active == true)"
                 {
@@ -1906,37 +1910,10 @@ module ietf-pcep {
                         "When PCEP entity is active stateful
                          enabled";
                 }
-                leaf state-timeout{
-                    type uint32;
-                    units "seconds";
-                    description
-                        "When a PCEP session is terminated, a PCC
-                         waits for this time period before flushing
-                         LSP state associated with that PCEP session
-                         and reverting to operator-defined default
-                         parameters or behaviours.";
-                }
-                leaf redelegation-timeout{
-                    type uint32;
-                    units "seconds";
-                    must "((../role == 'pcc')" +
-                         " or " +
-                         "(../role == 'pcc-and-pce'))"
-                    {
-                        error-message "The PCEP entity must be PCC";
-                        description
-                            "When PCEP entity is PCC";
-                    }
-                    description
-                        "When a PCEP session is terminated, a PCC
-                         waits for this time period before revoking
-                         LSP delegation to a PCE and attempting to
-                         redelegate LSPs associated with the
-                         terminated PCEP session to an alternate
-                         PCE.";
-                }
+                uses stateful-pce-parameter;
+
                 description
-                    "The operational stateful timer values";
+                    "The operational stateful parameters";
             }
 
 
@@ -2136,34 +2113,40 @@ module ietf-pcep {
                            active.";
                     }
 
-                    uses pcep-stats{
+                    container pcep-stats {
                         description
-                            "Since PCEP sessions can be ephemeral,
-                             the peer statistics tracks a peer even
-                             when no PCEP session currently exists
-                             to that peer. The statistics contained
-                             are an aggregate of the statistics for
-                             all successive sessions to that peer.";
-                    }
+                            "The container for all statistics at peer
+                             level.";
+                        uses pcep-stats{
+                            description
+                                "Since PCEP sessions can be 
+                                ephemeral, the peer statistics tracks
+                                a peer even when no PCEP session 
+                                currently exists to that peer. The 
+                                statistics contained are an aggregate
+                                of the statistics for all successive 
+                                sessions to that peer.";
+                        }
 
-                    leaf num-req-sent-closed{
-                        type yang:counter32;
-                        description
-                            "The number of requests that were sent
-                             to the peer and implicitly cancelled
-                             when the session they were sent over
-                             was closed.";
-                    }
+                        leaf num-req-sent-closed{
+                            type yang:counter32;
+                            description
+                                "The number of requests that were 
+                                 sent to the peer and implicitly 
+                                 cancelled when the session they were
+                                 sent over was closed.";
+                        }
 
-                    leaf  num-req-rcvd-closed{
-                        type yang:counter32;
-                        description
-                            "The number of requests that were
-                             received from the peer and implicitly
-                             cancelled when the session they were
-                             received over was closed.";
-                    }
-
+                        leaf  num-req-rcvd-closed{
+                            type yang:counter32;
+                            description
+                                "The number of requests that were
+                                 received from the peer and 
+                                 implicitly cancelled when the 
+                                 session they were received over 
+                                 was closed.";
+                        }
+                    }//pcep-stats
 
 
 
@@ -2233,6 +2216,14 @@ module ietf-pcep {
                                      excludes the idle state since
                                      entries do not exist in the
                                      idle state.";
+                            }
+
+                            leaf session-creation {
+                                type yang:timestamp;
+                                description
+                                    "The timestamp value at the
+                                     time this session was
+                                     created.";
                             }
 
                             leaf connect-retry {
@@ -2501,14 +2492,19 @@ module ietf-pcep {
                                       reset.";
                             }
 
-                            uses pcep-stats{
+                            container pcep-stats {
                                 description
-                                    "The statistics contained are
-                                     for the current sessions to that
-                                     peer. These are lost when the
-                                     session goes down.";
-
-                            }
+                                    "The container for all statistics
+                                     at session level.";
+                                uses pcep-stats{
+                                    description
+                                        "The statistics contained are
+                                         for the current sessions to
+                                         that peer. These are lost
+                                         when the session goes down.
+                                         ";
+                                }
+                            }//pcep-stats
 
                         } // session
                     } // sessions
@@ -2686,3 +2682,4 @@ module ietf-pcep {
         }
     } //notification
 }//module
+
