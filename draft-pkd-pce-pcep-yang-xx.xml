@@ -11,7 +11,7 @@
 <?rfc compact="yes" ?>
 <?rfc iprnotified="Yes" ?>
 <?rfc strict="no" ?>
-<rfc ipr="trust200902" category="std" docName="draft-pkd-pce-pcep-yang-03" obsoletes="" updates="" submissionType="IETF" xml:lang="en">
+<rfc ipr="trust200902" category="std" docName="draft-pkd-pce-pcep-yang-05" obsoletes="" updates="" submissionType="IETF" xml:lang="en">
   <front>
     <title abbrev="PCE-YANG">A YANG Data Model for Path Computation Element Communications Protocol (PCEP)</title>
        
@@ -53,20 +53,6 @@
       </address>
     </author>
     
-    <author initials="Z" surname="Ali" fullname="Zafar Ali">
-      <organization>Cisco Systems</organization>
-      <address>
-        <postal>
-          <street></street>
-          <city></city>
-          <region></region>
-          <code></code>
-          <country></country>
-        </postal>
-        <email>zali@cisco.com</email>
-      </address>
-    </author>
-
     <author fullname="Jeff Tantsura" initials="J." surname="Tantsura">
       <organization>Ericsson</organization>
 
@@ -87,7 +73,7 @@
       </address>
     </author>
     
-    <date month="July" year="2015" />
+    <date month="January" year="2016" />
     <area>Routing</area>
     <workgroup>PCE Working Group</workgroup>
     <abstract>
@@ -316,7 +302,7 @@ module: ietf-pcep
 |     +--rw max-unknown-reqs?             uint32
 |     +--rw max-unknown-msgs?             uint32
 |     +--rw pcep-notification-max-rate    uint32
-|     +--rw stateful-timer {stateful}?
+|     +--rw stateful-parameter {stateful}?
 |     |  +--rw state-timeout?          uint32
 |     |  +--rw redelegation-timeout?   uint32
 |     |  +--rw rpt-non-pcep-lsp?       boolean
@@ -421,9 +407,10 @@ module: ietf-pcep
       +--ro max-sessions?           uint32
       +--ro max-unknown-reqs?       uint32
       +--ro max-unknown-msgs?       uint32
-      +--ro stateful-timer {stateful}?
+      +--ro stateful-parameter {stateful}?
       |  +--ro state-timeout?          uint32
       |  +--ro redelegation-timeout?   uint32
+      |  +--ro rpt-non-pcep-lsp?       boolean
       +--ro lsp-db {stateful}?
       |  +--ro lsp* [plsp-id pcc-id]
       |     +--ro plsp-id               uint32
@@ -438,8 +425,8 @@ module: ietf-pcep
       |     +--ro last-error?           lsp-error
       +--ro peers
          +--ro peer* [addr]
-            +--ro addr                        inet:ip-address
-            +--ro role?                       pcep-role
+            +--ro addr                    inet:ip-address
+            +--ro role?                   pcep-role
             +--ro domain
             |  +--ro domain* [domain-type domain]
             |     +--ro domain-type    domain-type
@@ -476,169 +463,167 @@ module: ietf-pcep
             |     +--ro domain* [domain-type domain]
             |        +--ro domain-type    domain-type
             |        +--ro domain         domain
-            +--ro delegation-pref?            uint8 {stateful}?
-            +--ro discontinuity-time?         yang:timestamp
-            +--ro initiate-session?           boolean
-            +--ro session-exists?             boolean
-            +--ro num-sess-setup-ok?          yang:counter32
-            +--ro num-sess-setup-fail?        yang:counter32
-            +--ro session-up-time?            yang:timestamp
-            +--ro session-fail-time?          yang:timestamp
-            +--ro session-fail-up-time?       yang:timestamp
-            +--ro avg-rsp-time?               uint32
-            +--ro lwm-rsp-time?               uint32
-            +--ro hwm-rsp-time?               uint32
-            +--ro num-pcreq-sent?             yang:counter32
-            +--ro num-pcreq-rcvd?             yang:counter32
-            +--ro num-pcrep-sent?             yang:counter32
-            +--ro num-pcrep-rcvd?             yang:counter32
-            +--ro num-pcerr-sent?             yang:counter32
-            +--ro num-pcerr-rcvd?             yang:counter32
-            +--ro num-pcntf-sent?             yang:counter32
-            +--ro num-pcntf-rcvd?             yang:counter32
-            +--ro num-keepalive-sent?         yang:counter32
-            +--ro num-keepalive-rcvd?         yang:counter32
-            +--ro num-unknown-rcvd?           yang:counter32
-            +--ro num-corrupt-rcvd?           yang:counter32
-            +--ro num-req-sent?               yang:counter32
-            +--ro num-req-sent-pend-rep?      yang:counter32
-            +--ro num-req-sent-ero-rcvd?      yang:counter32
-            +--ro num-req-sent-nopath-rcvd?   yang:counter32
-            +--ro num-req-sent-cancel-rcvd?   yang:counter32
-            +--ro num-req-sent-error-rcvd?    yang:counter32
-            +--ro num-req-sent-timeout?       yang:counter32
-            +--ro num-req-sent-cancel-sent?   yang:counter32
-            +--ro num-req-rcvd?               yang:counter32
-            +--ro num-req-rcvd-pend-rep?      yang:counter32
-            +--ro num-req-rcvd-ero-sent?      yang:counter32
-            +--ro num-req-rcvd-nopath-sent?   yang:counter32
-            +--ro num-req-rcvd-cancel-sent?   yang:counter32
-            +--ro num-req-rcvd-error-sent?    yang:counter32
-            +--ro num-req-rcvd-cancel-rcvd?   yang:counter32
-            +--ro num-rep-rcvd-unknown?       yang:counter32
-            +--ro num-req-rcvd-unknown?       yang:counter32
-            +--ro svec {svec}?
-            |  +--ro num-svec-sent?       yang:counter32
-            |  +--ro num-svec-req-sent?   yang:counter32
-            |  +--ro num-svec-rcvd?       yang:counter32
-            |  +--ro num-svec-req-rcvd?   yang:counter32
-            +--ro stateful {stateful}?
-            |  +--ro num-pcrpt-sent?             yang:counter32
-            |  +--ro num-pcrpt-rcvd?             yang:counter32
-            |  +--ro num-pcupd-sent?             yang:counter32
-            |  +--ro num-pcupd-rcvd?             yang:counter32
-            |  +--ro num-rpt-sent?               yang:counter32
-            |  +--ro num-rpt-rcvd?               yang:counter32
-            |  +--ro num-rpt-rcvd-error-sent?    yang:counter32
-            |  +--ro num-upd-sent?               yang:counter32
-            |  +--ro num-upd-rcvd?               yang:counter32
-            |  +--ro num-upd-rcvd-unknown?       yang:counter32
-            |  +--ro num-upd-rcvd-undelegated?   yang:counter32
-            |  +--ro num-upd-rcvd-error-sent?    yang:counter32
-            +--ro num-req-sent-closed?        yang:counter32
-            +--ro num-req-rcvd-closed?        yang:counter32
+            +--ro delegation-pref?        uint8 {stateful}?
+            +--ro discontinuity-time?     yang:timestamp
+            +--ro initiate-session?       boolean
+            +--ro session-exists?         boolean
+            +--ro num-sess-setup-ok?      yang:counter32
+            +--ro num-sess-setup-fail?    yang:counter32
+            +--ro session-up-time?        yang:timestamp
+            +--ro session-fail-time?      yang:timestamp
+            +--ro session-fail-up-time?   yang:timestamp
+            +--ro pcep-stats
+            |  +--ro avg-rsp-time?               uint32
+            |  +--ro lwm-rsp-time?               uint32
+            |  +--ro hwm-rsp-time?               uint32
+            |  +--ro num-pcreq-sent?             yang:counter32
+            |  +--ro num-pcreq-rcvd?             yang:counter32
+            |  +--ro num-pcrep-sent?             yang:counter32
+            |  +--ro num-pcrep-rcvd?             yang:counter32
+            |  +--ro num-pcerr-sent?             yang:counter32
+            |  +--ro num-pcerr-rcvd?             yang:counter32
+            |  +--ro num-pcntf-sent?             yang:counter32
+            |  +--ro num-pcntf-rcvd?             yang:counter32
+            |  +--ro num-keepalive-sent?         yang:counter32
+            |  +--ro num-keepalive-rcvd?         yang:counter32
+            |  +--ro num-unknown-rcvd?           yang:counter32
+            |  +--ro num-corrupt-rcvd?           yang:counter32
+            |  +--ro num-req-sent?               yang:counter32
+            |  +--ro num-req-sent-pend-rep?      yang:counter32
+            |  +--ro num-req-sent-ero-rcvd?      yang:counter32
+            |  +--ro num-req-sent-nopath-rcvd?   yang:counter32
+            |  +--ro num-req-sent-cancel-rcvd?   yang:counter32
+            |  +--ro num-req-sent-error-rcvd?    yang:counter32
+            |  +--ro num-req-sent-timeout?       yang:counter32
+            |  +--ro num-req-sent-cancel-sent?   yang:counter32
+            |  +--ro num-req-rcvd?               yang:counter32
+            |  +--ro num-req-rcvd-pend-rep?      yang:counter32
+            |  +--ro num-req-rcvd-ero-sent?      yang:counter32
+            |  +--ro num-req-rcvd-nopath-sent?   yang:counter32
+            |  +--ro num-req-rcvd-cancel-sent?   yang:counter32
+            |  +--ro num-req-rcvd-error-sent?    yang:counter32
+            |  +--ro num-req-rcvd-cancel-rcvd?   yang:counter32
+            |  +--ro num-rep-rcvd-unknown?       yang:counter32
+            |  +--ro num-req-rcvd-unknown?       yang:counter32
+            |  +--ro svec {svec}?
+            |  |  +--ro num-svec-sent?       yang:counter32
+            |  |  +--ro num-svec-req-sent?   yang:counter32
+            |  |  +--ro num-svec-rcvd?       yang:counter32
+            |  |  +--ro num-svec-req-rcvd?   yang:counter32
+            |  +--ro stateful {stateful}?
+            |  |  +--ro num-pcrpt-sent?             yang:counter32
+            |  |  +--ro num-pcrpt-rcvd?             yang:counter32
+            |  |  +--ro num-pcupd-sent?             yang:counter32
+            |  |  +--ro num-pcupd-rcvd?             yang:counter32
+            |  |  +--ro num-rpt-sent?               yang:counter32
+            |  |  +--ro num-rpt-rcvd?               yang:counter32
+            |  |  +--ro num-rpt-rcvd-error-sent?    yang:counter32
+            |  |  +--ro num-upd-sent?               yang:counter32
+            |  |  +--ro num-upd-rcvd?               yang:counter32
+            |  |  +--ro num-upd-rcvd-unknown?       yang:counter32
+            |  |  +--ro num-upd-rcvd-undelegated?   yang:counter32
+            |  |  +--ro num-upd-rcvd-error-sent?    yang:counter32
+            |  +--ro num-req-sent-closed?        yang:counter32
+            |  +--ro num-req-rcvd-closed?        yang:counter32
             +--ro sessions
                +--ro session* [initiator]
-                  +--ro initiator                   pcep-initiator
-                  +--ro state-last-change?          yang:timestamp
-                  +--ro state?                      pcep-sess-state
-                  +--ro connect-retry?              yang:counter32
-                  +--ro local-id?                   uint32
-                  +--ro remote-id?                  uint32
-                  +--ro keepalive-timer?            uint32
-                  +--ro peer-keepalive-timer?       uint32
-                  +--ro dead-timer?                 uint32
-                  +--ro peer-dead-timer?            uint32
-                  +--ro ka-hold-time-rem?           uint32
-                  +--ro overloaded?                 boolean
-                  +--ro overload-time?              uint32
-                  +--ro peer-overloaded?            boolean
-                  +--ro peer-overload-time?         uint32
-                  +--ro lspdb-sync?                 sync-state {stateful}?
-                  +--ro discontinuity-time?         yang:timestamp
-                  +--ro avg-rsp-time?               uint32
-                  +--ro lwm-rsp-time?               uint32
-                  +--ro hwm-rsp-time?               uint32
-                  +--ro num-pcreq-sent?             yang:counter32
-                  +--ro num-pcreq-rcvd?             yang:counter32
-                  +--ro num-pcrep-sent?             yang:counter32
-                  +--ro num-pcrep-rcvd?             yang:counter32
-                  +--ro num-pcerr-sent?             yang:counter32
-                  +--ro num-pcerr-rcvd?             yang:counter32
-                  +--ro num-pcntf-sent?             yang:counter32
-                  +--ro num-pcntf-rcvd?             yang:counter32
-                  +--ro num-keepalive-sent?         yang:counter32
-                  +--ro num-keepalive-rcvd?         yang:counter32
-                  +--ro num-unknown-rcvd?           yang:counter32
-                  +--ro num-corrupt-rcvd?           yang:counter32
-                  +--ro num-req-sent?               yang:counter32
-                  +--ro num-req-sent-pend-rep?      yang:counter32
-                  +--ro num-req-sent-ero-rcvd?      yang:counter32
-                  +--ro num-req-sent-nopath-rcvd?   yang:counter32
-                  +--ro num-req-sent-cancel-rcvd?   yang:counter32
-                  +--ro num-req-sent-error-rcvd?    yang:counter32
-                  +--ro num-req-sent-timeout?       yang:counter32
-                  +--ro num-req-sent-cancel-sent?   yang:counter32
-                  +--ro num-req-rcvd?               yang:counter32
-                  +--ro num-req-rcvd-pend-rep?      yang:counter32
-                  +--ro num-req-rcvd-ero-sent?      yang:counter32
-                  +--ro num-req-rcvd-nopath-sent?   yang:counter32
-                  +--ro num-req-rcvd-cancel-sent?   yang:counter32
-                  +--ro num-req-rcvd-error-sent?    yang:counter32
-                  +--ro num-req-rcvd-cancel-rcvd?   yang:counter32
-                  +--ro num-rep-rcvd-unknown?       yang:counter32
-                  +--ro num-req-rcvd-unknown?       yang:counter32
-                  +--ro svec {svec}?
-                  |  +--ro num-svec-sent?       yang:counter32
-                  |  +--ro num-svec-req-sent?   yang:counter32
-                  |  +--ro num-svec-rcvd?       yang:counter32
-                  |  +--ro num-svec-req-rcvd?   yang:counter32
-                  +--ro stateful {stateful}?
-                     +--ro num-pcrpt-sent?             yang:counter32
-                     +--ro num-pcrpt-rcvd?             yang:counter32
-                     +--ro num-pcupd-sent?             yang:counter32
-                     +--ro num-pcupd-rcvd?             yang:counter32
-                     +--ro num-rpt-sent?               yang:counter32
-                     +--ro num-rpt-rcvd?               yang:counter32
-                     +--ro num-rpt-rcvd-error-sent?    yang:counter32
-                     +--ro num-upd-sent?               yang:counter32
-                     +--ro num-upd-rcvd?               yang:counter32
-                     +--ro num-upd-rcvd-unknown?       yang:counter32
-                     +--ro num-upd-rcvd-undelegated?   yang:counter32
-                     +--ro num-upd-rcvd-error-sent?    yang:counter32
+                  +--ro initiator               pcep-initiator
+                  +--ro state-last-change?      yang:timestamp
+                  +--ro state?                  pcep-sess-state
+                  +--ro session-creation?       yang:timestamp
+                  +--ro connect-retry?          yang:counter32
+                  +--ro local-id?               uint32
+                  +--ro remote-id?              uint32
+                  +--ro keepalive-timer?        uint32
+                  +--ro peer-keepalive-timer?   uint32
+                  +--ro dead-timer?             uint32
+                  +--ro peer-dead-timer?        uint32
+                  +--ro ka-hold-time-rem?       uint32
+                  +--ro overloaded?             boolean
+                  +--ro overload-time?          uint32
+                  +--ro peer-overloaded?        boolean
+                  +--ro peer-overload-time?     uint32
+                  +--ro lspdb-sync?             sync-state {stateful}?
+                  +--ro discontinuity-time?     yang:timestamp
+                  +--ro pcep-stats
+                     +--ro avg-rsp-time?               uint32
+                     +--ro lwm-rsp-time?               uint32
+                     +--ro hwm-rsp-time?               uint32
+                     +--ro num-pcreq-sent?             yang:counter32
+                     +--ro num-pcreq-rcvd?             yang:counter32
+                     +--ro num-pcrep-sent?             yang:counter32
+                     +--ro num-pcrep-rcvd?             yang:counter32
+                     +--ro num-pcerr-sent?             yang:counter32
+                     +--ro num-pcerr-rcvd?             yang:counter32
+                     +--ro num-pcntf-sent?             yang:counter32
+                     +--ro num-pcntf-rcvd?             yang:counter32
+                     +--ro num-keepalive-sent?         yang:counter32
+                     +--ro num-keepalive-rcvd?         yang:counter32
+                     +--ro num-unknown-rcvd?           yang:counter32
+                     +--ro num-corrupt-rcvd?           yang:counter32
+                     +--ro num-req-sent?               yang:counter32
+                     +--ro num-req-sent-pend-rep?      yang:counter32
+                     +--ro num-req-sent-ero-rcvd?      yang:counter32
+                     +--ro num-req-sent-nopath-rcvd?   yang:counter32
+                     +--ro num-req-sent-cancel-rcvd?   yang:counter32
+                     +--ro num-req-sent-error-rcvd?    yang:counter32
+                     +--ro num-req-sent-timeout?       yang:counter32
+                     +--ro num-req-sent-cancel-sent?   yang:counter32
+                     +--ro num-req-rcvd?               yang:counter32
+                     +--ro num-req-rcvd-pend-rep?      yang:counter32
+                     +--ro num-req-rcvd-ero-sent?      yang:counter32
+                     +--ro num-req-rcvd-nopath-sent?   yang:counter32
+                     +--ro num-req-rcvd-cancel-sent?   yang:counter32
+                     +--ro num-req-rcvd-error-sent?    yang:counter32
+                     +--ro num-req-rcvd-cancel-rcvd?   yang:counter32
+                     +--ro num-rep-rcvd-unknown?       yang:counter32
+                     +--ro num-req-rcvd-unknown?       yang:counter32
+                     +--ro svec {svec}?
+                     |  +--ro num-svec-sent?       yang:counter32
+                     |  +--ro num-svec-req-sent?   yang:counter32
+                     |  +--ro num-svec-rcvd?       yang:counter32
+                     |  +--ro num-svec-req-rcvd?   yang:counter32
+                     +--ro stateful {stateful}?
+                        +--ro num-pcrpt-sent?             yang:counter32
+                        +--ro num-pcrpt-rcvd?             yang:counter32
+                        +--ro num-pcupd-sent?             yang:counter32
+                        +--ro num-pcupd-rcvd?             yang:counter32
+                        +--ro num-rpt-sent?               yang:counter32
+                        +--ro num-rpt-rcvd?               yang:counter32
+                        +--ro num-rpt-rcvd-error-sent?    yang:counter32
+                        +--ro num-upd-sent?               yang:counter32
+                        +--ro num-upd-rcvd?               yang:counter32
+                        +--ro num-upd-rcvd-unknown?       yang:counter32
+                        +--ro num-upd-rcvd-undelegated?   yang:counter32
+                        +--ro num-upd-rcvd-error-sent?    yang:counter32
 notifications:
 +---n pcep-session-up                      
-|  +--ro entity-addr?         leafref
 |  +--ro peer-addr?           leafref
 |  +--ro session-initiator?   leafref
 |  +--ro state-last-change?   yang:timestamp
 |  +--ro state?               pcep-sess-state
 +---n pcep-session-down                    
-|  +--ro entity-addr?         leafref
 |  +--ro peer-addr?           leafref
 |  +--ro session-initiator?   pcep-initiator
 |  +--ro state-last-change?   yang:timestamp
 |  +--ro state?               pcep-sess-state
 +---n pcep-session-local-overload          
-|  +--ro entity-addr?         leafref
 |  +--ro peer-addr?           leafref
 |  +--ro session-initiator?   leafref
 |  +--ro overloaded?          boolean
 |  +--ro overload-time?       uint32
 +---n pcep-session-local-overload-clear    
-|  +--ro entity-addr?   leafref
-|  +--ro peer-addr?     leafref
-|  +--ro overloaded?    boolean
+|  +--ro peer-addr?    leafref
+|  +--ro overloaded?   boolean
 +---n pcep-session-peer-overload           
-|  +--ro entity-addr?          leafref
 |  +--ro peer-addr?            leafref
 |  +--ro session-initiator?    leafref
 |  +--ro peer-overloaded?      boolean
 |  +--ro peer-overload-time?   uint32
 +---n pcep-session-peer-overload-clear     
-   +--ro entity-addr?       leafref
    +--ro peer-addr?         leafref
    +--ro peer-overloaded?   boolean
+
 
 
                   ]]></artwork>
@@ -648,8 +633,7 @@ notifications:
     <section title="The Entity" toc="default">
     <t>The PCEP yang module may contain status information for the
     local PCEP entity.</t>
-    <t>The data model for PCEP presented in this document uses a flat
-   list of entities.  The entity has an IP address 
+    <t>The entity has an IP address 
    (using ietf-inet-types <xref target="RFC6991"/>) and a "role" 
    leaf (the local entity PCEP role) as mandatory. </t>
     <t>Note that, the PCEP MIB module <xref target="RFC7420"/> uses an 
@@ -686,8 +670,10 @@ notifications:
    IP address (addr-type, addr).</t>
    <t> There is one list for static peer configuration ("/pcep/entity/peers"),
    and a separate list for the operational state of all peers (i.e. 
-   static as well as discovered)("/pcep-state/entity/peers").
-    </t>   
+   static as well as discovered)("/pcep-state/entity/peers"). The former 
+   is used to enable remote PCE configuration at PCC (or PCE) while the
+   latter has the operational state of these peers as well as the remote PCE peer 
+   which were discovered and PCC peers that have initiated session.</t>   
     </section>
     <section title="The Session Lists" toc="default">
  <t>
@@ -740,11 +726,34 @@ notifications:
    <t>Inter-Layer</t>
    <t>Stateful PCE</t>
    <t>Segement Routing</t>
+   <t>Authentication including PCEPS (TLS)</t>
    </list>
    </t>
    <t>[Editor's Note - Some of them would be added in a future revision.]</t>
+<section title="Stateful PCE's LSP-DB" toc="default">
+   <t>In the operational state of PCEP which supports stateful PCE mode, the 
+   list of LSP state are maintained in LSP-DB. The key is the PLSP-ID and the 
+   PCC IP address.</t> 
+   <t>[Editor's Note - The document currently contains PCEP specific attributes only. 
+   The generic LSP attributes need to added after discussion with the TE Yang
+   draft authors.]</t>
+    </section></section>
+    <section title="Open Issues and Next Step" toc="default">
+    <t>This section is added so that open issues can be tracked. 
+    This section would be removed when the document is ready for publication.</t>
+    <section title="The LSP Database" toc="default">
+    <t>The current version of data model contains the operational state 
+    of LSPs (/pcep-state/entity/lsp-db/lsp/) with PCEP specific 
+    attributes. The generic TE attributes of the LSP would be defined 
+    in other documents <xref target="I-D.ietf-teas-yang-te"/>. In its
+    current form, <xref target="I-D.ietf-teas-yang-te"/> models the LSP
+    state from a device centric view (ingress, transit, egress) 
+    which is not suitable at a PCE server.</t>
+    <t>[Editor's Note: - The same issues would be amplified when 
+    PCE-Initiated LSP are supported and require LSP provisioning on 
+    PCE server rather than on the device.]</t>
     </section>
-    
+    </section>
   
     
     <section title="PCEP YANG Module" toc="default">
@@ -754,13 +763,7 @@ notifications:
     <figure title="" suppress-title="false" align="left" alt="" width="" height="">
           <artwork xml:space="preserve" name="" type="" align="left" alt="" width="" height="">
           <![CDATA[ 
-<CODE BEGINS> file "ietf-pcep@2015-07-03.yang"    
-
-
-
-
-
-
+<CODE BEGINS> file "ietf-pcep@2016-01-28.yang"    
 module ietf-pcep {
     namespace "urn:ietf:params:xml:ns:yang:ietf-pcep";
     prefix pcep;
@@ -786,6 +789,9 @@ module ietf-pcep {
          WG Chair: Julien Meuric
                    <mailto:julien.meuric@orange.com>
 
+        WG Chair: Jonathan Hardwick
+                   <mailto:Jonathan.Hardwick@metaswitch.com>
+
          Editor:   Dhruv Dhody
                    <mailto:dhruv.ietf@gmail.com>";
 
@@ -795,7 +801,7 @@ module ietf-pcep {
          vendor implementations.";
 
 
-    revision 2015-07-03 {
+    revision 2016-01-28 {
         description "Initial revision.";
         reference
             "RFC XXXX:  A YANG Data Model for Path Computation
@@ -1393,7 +1399,7 @@ module ietf-pcep {
             }
             units "seconds";
             description
-                 "In PCEP session parameter negotiationin in
+                 "In PCEP session parameter negotiation in
                   seconds, the minimum value that this PCEP entity
                   will accept for the Dead timer.  Zero means that
                   the PCEP entity insists on not running a Dead
@@ -1663,6 +1669,7 @@ module ietf-pcep {
             description
               "Support for P2MP path computation.";
         }
+
         container stateful{
             if-feature stateful;
             description
@@ -1696,12 +1703,12 @@ module ietf-pcep {
                 "The local domain for the PCEP entity";
             list domain{
                 key "domain-type domain";
-				description
+                description
                     "The local domain.";
-				uses domain{
-					description
-						"The local domain for the PCEP entity.";
-				}
+                uses domain{
+                    description
+                        "The local domain for the PCEP entity.";
+                }
             }
         }
         container capability{
@@ -2277,14 +2284,6 @@ module ietf-pcep {
             "This group describes common instance specific data
              for notifications.";
 
-        leaf entity-addr {
-            type leafref {
-                path "/pcep-state/entity/addr";
-            }
-            description
-                "Reference to local entity address";
-        }
-
         leaf peer-addr {
             type leafref {
                 path "/pcep-state/entity/peers/peer/addr";
@@ -2309,6 +2308,58 @@ module ietf-pcep {
                 "Reference to pcep session initiator leaf";
         }
     }// notification-session-hdr
+
+    grouping stateful-pce-parameter {
+        description
+        "This group describes stateful PCE specific
+         parameters.";
+        leaf state-timeout{
+            type uint32;
+            units "seconds";
+            description
+                "When a PCEP session is terminated, a PCC
+                 waits for this time period before flushing
+                 LSP state associated with that PCEP session
+                 and reverting to operator-defined default
+                 parameters or behaviours.";
+        }
+        leaf redelegation-timeout{
+            type uint32;
+            units "seconds";
+            must "((../role == 'pcc')" +
+                 " or " +
+                 "(../role == 'pcc-and-pce'))"
+            {
+                error-message "The PCEP entity must be PCC";
+                description
+                    "When PCEP entity is PCC";
+            }
+            description
+                "When a PCEP session is terminated, a PCC
+                 waits for this time period before revoking
+                 LSP delegation to a PCE and attempting to
+                 redelegate LSPs associated with the
+                 terminated PCEP session to an alternate
+                 PCE.";
+        }
+        leaf rpt-non-pcep-lsp{
+            type boolean;
+            must "((../role == 'pcc')" +
+                 " or " +
+                 "(../role == 'pcc-and-pce'))"
+            {
+                error-message "The PCEP entity must be PCC";
+                description
+                    "When PCEP entity is PCC";
+            }
+            description
+                "If set, a PCC reports LSPs that are not
+                controlled by any PCE (for example, LSPs
+                that are statically configured at the
+                PCC). ";
+        }
+
+    }
 
     /*
      * Configuration data nodes
@@ -2419,7 +2470,7 @@ module ietf-pcep {
                      queued).";
             }
 
-            container stateful-timer{
+            container stateful-parameter{
                 if-feature stateful;
                 must "(../info/capability/stateful/active == true)"
                 {
@@ -2429,54 +2480,12 @@ module ietf-pcep {
                         "When PCEP entity is active stateful
                          enabled";
                 }
-                leaf state-timeout{
-                    type uint32;
-                    units "seconds";
-                    description
-                        "When a PCEP session is terminated, a PCC
-                         waits for this time period before flushing
-                         LSP state associated with that PCEP session
-                         and reverting to operator-defined default
-                         parameters or behaviours.";
-                }
-                leaf redelegation-timeout{
-                    type uint32;
-                    units "seconds";
-                    must "((../role == 'pcc')" +
-                         " or " +
-                         "(../role == 'pcc-and-pce'))"
-                    {
-                        error-message "The PCEP entity must be PCC";
-                        description
-                            "When PCEP entity is PCC";
-                    }
-                    description
-                        "When a PCEP session is terminated, a PCC
-                         waits for this time period before revoking
-                         LSP delegation to a PCE and attempting to
-                         redelegate LSPs associated with the
-                         terminated PCEP session to an alternate
-                         PCE.";
-                }
-                leaf rpt-non-pcep-lsp{
-                    type boolean;
-                    must "((../role == 'pcc')" +
-                         " or " +
-                         "(../role == 'pcc-and-pce'))"
-                    {
-                        error-message "The PCEP entity must be PCC";
-                        description
-                            "When PCEP entity is PCC";
-                    }
-                    description
-                        "If set, a PCC reports LSPs that are not
-                        controlled by any PCE (for example, LSPs
-                        that are statically configured at the
-                        PCC). ";
-                }
+                uses stateful-pce-parameter;
+
                 description
                     "The configured stateful parameters";
             }
+
 
             container peers{
                 must "((../role == 'pcc')" +
@@ -2657,7 +2666,7 @@ module ietf-pcep {
                      PCEP entity.";
             }
 
-            container stateful-timer{
+            container stateful-parameter{
                 if-feature stateful;
                 must "(../info/capability/stateful/active == true)"
                 {
@@ -2667,37 +2676,10 @@ module ietf-pcep {
                         "When PCEP entity is active stateful
                          enabled";
                 }
-                leaf state-timeout{
-                    type uint32;
-                    units "seconds";
-                    description
-                        "When a PCEP session is terminated, a PCC
-                         waits for this time period before flushing
-                         LSP state associated with that PCEP session
-                         and reverting to operator-defined default
-                         parameters or behaviours.";
-                }
-                leaf redelegation-timeout{
-                    type uint32;
-                    units "seconds";
-                    must "((../role == 'pcc')" +
-                         " or " +
-                         "(../role == 'pcc-and-pce'))"
-                    {
-                        error-message "The PCEP entity must be PCC";
-                        description
-                            "When PCEP entity is PCC";
-                    }
-                    description
-                        "When a PCEP session is terminated, a PCC
-                         waits for this time period before revoking
-                         LSP delegation to a PCE and attempting to
-                         redelegate LSPs associated with the
-                         terminated PCEP session to an alternate
-                         PCE.";
-                }
+                uses stateful-pce-parameter;
+
                 description
-                    "The operational stateful timer values";
+                    "The operational stateful parameters";
             }
 
 
@@ -2897,34 +2879,40 @@ module ietf-pcep {
                            active.";
                     }
 
-                    uses pcep-stats{
+                    container pcep-stats {
                         description
-                            "Since PCEP sessions can be ephemeral,
-                             the peer statistics tracks a peer even
-                             when no PCEP session currently exists
-                             to that peer. The statistics contained
-                             are an aggregate of the statistics for
-                             all successive sessions to that peer.";
-                    }
+                            "The container for all statistics at peer
+                             level.";
+                        uses pcep-stats{
+                            description
+                                "Since PCEP sessions can be 
+                                ephemeral, the peer statistics tracks
+                                a peer even when no PCEP session 
+                                currently exists to that peer. The 
+                                statistics contained are an aggregate
+                                of the statistics for all successive 
+                                sessions to that peer.";
+                        }
 
-                    leaf num-req-sent-closed{
-                        type yang:counter32;
-                        description
-                            "The number of requests that were sent
-                             to the peer and implicitly cancelled
-                             when the session they were sent over
-                             was closed.";
-                    }
+                        leaf num-req-sent-closed{
+                            type yang:counter32;
+                            description
+                                "The number of requests that were 
+                                 sent to the peer and implicitly 
+                                 cancelled when the session they were
+                                 sent over was closed.";
+                        }
 
-                    leaf  num-req-rcvd-closed{
-                        type yang:counter32;
-                        description
-                            "The number of requests that were
-                             received from the peer and implicitly
-                             cancelled when the session they were
-                             received over was closed.";
-                    }
-
+                        leaf  num-req-rcvd-closed{
+                            type yang:counter32;
+                            description
+                                "The number of requests that were
+                                 received from the peer and 
+                                 implicitly cancelled when the 
+                                 session they were received over 
+                                 was closed.";
+                        }
+                    }//pcep-stats
 
 
 
@@ -2994,6 +2982,14 @@ module ietf-pcep {
                                      excludes the idle state since
                                      entries do not exist in the
                                      idle state.";
+                            }
+
+                            leaf session-creation {
+                                type yang:timestamp;
+                                description
+                                    "The timestamp value at the
+                                     time this session was
+                                     created.";
                             }
 
                             leaf connect-retry {
@@ -3262,14 +3258,19 @@ module ietf-pcep {
                                       reset.";
                             }
 
-                            uses pcep-stats{
+                            container pcep-stats {
                                 description
-                                    "The statistics contained are
-                                     for the current sessions to that
-                                     peer. These are lost when the
-                                     session goes down.";
-
-                            }
+                                    "The container for all statistics
+                                     at session level.";
+                                uses pcep-stats{
+                                    description
+                                        "The statistics contained are
+                                         for the current sessions to
+                                         that peer. These are lost
+                                         when the session goes down.
+                                         ";
+                                }
+                            }//pcep-stats
 
                         } // session
                     } // sessions
@@ -3448,7 +3449,6 @@ module ietf-pcep {
     } //notification
 }//module
 
-
 <CODE ENDS>          
                      ]]></artwork>
         </figure>
@@ -3548,6 +3548,7 @@ module ietf-pcep {
       <?rfc include="reference.RFC.7420.xml" ?>
       <?rfc include="reference.I-D.ietf-netmod-routing-cfg.xml" ?>
       <?rfc include="reference.I-D.ietf-netmod-rfc6087bis.xml" ?>
+      <?rfc include="reference.I-D.ietf-teas-yang-te"?>
       
     </references>
 <section title="Contributor Addresses" toc="default">
@@ -3570,6 +3571,12 @@ India
 
 EMail: vinods.kumar@huawei.com
 
+Zafar Ali
+Cisco Systems
+Canada
+
+EMail: zali@cisco.com
+   
 Xufeng Liu
 Ericsson
 1595 Spring Hill Road, Suite 500
@@ -3601,14 +3608,6 @@ Shenzhen  518129
 P.R.China
 
 EMail: zhang.xian@huawei.com
-
-Siva Sivabalan
-Cisco Systems, Inc.
-2000 Innovation Drive
-Kanata, Ontario  K2K 3E8
-Canada
-
-EMail: msiva@cisco.com
 
 Avantika
 Huawei Technologies
