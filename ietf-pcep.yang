@@ -9,6 +9,10 @@ module ietf-pcep {
     import ietf-yang-types {
         prefix yang;
     }
+    
+    import ietf-te {
+        prefix te;
+    }
 
     organization
         "IETF PCE (Path Computation Element) Working Group";
@@ -35,7 +39,7 @@ module ietf-pcep {
          vendor implementations.";
 
 
-    revision 2016-01-28 {
+    revision 2016-04-01 {
         description "Initial revision.";
         reference
             "RFC XXXX:  A YANG Data Model for Path Computation
@@ -385,6 +389,7 @@ module ietf-pcep {
         description
             "The LSP-DB state synchronization operational status.";
     }
+    
     /*
      * Features
      */
@@ -1455,6 +1460,65 @@ module ietf-pcep {
                  generated the PLSP-ID.";
         }
 
+        container lsp-ref{
+            description 
+                "reference to ietf-te lsp state";
+        
+            leaf source {
+                type leafref {
+                    path "/te:te/te:lsps-state/te:lsp/te:source";
+                }
+                description
+                  "Tunnel sender address extracted from
+                  SENDER_TEMPLATE  object";
+                reference "RFC3209";
+            }
+            leaf destination {
+                type leafref {
+                    path "/te:te/te:lsps-state/te:lsp/te:destination";
+                }
+                description
+                    "Tunnel endpoint address extracted from
+                    SESSION object";
+                reference "RFC3209";
+            }
+            leaf tunnel-id {
+                type leafref {
+                    path "/te:te/te:lsps-state/te:lsp/te:tunnel-id";
+                }
+                description
+                    "Tunnel identifier used in the SESSION
+                    that remains constant over the life
+                    of the tunnel.";
+                reference "RFC3209";
+            }
+            leaf lsp-id {
+                type leafref {
+                    path "/te:te/te:lsps-state/te:lsp/te:lsp-id";
+                }
+                description
+                    "Identifier used in the SENDER_TEMPLATE
+                    and the FILTER_SPEC that can be changed
+                    to allow a sender to share resources with
+                    itself.";
+                reference "RFC3209";
+            }
+            leaf extended-tunnel-id {
+                type leafref {
+                    path "/te:te/te:lsps-state/te:lsp/te:extended-tunnel-id";
+                }
+                description
+                    "Extended Tunnel ID of the LSP.";
+                reference "RFC3209";
+            }
+            leaf type {
+                type leafref {
+                    path "/te:te/te:lsps-state/te:lsp/te:type";
+                }
+                description "LSP type P2P or P2MP";
+            }
+        }
+        
         leaf admin-state{
             type boolean;
             description
@@ -1511,6 +1575,7 @@ module ietf-pcep {
             description
                 "The last error for the LSP.";
         }
+        
     }//lsp-state
 
     grouping notification-instance-hdr {
@@ -2682,4 +2747,3 @@ module ietf-pcep {
         }
     } //notification
 }//module
-
