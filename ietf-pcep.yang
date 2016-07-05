@@ -3,33 +3,34 @@ module ietf-pcep {
     prefix pcep;
 
     import ietf-inet-types {
-        prefix inet;
+        prefix "inet";
     }
 
     import ietf-yang-types {
-        prefix yang;
+        prefix "yang";
     }
     
     import ietf-te {
-        prefix te;
+        prefix "te";
+    }
+    
+    import ietf-key-chain {
+       prefix "key-chain";
     }
 
+    
     organization
         "IETF PCE (Path Computation Element) Working Group";
 
     contact
         "WG Web:   <http://tools.ietf.org/wg/pce/>
          WG List:  <mailto:pce@ietf.org>
-
          WG Chair: JP Vasseur
                    <mailto:jpv@cisco.com>
-
          WG Chair: Julien Meuric
                    <mailto:julien.meuric@orange.com>
-
-        WG Chair: Jonathan Hardwick
+         WG Chair: Jonathan Hardwick
                    <mailto:Jonathan.Hardwick@metaswitch.com>
-
          Editor:   Dhruv Dhody
                    <mailto:dhruv.ietf@gmail.com>";
 
@@ -39,7 +40,7 @@ module ietf-pcep {
          vendor implementations.";
 
 
-    revision 2016-04-01 {
+    revision 2016-05-08 {
         description "Initial revision.";
         reference
             "RFC XXXX:  A YANG Data Model for Path Computation
@@ -214,7 +215,6 @@ module ietf-pcep {
         }
         description
             "The current state of the session.
-
              The set of possible states excludes the idle state
              since entries do not exist in the idle state.
              Takes one of the following values
@@ -429,7 +429,10 @@ module ietf-pcep {
             "Support stateful PCE.";
     }
 
-
+    feature tls {
+        description
+            "Support PCEP over TLS.";
+    }
 
     /*
      * Groupings
@@ -477,7 +480,6 @@ module ietf-pcep {
             description
                "The initial back-off time in seconds for retrying
                 a failed session setup attempt to a peer.
-
                 The back-off time increases for each failed
                 session setup attempt, until a maximum back-off
                 time is reached.  The maximum back-off time is
@@ -490,7 +492,6 @@ module ietf-pcep {
             description
                "The maximum back-off time in seconds for retrying
                 a failed session setup attempt to a peer.
-
                 The back-off time increases for each failed session
                 setup attempt, until this maximum value is reached.
                 Session setup attempts then repeat periodically
@@ -507,7 +508,6 @@ module ietf-pcep {
                "The time in seconds that the PCEP entity will wait
                 to receive an Open message from a peer after the
                 TCP connection has come up.
-
                 If no Open message is received within this time then
                 PCEP terminates the TCP connection and deletes the
                 associated sessions.";
@@ -548,7 +548,6 @@ module ietf-pcep {
                  maximum time between two consecutive messages sent
                  to a peer. Zero means that the PCEP entity prefers
                  not to send Keepalives at all.
-
                  Note that the actual Keepalive transmission
                  intervals, in either direction of an active PCEP
                  session, are determined by negotiation between the
@@ -663,12 +662,10 @@ module ietf-pcep {
                  have not been, received a protocol error is
                  triggered and the PCE MUST cancel the whole set
                  of path computation  requests.
-
                  The aim of the SyncTimer is to avoid the storage
                  of unused synchronized requests should one of
                  them get lost for some reasons (for example, a
                  misbehaving PCC).
-
                  Zero means that the PCEP entity does not use the
                  SyncTimer.";
             reference
@@ -702,12 +699,10 @@ module ietf-pcep {
                replies that any session on this PCEP entity is
                willing to accept per minute before terminating
                the session.
-
                A PCRep message contains an unrecognized reply
                if it contains an RP object whose request ID
                does not correspond to any in-progress request
                sent by this PCEP entity.
-
                A PCReq message contains an unrecognized request
                if it contains an RP object whose request ID is
                zero.";
@@ -1010,7 +1005,6 @@ module ietf-pcep {
             }
             description
               "The average response time.
-
                If an average response time has not been
                calculated then this leaf has the value zero.";
         }
@@ -1031,7 +1025,6 @@ module ietf-pcep {
             }
             description
              "The smallest (low-water mark) response time seen.
-
               If no responses have been received then this
               leaf has the value zero.";
         }
@@ -1052,7 +1045,6 @@ module ietf-pcep {
             }
             description
              "The greatest (high-water mark) response time seen.
-
               If no responses have been received then this object
               has the value zero.";
         }
@@ -1170,7 +1162,6 @@ module ietf-pcep {
             description
               "The number of requests that were cancelled with
                a PCNtf message.
-
                This might be different than num-pcntf-rcvd because
                not all PCNtf messages are used to cancel requests,
                and a single PCNtf message can cancel multiple
@@ -1182,7 +1173,6 @@ module ietf-pcep {
             description
              "The number of requests that were rejected with a
               PCErr message.
-
               This might be different than num-pcerr-rcvd because
               not all PCErr messages are used to reject requests,
               and a single PCErr message can reject multiple
@@ -1211,7 +1201,6 @@ module ietf-pcep {
              "The number of requests received.  A request
               corresponds 1:1 with an RP object in a PCReq
               message.
-
               This might be greater than num-pcreq-rcvd because
               multiple requests can be batched into a single
               PCReq message.";
@@ -1247,7 +1236,6 @@ module ietf-pcep {
             description
              "The number of requests received that were cancelled
               by the local PCEP entity sending a PCNtf message.
-
               This might be different than num-pcntf-sent because
               not all PCNtf messages are used to cancel requests,
               and a single PCNtf message can cancel multiple
@@ -1259,7 +1247,6 @@ module ietf-pcep {
             description
              "The number of requests received that were cancelled
               by the local PCEP entity sending a PCErr message.
-
               This might be different than num-pcerr-sent because
               not all PCErr messages are used to cancel requests,
               and a single PCErr message can cancel multiple
@@ -1371,7 +1358,6 @@ module ietf-pcep {
                  "The number of LSP Reports received.  A LSP report
                   corresponds 1:1 with an LSP object in a PCRpt
                   message.
-
                   This might be greater than num-pcrpt-rcvd because
                   multiple reports can be batched into a single
                   PCRpt message.";
@@ -1401,7 +1387,6 @@ module ietf-pcep {
                  "The number of LSP Updates received.  A LSP update
                   corresponds 1:1 with an LSP object in a PCUpd
                   message.
-
                   This might be greater than num-pcupd-rcvd because
                   multiple updates can be batched into a single
                   PCUpd message.";
@@ -1475,7 +1460,8 @@ module ietf-pcep {
             }
             leaf destination {
                 type leafref {
-                    path "/te:te/te:lsps-state/te:lsp/te:destination";
+                    path "/te:te/te:lsps-state/te:lsp/te:"
+                         + "destination";
                 }
                 description
                     "Tunnel endpoint address extracted from
@@ -1505,7 +1491,8 @@ module ietf-pcep {
             }
             leaf extended-tunnel-id {
                 type leafref {
-                    path "/te:te/te:lsps-state/te:lsp/te:extended-tunnel-id";
+                    path "/te:te/te:lsps-state/te:lsp/te:"
+                    + "extended-tunnel-id";
                 }
                 description
                     "Extended Tunnel ID of the LSP.";
@@ -1659,13 +1646,51 @@ module ietf-pcep {
         }
 
     }
+    
+    grouping authentication {
+        description "Authentication Information";
+        choice auth-type-selection {
+            description
+                "Options for expressing authentication setting.";
+            case auth-key-chain {
+                leaf key-chain {
+                    type key-chain:key-chain-ref;
+                    description
+                        "key-chain name.";
+                }
+            }
+            case auth-key {
+                leaf key {
+                    type string;
+                description
+                    "Key string in ASCII format.";
+                }
+                container crypto-algorithm {
+                    uses key-chain:crypto-algorithm-types;
+                        description
+                            "Cryptographic algorithm associated 
+                             with key.";
+                }
+            }
+            case auth-tls {
+                if-feature tls;
+                container tls {
+                    description
+                        "TLS related information - TBD";
+                }
+            }
+        }
+    }
 
     /*
      * Configuration data nodes
      */
     container pcep{
 
-        description
+        presence
+            "The PCEP is enabled";
+
+            description
             "Parameters for list of configured PCEP entities
              on the device.";
 
@@ -1680,14 +1705,11 @@ module ietf-pcep {
                 description
                     "The local Internet address of this PCEP
                     entity.
-
                     If operating as a PCE server, the PCEP
                     entity listens on this address.
-
                     If operating as a PCC, the PCEP entity
                     binds outgoing TCP connections to this
                     address.
-
                     It is possible for the PCEP entity to
                     operate both as a PCC and a PCE Server, in
                     which case it uses this address both to
@@ -1847,6 +1869,10 @@ module ietf-pcep {
                         description
                             "The PCE peer delegation preference.";
                     }
+                    uses authentication {
+                        description
+                            "PCE Peer authentication";
+                    }
                 }//peer
             }//peers
         }//entity
@@ -1871,14 +1897,11 @@ module ietf-pcep {
                 description
                     "The local Internet address of this PCEP
                     entity.
-
                     If operating as a PCE server, the PCEP
                     entity listens on this address.
-
                     If operating as a PCC, the PCEP entity
                     binds outgoing TCP connections to this
                     address.
-
                     It is possible for the PCEP entity to
                     operate both as a PCC and a PCE Server, in
                     which case it uses this address both to
@@ -2081,6 +2104,12 @@ module ietf-pcep {
                         description
                             "The PCE peer delegation preference.";
                     }
+
+                    uses authentication {
+                        description
+                            "PCE Peer authentication";
+                    }
+
                     leaf discontinuity-time {
                         type yang:timestamp;
                         description
@@ -2220,7 +2249,6 @@ module ietf-pcep {
                             "This entry represents a single PCEP
                              session in which the local PCEP entity
                              participates.
-
                              This entry exists only if the
                              corresponding PCEP session has been
                              initialized by some event, such as
@@ -2244,7 +2272,6 @@ module ietf-pcep {
                                      connection was initiated by
                                      the local PCEP entity or the
                                      peer.
-
                                      There is a window during
                                      session initialization where
                                      two sessions can exist between
@@ -2276,7 +2303,6 @@ module ietf-pcep {
                                 description
                                     "The current state of the
                                      session.
-
                                      The set of possible states
                                      excludes the idle state since
                                      entries do not exist in the
@@ -2312,7 +2338,6 @@ module ietf-pcep {
                                       ID used by the local PCEP
                                       entity in the Open message
                                       for this session.
-
                                       If state is tcp-pending then
                                       this is the session ID that
                                       will be used in the Open
@@ -2602,7 +2627,6 @@ module ietf-pcep {
             type pcep-sess-state;
             description
                 "The current state of the session.
-
                  The set of possible states excludes the idle state
                  since entries do not exist in the idle state.";
         }
@@ -2633,7 +2657,6 @@ module ietf-pcep {
             type pcep-sess-state;
             description
                 "The current state of the session.
-
                  The set of possible states excludes the idle state
                  since entries do not exist in the idle state.";
         }
