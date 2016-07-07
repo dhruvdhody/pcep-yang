@@ -22,9 +22,12 @@ module: ietf-pcep
    |     |  +--rw gco?                   boolean {gco}?
    |     |  +--rw p2mp?                  boolean {p2mp}?
    |     |  +--rw stateful {stateful}?
-   |     |     +--rw enabled?         boolean
-   |     |     +--rw active?          boolean
-   |     |     +--rw pce-initiated?   boolean
+   |     |  |  +--rw enabled?         boolean
+   |     |  |  +--rw active?          boolean
+   |     |  |  +--rw pce-initiated?   boolean
+   |     |  +--rw sr {sr}?
+   |     |     +--rw enabled?   boolean
+   |     |     +--rw msd?       uint8
    |     +--rw pce-info
    |     |  +--rw scope
    |     |  |  +--rw intra-area-scope?           boolean
@@ -114,9 +117,12 @@ module: ietf-pcep
    |           |  +--rw gco?                   boolean {gco}?
    |           |  +--rw p2mp?                  boolean {p2mp}?
    |           |  +--rw stateful {stateful}?
-   |           |     +--rw enabled?         boolean
-   |           |     +--rw active?          boolean
-   |           |     +--rw pce-initiated?   boolean
+   |           |  |  +--rw enabled?         boolean
+   |           |  |  +--rw active?          boolean
+   |           |  |  +--rw pce-initiated?   boolean
+   |           |  +--rw sr {sr}?
+   |           |     +--rw enabled?   boolean
+   |           |     +--rw msd?       uint8
    |           +--rw scope
    |           |  +--rw intra-area-scope?           boolean
    |           |  +--rw intra-area-pref?            uint8
@@ -186,9 +192,12 @@ module: ietf-pcep
          |  +--ro gco?                   boolean {gco}?
          |  +--ro p2mp?                  boolean {p2mp}?
          |  +--ro stateful {stateful}?
-         |     +--ro enabled?         boolean
-         |     +--ro active?          boolean
-         |     +--ro pce-initiated?   boolean
+         |  |  +--ro enabled?         boolean
+         |  |  +--ro active?          boolean
+         |  |  +--ro pce-initiated?   boolean
+         |  +--ro sr {sr}?
+         |     +--ro enabled?   boolean
+         |     +--ro msd?       uint8
          +--ro pce-info
          |  +--ro scope
          |  |  +--ro intra-area-scope?           boolean
@@ -257,6 +266,15 @@ module: ietf-pcep
          |  +--ro redelegation-timeout?   uint32
          |  +--ro rpt-non-pcep-lsp?       boolean
          +--ro lsp-db {stateful}?
+         |  +--ro association-list* [id source global-source extended-id]
+         |  |  +--ro type?            assoc-type
+         |  |  +--ro id               uint16
+         |  |  +--ro source           inet:ip-address
+         |  |  +--ro global-source    uint32
+         |  |  +--ro extended-id      string
+         |  |  +--ro lsp* [plsp-id pcc-id]
+         |  |     +--ro plsp-id    -> /pcep-state/entity/lsp-db/lsp/plsp-id
+         |  |     +--ro pcc-id     -> /pcep-state/entity/lsp-db/lsp/pcc-id
          |  +--ro lsp* [plsp-id pcc-id]
          |     +--ro plsp-id               uint32
          |     +--ro pcc-id                inet:ip-address
@@ -275,6 +293,12 @@ module: ietf-pcep
          |     |  +--ro srp-id?    uint32
          |     +--ro symbolic-path-name?   string
          |     +--ro last-error?           lsp-error
+         |     +--ro pst?                  pst
+         |     +--ro association-list* [id source global-source extended-id]
+         |        +--ro id               -> /pcep-state/entity/lsp-db/association-list/id
+         |        +--ro source           -> /pcep-state/entity/lsp-db/association-list/source
+         |        +--ro global-source    -> /pcep-state/entity/lsp-db/association-list/global-source
+         |        +--ro extended-id      -> /pcep-state/entity/lsp-db/association-list/extended-id
          +--ro peers
             +--ro peer* [addr]
                +--ro addr                    inet:ip-address
@@ -296,9 +320,12 @@ module: ietf-pcep
                |  +--ro gco?                   boolean {gco}?
                |  +--ro p2mp?                  boolean {p2mp}?
                |  +--ro stateful {stateful}?
-               |     +--ro enabled?         boolean
-               |     +--ro active?          boolean
-               |     +--ro pce-initiated?   boolean
+               |  |  +--ro enabled?         boolean
+               |  |  +--ro active?          boolean
+               |  |  +--ro pce-initiated?   boolean
+               |  +--ro sr {sr}?
+               |     +--ro enabled?   boolean
+               |     +--ro msd?       uint8
                +--ro pce-info
                |  +--ro scope
                |  |  +--ro intra-area-scope?           boolean
