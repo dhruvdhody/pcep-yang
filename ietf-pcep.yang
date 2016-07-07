@@ -457,6 +457,11 @@ module ietf-pcep {
         description
             "Support stateful PCE.";
     }
+    
+    feature pce-initiated {
+        description
+            "Support PCE-Initiated LSP.";
+    }
 
     feature tls {
         description
@@ -953,6 +958,7 @@ module ietf-pcep {
                   "Support for active stateful PCE.";
             }
             leaf pce-initiated{
+                if-feature pce-initiated;
                 type boolean;
                 description
                   "Support for PCE-initiated LSP.";
@@ -1478,6 +1484,52 @@ module ietf-pcep {
                   responded by the local PCEP entity by sending a
                   PCErr message.";
             }
+            container initiation {
+                if-feature pce-initiated;
+                description
+                    "PCE-Initiated related statistics";                
+                leaf num-pcinitiate-sent{
+                    type yang:counter32;
+                    description
+                     "The number of PCInitiate messages sent.";
+                }
+
+                leaf num-pcinitiate-rcvd{
+                    type yang:counter32;
+                    description
+                      "The number of PCInitiate messages received.";
+                }
+            
+                leaf num-initiate-sent{
+                    type yang:counter32;
+                    description
+                      "The number of LSP Initiation sent via PCE.
+                       A LSP initiation corresponds 1:1 with an LSP 
+                       object in a PCInitiate message. This might be 
+                       greater than num-pcinitiate-sent because 
+                       multiple initiations can be batched into a 
+                       single PCInitiate message.";
+                }
+
+                leaf num-initiate-rcvd{
+                    type yang:counter32;
+                    description
+                      "The number of LSP Initiation received from 
+                       PCE.  A LSP initiation corresponds 1:1 with 
+                       an LSP object in a PCInitiate message. This 
+                       might be greater than num-pcinitiate-rcvd 
+                       because multiple initiations can be batched 
+                       into a single PCInitiate message.";
+                }
+
+                leaf  num-initiate-rcvd-error-sent{
+                    type yang:counter32;
+                    description
+                      "The number of initiations of LSPs received 
+                       that were responded by the local PCEP entity 
+                       by sending a PCErr message.";
+                }                
+            }
         }
     }//pcep-stats
 
@@ -1609,6 +1661,31 @@ module ietf-pcep {
                 description
                     "The last SRP-ID-number associated with this
                     LSP.";
+            }
+        }
+        container initiation {
+            if-feature pce-initiated;
+            description
+                "The PCE initiation related parameters";
+            leaf enabled{
+                type boolean;
+                description
+                    "LSP is PCE-initiated or not";
+            }
+            leaf pce{
+                type leafref {
+                    path "/pcep-state/entity/peers/peer/addr";
+                }
+                must "(../enabled == true)"
+                {
+                    error-message
+                        "The LSP must be PCE-Initiated";
+                    description
+                        "When the LSP must be PCE-Initiated";
+                }
+                description
+                    "The reference to the PCE 
+                    that initiated this LSP";
             }
         }
         leaf symbolic-path-name{
@@ -1784,21 +1861,24 @@ module ietf-pcep {
             "Generic Association parameters";
         leaf id {
             type leafref {
-                path "/pcep-state/entity/lsp-db/association-list/id";
+                path "/pcep-state/entity/lsp-db/"
+                + "association-list/id";
             }
             description 
                 "PCEP Association ID";
         }
         leaf source {
             type leafref {
-                path "/pcep-state/entity/lsp-db/association-list/source";
+                path "/pcep-state/entity/lsp-db/"
+                + "association-list/source";
             }
           description
                 "PCEP Association Source.";
         }
         leaf global-source {
             type leafref {
-                path "/pcep-state/entity/lsp-db/association-list/global-source";
+                path "/pcep-state/entity/lsp-db/"
+                + "association-list/global-source";
             }
           description
                 "PCEP Association Global
@@ -1806,7 +1886,8 @@ module ietf-pcep {
         }
         leaf extended-id{
             type leafref {
-                path "/pcep-state/entity/lsp-db/association-list/extended-id";
+                path "/pcep-state/entity/lsp-db/"
+                + "association-list/extended-id";
             }
             description
                 "Additional information to
@@ -2165,17 +2246,20 @@ module ietf-pcep {
                             "List of all LSP in this association";
                         leaf plsp-id {
                             type leafref {
-                                path "/pcep-state/entity/lsp-db/lsp/plsp-id";
+                                path "/pcep-state/entity/lsp-db/"
+                                + "lsp/plsp-id";
                             }
                             description
                                 "Reference to PLSP-ID in LSP-DB";
                         }
                         leaf pcc-id {
                             type leafref {
-                                path "/pcep-state/entity/lsp-db/lsp/pcc-id";
+                                path "/pcep-state/entity/lsp-db/"
+                                + "lsp/pcc-id";
                             }
                             description
-                                "Reference to PCC-ID in LSP-DB";                        }
+                                "Reference to PCC-ID in LSP-DB";                        
+                        }
                     }
                 }    
                 list lsp{
@@ -2193,7 +2277,8 @@ module ietf-pcep {
                             "List of all PCEP associations";
                         uses association-ref {
                             description
-                                "Reference to the Association attributes";
+                                "Reference to the Association 
+                                 attributes";
                         }                
                     }
                 
