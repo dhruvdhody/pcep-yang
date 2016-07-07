@@ -390,6 +390,35 @@ module ietf-pcep {
             "The LSP-DB state synchronization operational status.";
     }
     
+	typedef pst{
+		type enumeration{
+			enum rsvp-te{
+				value "0";
+				description
+					"RSVP-TE signaling protocol";
+			}
+			enum sr{
+				value "1";
+				description
+					"Segment Routing Traffic Engineering";
+			}
+		}
+		description
+			"The Path Setup Type";
+	}
+    
+    typedef assoc-type{
+        type enumeration{
+            enum protection{ 
+                value "1";
+                description
+                    "Path Protection Association Type";
+            }
+        }
+        description
+            "The PCEP Association Type";
+    }
+	
     /*
      * Features
      */
@@ -434,6 +463,11 @@ module ietf-pcep {
             "Support PCEP over TLS.";
     }
 
+    feature sr {
+        description
+            "Support Segement Routing for PCE.";
+    }	
+	
     /*
      * Groupings
      */
@@ -924,6 +958,31 @@ module ietf-pcep {
                   "Support for PCE-initiated LSP.";
             }
         }
+		container sr{
+			if-feature sr;
+			description
+				"If segment routing is supported";
+			leaf enabled{
+                type boolean;
+                description
+                    "Enabled or Disabled";			
+			}	
+			leaf msd{
+				type uint8;
+                must "((../../role == 'pcc')" +
+                     " or " +
+                    "(../../role == 'pcc-and-pce')))"
+                {
+                    error-message
+                        "The PCEP entity must be PCC";
+                    description
+                        "When PCEP entity is PCC for
+                        MSD to be applicable";
+                }				
+				description
+					"Maximum SID Depth";
+			}
+		}
     }//capability
 
     grouping  info{
@@ -1562,6 +1621,13 @@ module ietf-pcep {
             description
                 "The last error for the LSP.";
         }
+		leaf pst{
+			type pst;
+			default "rsvp-te";	
+			description
+				"The Path Setup Type";
+			
+		}
         
     }//lsp-state
 
@@ -1681,7 +1747,72 @@ module ietf-pcep {
             }
         }
     }
-
+    
+    grouping association {
+        description
+            "Generic Association parameters";
+        leaf type {
+            type "assoc-type";
+            description
+                "The PCEP association type";
+        }    
+        leaf id {
+            type uint16;
+            description 
+                "PCEP Association ID";
+        }
+        leaf source {
+          type inet:ip-address;
+          description
+                "PCEP Association Source.";
+        }
+        leaf global-source {
+          type uint32;
+          description
+                "PCEP Association Global
+                Source.";
+        }
+        leaf extended-id{
+            type string;
+            description
+                "Additional information to
+                support unique identification.";
+        }
+    }
+    grouping association-ref {
+        description
+            "Generic Association parameters";
+        leaf id {
+            type leafref {
+                path "/pcep-state/entity/lsp-db/association-list/id";
+            }
+            description 
+                "PCEP Association ID";
+        }
+        leaf source {
+            type leafref {
+                path "/pcep-state/entity/lsp-db/association-list/source";
+            }
+          description
+                "PCEP Association Source.";
+        }
+        leaf global-source {
+            type leafref {
+                path "/pcep-state/entity/lsp-db/association-list/global-source";
+            }
+          description
+                "PCEP Association Global
+                Source.";
+        }
+        leaf extended-id{
+            type leafref {
+                path "/pcep-state/entity/lsp-db/association-list/extended-id";
+            }
+            description
+                "Additional information to
+                support unique identification.";
+        }
+    }
     /*
      * Configuration data nodes
      */
@@ -2013,12 +2144,40 @@ module ietf-pcep {
                 description
                     "The operational stateful parameters";
             }
+            
 
 
             container lsp-db{
                 if-feature stateful;
                 description
                     "The LSP-DB";
+                list association-list {
+                    key "id source global-source extended-id";
+                    description
+                        "List of all PCEP associations";
+                    uses association {
+                        description
+                            "The Association attributes";
+                    }
+                    list lsp {
+                        key "plsp-id pcc-id";
+                        description
+                            "List of all LSP in this association";
+                        leaf plsp-id {
+                            type leafref {
+                                path "/pcep-state/entity/lsp-db/lsp/plsp-id";
+                            }
+                            description
+                                "Reference to PLSP-ID in LSP-DB";
+                        }
+                        leaf pcc-id {
+                            type leafref {
+                                path "/pcep-state/entity/lsp-db/lsp/pcc-id";
+                            }
+                            description
+                                "Reference to PCC-ID in LSP-DB";                        }
+                    }
+                }    
                 list lsp{
                     key "plsp-id pcc-id";
                     description
@@ -2028,12 +2187,18 @@ module ietf-pcep {
                             "The PCEP specific attributes for
                              LSP-DB.";
                     }
-                    // To Do - add groupings and useful information
-                    // from TE yang model, once ready
+                    list association-list {
+                        key "id source global-source extended-id";
+                        description
+                            "List of all PCEP associations";
+                        uses association-ref {
+                            description
+                                "Reference to the Association attributes";
+                        }                
+                    }
+                
                 }
             }
-
-
             container peers{
                 description
                         "The list of peers for the entity";
