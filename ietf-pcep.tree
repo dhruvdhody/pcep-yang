@@ -24,7 +24,7 @@ module: ietf-pcep
    |     |  +--rw stateful {stateful}?
    |     |  |  +--rw enabled?         boolean
    |     |  |  +--rw active?          boolean
-   |     |  |  +--rw pce-initiated?   boolean
+   |     |  |  +--rw pce-initiated?   boolean {pce-initiated}?
    |     |  +--rw sr {sr}?
    |     |     +--rw enabled?   boolean
    |     |     +--rw msd?       uint8
@@ -119,7 +119,7 @@ module: ietf-pcep
    |           |  +--rw stateful {stateful}?
    |           |  |  +--rw enabled?         boolean
    |           |  |  +--rw active?          boolean
-   |           |  |  +--rw pce-initiated?   boolean
+   |           |  |  +--rw pce-initiated?   boolean {pce-initiated}?
    |           |  +--rw sr {sr}?
    |           |     +--rw enabled?   boolean
    |           |     +--rw msd?       uint8
@@ -194,7 +194,7 @@ module: ietf-pcep
          |  +--ro stateful {stateful}?
          |  |  +--ro enabled?         boolean
          |  |  +--ro active?          boolean
-         |  |  +--ro pce-initiated?   boolean
+         |  |  +--ro pce-initiated?   boolean {pce-initiated}?
          |  +--ro sr {sr}?
          |     +--ro enabled?   boolean
          |     +--ro msd?       uint8
@@ -291,6 +291,9 @@ module: ietf-pcep
          |     |  +--ro enabled?   boolean
          |     |  +--ro pce?       -> /pcep-state/entity/peers/peer/addr
          |     |  +--ro srp-id?    uint32
+         |     +--ro initiation {pce-initiated}?
+         |     |  +--ro enabled?   boolean
+         |     |  +--ro pce?       -> /pcep-state/entity/peers/peer/addr
          |     +--ro symbolic-path-name?   string
          |     +--ro last-error?           lsp-error
          |     +--ro pst?                  pst
@@ -322,7 +325,7 @@ module: ietf-pcep
                |  +--ro stateful {stateful}?
                |  |  +--ro enabled?         boolean
                |  |  +--ro active?          boolean
-               |  |  +--ro pce-initiated?   boolean
+               |  |  +--ro pce-initiated?   boolean {pce-initiated}?
                |  +--ro sr {sr}?
                |     +--ro enabled?   boolean
                |     +--ro msd?       uint8
@@ -431,6 +434,12 @@ module: ietf-pcep
                |  |  +--ro num-upd-rcvd-unknown?       yang:counter32
                |  |  +--ro num-upd-rcvd-undelegated?   yang:counter32
                |  |  +--ro num-upd-rcvd-error-sent?    yang:counter32
+               |  |  +--ro initiation {pce-initiated}?
+               |  |     +--ro num-pcinitiate-sent?            yang:counter32
+               |  |     +--ro num-pcinitiate-rcvd?            yang:counter32
+               |  |     +--ro num-initiate-sent?              yang:counter32
+               |  |     +--ro num-initiate-rcvd?              yang:counter32
+               |  |     +--ro num-initiate-rcvd-error-sent?   yang:counter32
                |  +--ro num-req-sent-closed?        yang:counter32
                |  +--ro num-req-rcvd-closed?        yang:counter32
                +--ro sessions
@@ -504,6 +513,12 @@ module: ietf-pcep
                            +--ro num-upd-rcvd-unknown?       yang:counter32
                            +--ro num-upd-rcvd-undelegated?   yang:counter32
                            +--ro num-upd-rcvd-error-sent?    yang:counter32
+                           +--ro initiation {pce-initiated}?
+                              +--ro num-pcinitiate-sent?            yang:counter32
+                              +--ro num-pcinitiate-rcvd?            yang:counter32
+                              +--ro num-initiate-sent?              yang:counter32
+                              +--ro num-initiate-rcvd?              yang:counter32
+                              +--ro num-initiate-rcvd-error-sent?   yang:counter32
 notifications:
    +---n pcep-session-up
    |  +--ro peer-addr?           -> /pcep-state/entity/peers/peer/addr
