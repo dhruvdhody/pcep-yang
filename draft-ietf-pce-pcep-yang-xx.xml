@@ -11,7 +11,7 @@
 <?rfc compact="yes" ?>
 <?rfc iprnotified="Yes" ?>
 <?rfc strict="no" ?>
-<rfc ipr="trust200902" category="std" docName="draft-pkd-pce-pcep-yang-06" obsoletes="" updates="" submissionType="IETF" xml:lang="en">
+<rfc ipr="trust200902" category="std" docName="draft-ietf-pce-pcep-yang-00" obsoletes="" updates="" submissionType="IETF" xml:lang="en">
   <front>
     <title abbrev="PCE-YANG">A YANG Data Model for Path Computation Element Communications Protocol (PCEP)</title>
 
@@ -73,7 +73,7 @@
       </address>
     </author>
 
-    <date month="July" year="2016" />
+    <date month="September" year="2016" />
     <area>Routing</area>
     <workgroup>PCE Working Group</workgroup>
     <abstract>
