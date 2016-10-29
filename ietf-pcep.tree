@@ -5,6 +5,7 @@ module: ietf-pcep
    |     +--rw enabled?                      boolean
    |     +--rw role                          pcep-role
    |     +--rw description?                  string
+   |     +--rw speaker-entity-id?            string {stateful-sync-opt}?
    |     +--rw domain
    |     |  +--rw domain* [domain-type domain]
    |     |     +--rw domain-type    domain-type
@@ -15,19 +16,22 @@ module: ietf-pcep
    |     |  +--rw diverse?               boolean
    |     |  +--rw load-balance?          boolean
    |     |  +--rw synchronize?           boolean {svec}?
-   |     |  +--rw objective-function?    boolean {obj-fn}?
+   |     |  +--rw objective-function?    boolean {objective-function}?
    |     |  +--rw add-path-constraint?   boolean
    |     |  +--rw prioritization?        boolean
    |     |  +--rw multi-request?         boolean
    |     |  +--rw gco?                   boolean {gco}?
    |     |  +--rw p2mp?                  boolean {p2mp}?
    |     |  +--rw stateful {stateful}?
-   |     |  |  +--rw enabled?         boolean
-   |     |  |  +--rw active?          boolean
-   |     |  |  +--rw pce-initiated?   boolean {pce-initiated}?
+   |     |  |  +--rw enabled?                boolean
+   |     |  |  +--rw active?                 boolean
+   |     |  |  +--rw pce-initiated?          boolean {pce-initiated}?
+   |     |  |  +--rw include-db-ver?         boolean {stateful-sync-opt}?
+   |     |  |  +--rw trigger-resync?         boolean {stateful-sync-opt}?
+   |     |  |  +--rw trigger-initial-sync?   boolean {stateful-sync-opt}?
+   |     |  |  +--rw incremental-sync?       boolean {stateful-sync-opt}?
    |     |  +--rw sr {sr}?
    |     |     +--rw enabled?   boolean
-   |     |     +--rw msd?       uint8
    |     +--rw pce-info
    |     |  +--rw scope
    |     |  |  +--rw intra-area-scope?           boolean
@@ -44,35 +48,40 @@ module: ietf-pcep
    |     |  |  +--rw domain* [domain-type domain]
    |     |  |     +--rw domain-type    domain-type
    |     |  |     +--rw domain         domain
-   |     |  +--rw (auth-type-selection)?
-   |     |     +--:(auth-key-chain)
-   |     |     |  +--rw key-chain?          key-chain:key-chain-ref
-   |     |     +--:(auth-key)
-   |     |     |  +--rw key?                string
-   |     |     |  +--rw crypto-algorithm
-   |     |     |     +--rw (algorithm)?
-   |     |     |        +--:(hmac-sha-1-12) {crypto-hmac-sha-1-12}?
-   |     |     |        |  +--rw hmac-sha1-12?             empty
-   |     |     |        +--:(aes-cmac-prf-128) {aes-cmac-prf-128}?
-   |     |     |        |  +--rw aes-cmac-prf-128?         empty
-   |     |     |        +--:(md5)
-   |     |     |        |  +--rw md5?                      empty
-   |     |     |        +--:(sha-1)
-   |     |     |        |  +--rw sha-1?                    empty
-   |     |     |        +--:(hmac-sha-1)
-   |     |     |        |  +--rw hmac-sha-1?               empty
-   |     |     |        +--:(hmac-sha-256)
-   |     |     |        |  +--rw hmac-sha-256?             empty
-   |     |     |        +--:(hmac-sha-384)
-   |     |     |        |  +--rw hmac-sha-384?             empty
-   |     |     |        +--:(hmac-sha-512)
-   |     |     |        |  +--rw hmac-sha-512?             empty
-   |     |     |        +--:(clear-text) {clear-text}?
-   |     |     |        |  +--rw clear-text?               empty
-   |     |     |        +--:(replay-protection-only) {replay-protection-only}?
-   |     |     |           +--rw replay-protection-only?   empty
-   |     |     +--:(auth-tls) {tls}?
-   |     |        +--rw tls
+   |     |  +--rw path-key {path-key}?
+   |     |     +--rw enabled?         boolean
+   |     |     +--rw discard-timer?   uint32
+   |     |     +--rw reuse-time?      uint32
+   |     |     +--rw pce-id?          inet:ip-address
+   |     +--rw (auth-type-selection)?
+   |     |  +--:(auth-key-chain)
+   |     |  |  +--rw key-chain?                    key-chain:key-chain-ref
+   |     |  +--:(auth-key)
+   |     |  |  +--rw key?                          string
+   |     |  |  +--rw crypto-algorithm
+   |     |  |     +--rw (algorithm)?
+   |     |  |        +--:(hmac-sha-1-12) {crypto-hmac-sha-1-12}?
+   |     |  |        |  +--rw hmac-sha1-12?             empty
+   |     |  |        +--:(aes-cmac-prf-128) {aes-cmac-prf-128}?
+   |     |  |        |  +--rw aes-cmac-prf-128?         empty
+   |     |  |        +--:(md5)
+   |     |  |        |  +--rw md5?                      empty
+   |     |  |        +--:(sha-1)
+   |     |  |        |  +--rw sha-1?                    empty
+   |     |  |        +--:(hmac-sha-1)
+   |     |  |        |  +--rw hmac-sha-1?               empty
+   |     |  |        +--:(hmac-sha-256)
+   |     |  |        |  +--rw hmac-sha-256?             empty
+   |     |  |        +--:(hmac-sha-384)
+   |     |  |        |  +--rw hmac-sha-384?             empty
+   |     |  |        +--:(hmac-sha-512)
+   |     |  |        |  +--rw hmac-sha-512?             empty
+   |     |  |        +--:(clear-text) {clear-text}?
+   |     |  |        |  +--rw clear-text?               empty
+   |     |  |        +--:(replay-protection-only) {replay-protection-only}?
+   |     |  |           +--rw replay-protection-only?   empty
+   |     |  +--:(auth-tls) {tls}?
+   |     |     +--rw tls
    |     +--rw connect-timer?                uint32
    |     +--rw connect-max-retry?            uint32
    |     +--rw init-backoff-timer?           uint32
@@ -96,6 +105,9 @@ module: ietf-pcep
    |     |  +--rw state-timeout?          uint32
    |     |  +--rw redelegation-timeout?   uint32
    |     |  +--rw rpt-non-pcep-lsp?       boolean
+   |     +--rw of-list {objective-function}?
+   |     |  +--rw objective-function* [of]
+   |     |     +--rw of    objective-function
    |     +--rw peers
    |        +--rw peer* [addr]
    |           +--rw addr                inet:ip-address
@@ -110,19 +122,22 @@ module: ietf-pcep
    |           |  +--rw diverse?               boolean
    |           |  +--rw load-balance?          boolean
    |           |  +--rw synchronize?           boolean {svec}?
-   |           |  +--rw objective-function?    boolean {obj-fn}?
+   |           |  +--rw objective-function?    boolean {objective-function}?
    |           |  +--rw add-path-constraint?   boolean
    |           |  +--rw prioritization?        boolean
    |           |  +--rw multi-request?         boolean
    |           |  +--rw gco?                   boolean {gco}?
    |           |  +--rw p2mp?                  boolean {p2mp}?
    |           |  +--rw stateful {stateful}?
-   |           |  |  +--rw enabled?         boolean
-   |           |  |  +--rw active?          boolean
-   |           |  |  +--rw pce-initiated?   boolean {pce-initiated}?
+   |           |  |  +--rw enabled?                boolean
+   |           |  |  +--rw active?                 boolean
+   |           |  |  +--rw pce-initiated?          boolean {pce-initiated}?
+   |           |  |  +--rw include-db-ver?         boolean {stateful-sync-opt}?
+   |           |  |  +--rw trigger-resync?         boolean {stateful-sync-opt}?
+   |           |  |  +--rw trigger-initial-sync?   boolean {stateful-sync-opt}?
+   |           |  |  +--rw incremental-sync?       boolean {stateful-sync-opt}?
    |           |  +--rw sr {sr}?
    |           |     +--rw enabled?   boolean
-   |           |     +--rw msd?       uint8
    |           +--rw scope
    |           |  +--rw intra-area-scope?           boolean
    |           |  +--rw intra-area-pref?            uint8
@@ -140,34 +155,37 @@ module: ietf-pcep
    |           |     +--rw domain         domain
    |           +--rw delegation-pref?    uint8 {stateful}?
    |           +--rw (auth-type-selection)?
-   |              +--:(auth-key-chain)
-   |              |  +--rw key-chain?          key-chain:key-chain-ref
-   |              +--:(auth-key)
-   |              |  +--rw key?                string
-   |              |  +--rw crypto-algorithm
-   |              |     +--rw (algorithm)?
-   |              |        +--:(hmac-sha-1-12) {crypto-hmac-sha-1-12}?
-   |              |        |  +--rw hmac-sha1-12?             empty
-   |              |        +--:(aes-cmac-prf-128) {aes-cmac-prf-128}?
-   |              |        |  +--rw aes-cmac-prf-128?         empty
-   |              |        +--:(md5)
-   |              |        |  +--rw md5?                      empty
-   |              |        +--:(sha-1)
-   |              |        |  +--rw sha-1?                    empty
-   |              |        +--:(hmac-sha-1)
-   |              |        |  +--rw hmac-sha-1?               empty
-   |              |        +--:(hmac-sha-256)
-   |              |        |  +--rw hmac-sha-256?             empty
-   |              |        +--:(hmac-sha-384)
-   |              |        |  +--rw hmac-sha-384?             empty
-   |              |        +--:(hmac-sha-512)
-   |              |        |  +--rw hmac-sha-512?             empty
-   |              |        +--:(clear-text) {clear-text}?
-   |              |        |  +--rw clear-text?               empty
-   |              |        +--:(replay-protection-only) {replay-protection-only}?
-   |              |           +--rw replay-protection-only?   empty
-   |              +--:(auth-tls) {tls}?
-   |                 +--rw tls
+   |           |  +--:(auth-key-chain)
+   |           |  |  +--rw key-chain?          key-chain:key-chain-ref
+   |           |  +--:(auth-key)
+   |           |  |  +--rw key?                string
+   |           |  |  +--rw crypto-algorithm
+   |           |  |     +--rw (algorithm)?
+   |           |  |        +--:(hmac-sha-1-12) {crypto-hmac-sha-1-12}?
+   |           |  |        |  +--rw hmac-sha1-12?             empty
+   |           |  |        +--:(aes-cmac-prf-128) {aes-cmac-prf-128}?
+   |           |  |        |  +--rw aes-cmac-prf-128?         empty
+   |           |  |        +--:(md5)
+   |           |  |        |  +--rw md5?                      empty
+   |           |  |        +--:(sha-1)
+   |           |  |        |  +--rw sha-1?                    empty
+   |           |  |        +--:(hmac-sha-1)
+   |           |  |        |  +--rw hmac-sha-1?               empty
+   |           |  |        +--:(hmac-sha-256)
+   |           |  |        |  +--rw hmac-sha-256?             empty
+   |           |  |        +--:(hmac-sha-384)
+   |           |  |        |  +--rw hmac-sha-384?             empty
+   |           |  |        +--:(hmac-sha-512)
+   |           |  |        |  +--rw hmac-sha-512?             empty
+   |           |  |        +--:(clear-text) {clear-text}?
+   |           |  |        |  +--rw clear-text?               empty
+   |           |  |        +--:(replay-protection-only) {replay-protection-only}?
+   |           |  |           +--rw replay-protection-only?   empty
+   |           |  +--:(auth-tls) {tls}?
+   |           |     +--rw tls
+   |           +--rw of-list {objective-function}?
+   |              +--rw objective-function* [of]
+   |                 +--rw of    objective-function
    +--ro pcep-state
       +--ro entity
          +--ro addr?                   inet:ip-address
@@ -175,6 +193,8 @@ module: ietf-pcep
          +--ro admin-status?           pcep-admin-status
          +--ro oper-status?            pcep-admin-status
          +--ro role?                   pcep-role
+         +--ro description?            string
+         +--ro speaker-entity-id?      string {stateful-sync-opt}?
          +--ro domain
          |  +--ro domain* [domain-type domain]
          |     +--ro domain-type    domain-type
@@ -185,19 +205,22 @@ module: ietf-pcep
          |  +--ro diverse?               boolean
          |  +--ro load-balance?          boolean
          |  +--ro synchronize?           boolean {svec}?
-         |  +--ro objective-function?    boolean {obj-fn}?
+         |  +--ro objective-function?    boolean {objective-function}?
          |  +--ro add-path-constraint?   boolean
          |  +--ro prioritization?        boolean
          |  +--ro multi-request?         boolean
          |  +--ro gco?                   boolean {gco}?
          |  +--ro p2mp?                  boolean {p2mp}?
          |  +--ro stateful {stateful}?
-         |  |  +--ro enabled?         boolean
-         |  |  +--ro active?          boolean
-         |  |  +--ro pce-initiated?   boolean {pce-initiated}?
+         |  |  +--ro enabled?                boolean
+         |  |  +--ro active?                 boolean
+         |  |  +--ro pce-initiated?          boolean {pce-initiated}?
+         |  |  +--ro include-db-ver?         boolean {stateful-sync-opt}?
+         |  |  +--ro trigger-resync?         boolean {stateful-sync-opt}?
+         |  |  +--ro trigger-initial-sync?   boolean {stateful-sync-opt}?
+         |  |  +--ro incremental-sync?       boolean {stateful-sync-opt}?
          |  +--ro sr {sr}?
          |     +--ro enabled?   boolean
-         |     +--ro msd?       uint8
          +--ro pce-info
          |  +--ro scope
          |  |  +--ro intra-area-scope?           boolean
@@ -214,35 +237,40 @@ module: ietf-pcep
          |  |  +--ro domain* [domain-type domain]
          |  |     +--ro domain-type    domain-type
          |  |     +--ro domain         domain
-         |  +--ro (auth-type-selection)?
-         |     +--:(auth-key-chain)
-         |     |  +--ro key-chain?          key-chain:key-chain-ref
-         |     +--:(auth-key)
-         |     |  +--ro key?                string
-         |     |  +--ro crypto-algorithm
-         |     |     +--ro (algorithm)?
-         |     |        +--:(hmac-sha-1-12) {crypto-hmac-sha-1-12}?
-         |     |        |  +--ro hmac-sha1-12?             empty
-         |     |        +--:(aes-cmac-prf-128) {aes-cmac-prf-128}?
-         |     |        |  +--ro aes-cmac-prf-128?         empty
-         |     |        +--:(md5)
-         |     |        |  +--ro md5?                      empty
-         |     |        +--:(sha-1)
-         |     |        |  +--ro sha-1?                    empty
-         |     |        +--:(hmac-sha-1)
-         |     |        |  +--ro hmac-sha-1?               empty
-         |     |        +--:(hmac-sha-256)
-         |     |        |  +--ro hmac-sha-256?             empty
-         |     |        +--:(hmac-sha-384)
-         |     |        |  +--ro hmac-sha-384?             empty
-         |     |        +--:(hmac-sha-512)
-         |     |        |  +--ro hmac-sha-512?             empty
-         |     |        +--:(clear-text) {clear-text}?
-         |     |        |  +--ro clear-text?               empty
-         |     |        +--:(replay-protection-only) {replay-protection-only}?
-         |     |           +--ro replay-protection-only?   empty
-         |     +--:(auth-tls) {tls}?
-         |        +--ro tls
+         |  +--ro path-key {path-key}?
+         |     +--ro enabled?         boolean
+         |     +--ro discard-timer?   uint32
+         |     +--ro reuse-time?      uint32
+         |     +--ro pce-id?          inet:ip-address
+         +--ro (auth-type-selection)?
+         |  +--:(auth-key-chain)
+         |  |  +--ro key-chain?              key-chain:key-chain-ref
+         |  +--:(auth-key)
+         |  |  +--ro key?                    string
+         |  |  +--ro crypto-algorithm
+         |  |     +--ro (algorithm)?
+         |  |        +--:(hmac-sha-1-12) {crypto-hmac-sha-1-12}?
+         |  |        |  +--ro hmac-sha1-12?             empty
+         |  |        +--:(aes-cmac-prf-128) {aes-cmac-prf-128}?
+         |  |        |  +--ro aes-cmac-prf-128?         empty
+         |  |        +--:(md5)
+         |  |        |  +--ro md5?                      empty
+         |  |        +--:(sha-1)
+         |  |        |  +--ro sha-1?                    empty
+         |  |        +--:(hmac-sha-1)
+         |  |        |  +--ro hmac-sha-1?               empty
+         |  |        +--:(hmac-sha-256)
+         |  |        |  +--ro hmac-sha-256?             empty
+         |  |        +--:(hmac-sha-384)
+         |  |        |  +--ro hmac-sha-384?             empty
+         |  |        +--:(hmac-sha-512)
+         |  |        |  +--ro hmac-sha-512?             empty
+         |  |        +--:(clear-text) {clear-text}?
+         |  |        |  +--ro clear-text?               empty
+         |  |        +--:(replay-protection-only) {replay-protection-only}?
+         |  |           +--ro replay-protection-only?   empty
+         |  +--:(auth-tls) {tls}?
+         |     +--ro tls
          +--ro connect-timer?          uint32
          +--ro connect-max-retry?      uint32
          +--ro init-backoff-timer?     uint32
@@ -266,6 +294,7 @@ module: ietf-pcep
          |  +--ro redelegation-timeout?   uint32
          |  +--ro rpt-non-pcep-lsp?       boolean
          +--ro lsp-db {stateful}?
+         |  +--ro db-ver?             uint64 {stateful-sync-opt}?
          |  +--ro association-list* [id source global-source extended-id]
          |  |  +--ro type?            assoc-type
          |  |  +--ro id               uint16
@@ -302,6 +331,39 @@ module: ietf-pcep
          |        +--ro source           -> /pcep-state/entity/lsp-db/association-list/source
          |        +--ro global-source    -> /pcep-state/entity/lsp-db/association-list/global-source
          |        +--ro extended-id      -> /pcep-state/entity/lsp-db/association-list/extended-id
+         +--ro path-keys {path-key}?
+         |  +--ro path-keys* [path-key]
+         |     +--ro path-key         uint16
+         |     +--ro cps
+         |     |  +--ro explicit-route-objects* [index]
+         |     |     +--ro index                   uint8
+         |     |     +--ro explicit-route-usage?   identityref
+         |     |     +--ro (type)?
+         |     |        +--:(ipv4-address)
+         |     |        |  +--ro v4-address?             inet:ipv4-address
+         |     |        |  +--ro v4-prefix-length?       uint8
+         |     |        |  +--ro v4-loose?               boolean
+         |     |        +--:(ipv6-address)
+         |     |        |  +--ro v6-address?             inet:ipv6-address
+         |     |        |  +--ro v6-prefix-length?       uint8
+         |     |        |  +--ro v6-loose?               boolean
+         |     |        +--:(as-number)
+         |     |        |  +--ro as-number?              uint16
+         |     |        +--:(unnumbered-link)
+         |     |        |  +--ro router-id?              inet:ip-address
+         |     |        |  +--ro interface-id?           uint32
+         |     |        +--:(label)
+         |     |           +--ro value?                  uint32
+         |     +--ro pcc-original?    -> /pcep-state/entity/peers/peer/addr
+         |     +--ro req-id?          uint32
+         |     +--ro retrieved?       boolean
+         |     +--ro pcc-retrieved?   -> /pcep-state/entity/peers/peer/addr
+         |     +--ro creation-time?   yang:timestamp
+         |     +--ro discard-time?    uint32
+         |     +--ro reuse-time?      uint32
+         +--ro of-list {objective-function}?
+         |  +--ro objective-function* [of]
+         |     +--ro of    objective-function
          +--ro peers
             +--ro peer* [addr]
                +--ro addr                    inet:ip-address
@@ -316,19 +378,22 @@ module: ietf-pcep
                |  +--ro diverse?               boolean
                |  +--ro load-balance?          boolean
                |  +--ro synchronize?           boolean {svec}?
-               |  +--ro objective-function?    boolean {obj-fn}?
+               |  +--ro objective-function?    boolean {objective-function}?
                |  +--ro add-path-constraint?   boolean
                |  +--ro prioritization?        boolean
                |  +--ro multi-request?         boolean
                |  +--ro gco?                   boolean {gco}?
                |  +--ro p2mp?                  boolean {p2mp}?
                |  +--ro stateful {stateful}?
-               |  |  +--ro enabled?         boolean
-               |  |  +--ro active?          boolean
-               |  |  +--ro pce-initiated?   boolean {pce-initiated}?
+               |  |  +--ro enabled?                boolean
+               |  |  +--ro active?                 boolean
+               |  |  +--ro pce-initiated?          boolean {pce-initiated}?
+               |  |  +--ro include-db-ver?         boolean {stateful-sync-opt}?
+               |  |  +--ro trigger-resync?         boolean {stateful-sync-opt}?
+               |  |  +--ro trigger-initial-sync?   boolean {stateful-sync-opt}?
+               |  |  +--ro incremental-sync?       boolean {stateful-sync-opt}?
                |  +--ro sr {sr}?
                |     +--ro enabled?   boolean
-               |     +--ro msd?       uint8
                +--ro pce-info
                |  +--ro scope
                |  |  +--ro intra-area-scope?           boolean
@@ -375,6 +440,9 @@ module: ietf-pcep
                |  |           +--ro replay-protection-only?   empty
                |  +--:(auth-tls) {tls}?
                |     +--ro tls
+               +--ro of-list {objective-function}?
+               |  +--ro objective-function* [of]
+               |     +--ro of    objective-function
                +--ro discontinuity-time?     yang:timestamp
                +--ro initiate-session?       boolean
                +--ro session-exists?         boolean
@@ -440,6 +508,11 @@ module: ietf-pcep
                |  |     +--ro num-initiate-sent?              yang:counter32
                |  |     +--ro num-initiate-rcvd?              yang:counter32
                |  |     +--ro num-initiate-rcvd-error-sent?   yang:counter32
+               |  +--ro path-key {path-key}?
+               |  |  +--ro num-unknown-path-key?      yang:counter32
+               |  |  +--ro num-exp-path-key?          yang:counter32
+               |  |  +--ro num-dup-path-key?          yang:counter32
+               |  |  +--ro num-path-key-no-attempt?   yang:counter32
                |  +--ro num-req-sent-closed?        yang:counter32
                |  +--ro num-req-rcvd-closed?        yang:counter32
                +--ro sessions
@@ -461,6 +534,11 @@ module: ietf-pcep
                      +--ro peer-overloaded?        boolean
                      +--ro peer-overload-time?     uint32
                      +--ro lspdb-sync?             sync-state {stateful}?
+                     +--ro recv-db-ver?            uint64 {stateful,stateful-sync-opt}?
+                     +--ro of-list {objective-function}?
+                     |  +--ro objective-function* [of]
+                     |     +--ro of    objective-function
+                     +--ro speaker-entity-id?      string {stateful-sync-opt}?
                      +--ro discontinuity-time?     yang:timestamp
                      +--ro pcep-stats
                         +--ro avg-rsp-time?               uint32
@@ -501,24 +579,29 @@ module: ietf-pcep
                         |  +--ro num-svec-rcvd?       yang:counter32
                         |  +--ro num-svec-req-rcvd?   yang:counter32
                         +--ro stateful {stateful}?
-                           +--ro num-pcrpt-sent?             yang:counter32
-                           +--ro num-pcrpt-rcvd?             yang:counter32
-                           +--ro num-pcupd-sent?             yang:counter32
-                           +--ro num-pcupd-rcvd?             yang:counter32
-                           +--ro num-rpt-sent?               yang:counter32
-                           +--ro num-rpt-rcvd?               yang:counter32
-                           +--ro num-rpt-rcvd-error-sent?    yang:counter32
-                           +--ro num-upd-sent?               yang:counter32
-                           +--ro num-upd-rcvd?               yang:counter32
-                           +--ro num-upd-rcvd-unknown?       yang:counter32
-                           +--ro num-upd-rcvd-undelegated?   yang:counter32
-                           +--ro num-upd-rcvd-error-sent?    yang:counter32
-                           +--ro initiation {pce-initiated}?
-                              +--ro num-pcinitiate-sent?            yang:counter32
-                              +--ro num-pcinitiate-rcvd?            yang:counter32
-                              +--ro num-initiate-sent?              yang:counter32
-                              +--ro num-initiate-rcvd?              yang:counter32
-                              +--ro num-initiate-rcvd-error-sent?   yang:counter32
+                        |  +--ro num-pcrpt-sent?             yang:counter32
+                        |  +--ro num-pcrpt-rcvd?             yang:counter32
+                        |  +--ro num-pcupd-sent?             yang:counter32
+                        |  +--ro num-pcupd-rcvd?             yang:counter32
+                        |  +--ro num-rpt-sent?               yang:counter32
+                        |  +--ro num-rpt-rcvd?               yang:counter32
+                        |  +--ro num-rpt-rcvd-error-sent?    yang:counter32
+                        |  +--ro num-upd-sent?               yang:counter32
+                        |  +--ro num-upd-rcvd?               yang:counter32
+                        |  +--ro num-upd-rcvd-unknown?       yang:counter32
+                        |  +--ro num-upd-rcvd-undelegated?   yang:counter32
+                        |  +--ro num-upd-rcvd-error-sent?    yang:counter32
+                        |  +--ro initiation {pce-initiated}?
+                        |     +--ro num-pcinitiate-sent?            yang:counter32
+                        |     +--ro num-pcinitiate-rcvd?            yang:counter32
+                        |     +--ro num-initiate-sent?              yang:counter32
+                        |     +--ro num-initiate-rcvd?              yang:counter32
+                        |     +--ro num-initiate-rcvd-error-sent?   yang:counter32
+                        +--ro path-key {path-key}?
+                           +--ro num-unknown-path-key?      yang:counter32
+                           +--ro num-exp-path-key?          yang:counter32
+                           +--ro num-dup-path-key?          yang:counter32
+                           +--ro num-path-key-no-attempt?   yang:counter32
 notifications:
    +---n pcep-session-up
    |  +--ro peer-addr?           -> /pcep-state/entity/peers/peer/addr
