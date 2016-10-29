@@ -5,16 +5,16 @@
 PCE Working Group                                          D. Dhody, Ed.
 Internet-Draft                                       Huawei Technologies
 Intended status: Standards Track                             J. Hardwick
-Expires: March 16, 2017                                       Metaswitch
+Expires: April 30, 2017                                       Metaswitch
                                                                V. Beeram
                                                         Juniper Networks
                                                              J. Tantsura
-                                                      September 12, 2016
+                                                        October 27, 2016
 
 
  A YANG Data Model for Path Computation Element Communications Protocol
                                  (PCEP)
-                      draft-ietf-pce-pcep-yang-00
+                      draft-ietf-pce-pcep-yang-01
 
 Abstract
 
@@ -40,7 +40,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 16, 2017.
+   This Internet-Draft will expire on April 30, 2017.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Dhody, et al.            Expires March 16, 2017                 [Page 1]
+Dhody, et al.            Expires April 30, 2017                 [Page 1]
 
-Internet-Draft                  PCE-YANG                  September 2016
+Internet-Draft                  PCE-YANG                    October 2016
 
 
    publication of this document.  Please review these documents
@@ -74,31 +74,31 @@ Table of Contents
      3.2.  Prefixes in Data Node Names . . . . . . . . . . . . . . .   5
    4.  Objectives  . . . . . . . . . . . . . . . . . . . . . . . . .   5
    5.  The Design of PCEP Data Model . . . . . . . . . . . . . . . .   6
-     5.1.  The Entity  . . . . . . . . . . . . . . . . . . . . . . .  17
-     5.2.  The Peer Lists  . . . . . . . . . . . . . . . . . . . . .  18
-     5.3.  The Session Lists . . . . . . . . . . . . . . . . . . . .  18
-     5.4.  Notifications . . . . . . . . . . . . . . . . . . . . . .  19
-   6.  Advanced PCE Features . . . . . . . . . . . . . . . . . . . .  19
-     6.1.  Stateful PCE's LSP-DB . . . . . . . . . . . . . . . . . .  19
-   7.  Open Issues and Next Step . . . . . . . . . . . . . . . . . .  20
-     7.1.  The PCE-Initiated LSP . . . . . . . . . . . . . . . . . .  20
-     7.2.  PCEP over TLS (PCEPS) . . . . . . . . . . . . . . . . . .  20
-   8.  PCEP YANG Module  . . . . . . . . . . . . . . . . . . . . . .  20
-   9.  Security Considerations . . . . . . . . . . . . . . . . . . .  83
-   10. Manageability Considerations  . . . . . . . . . . . . . . . .  84
-     10.1.  Control of Function and Policy . . . . . . . . . . . . .  84
-     10.2.  Information and Data Models  . . . . . . . . . . . . . .  84
-     10.3.  Liveness Detection and Monitoring  . . . . . . . . . . .  84
-     10.4.  Verify Correct Operations  . . . . . . . . . . . . . . .  84
-     10.5.  Requirements On Other Protocols  . . . . . . . . . . . .  84
-     10.6.  Impact On Network Operations . . . . . . . . . . . . . .  84
-   11. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  84
-   12. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  85
-   13. References  . . . . . . . . . . . . . . . . . . . . . . . . .  85
-     13.1.  Normative References . . . . . . . . . . . . . . . . . .  85
-     13.2.  Informative References . . . . . . . . . . . . . . . . .  86
-   Appendix A.  Contributor Addresses  . . . . . . . . . . . . . . .  88
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  89
+     5.1.  The Entity  . . . . . . . . . . . . . . . . . . . . . . .  19
+     5.2.  The Peer Lists  . . . . . . . . . . . . . . . . . . . . .  19
+     5.3.  The Session Lists . . . . . . . . . . . . . . . . . . . .  20
+     5.4.  Notifications . . . . . . . . . . . . . . . . . . . . . .  20
+   6.  Advanced PCE Features . . . . . . . . . . . . . . . . . . . .  20
+     6.1.  Stateful PCE's LSP-DB . . . . . . . . . . . . . . . . . .  21
+   7.  Open Issues and Next Step . . . . . . . . . . . . . . . . . .  21
+     7.1.  The PCE-Initiated LSP . . . . . . . . . . . . . . . . . .  21
+     7.2.  PCEP over TLS (PCEPS) . . . . . . . . . . . . . . . . . .  21
+   8.  PCEP YANG Module  . . . . . . . . . . . . . . . . . . . . . .  22
+   9.  Security Considerations . . . . . . . . . . . . . . . . . . .  94
+   10. Manageability Considerations  . . . . . . . . . . . . . . . .  94
+     10.1.  Control of Function and Policy . . . . . . . . . . . . .  94
+     10.2.  Information and Data Models  . . . . . . . . . . . . . .  94
+     10.3.  Liveness Detection and Monitoring  . . . . . . . . . . .  94
+     10.4.  Verify Correct Operations  . . . . . . . . . . . . . . .  94
+     10.5.  Requirements On Other Protocols  . . . . . . . . . . . .  94
+     10.6.  Impact On Network Operations . . . . . . . . . . . . . .  94
+   11. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  94
+   12. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  95
+   13. References  . . . . . . . . . . . . . . . . . . . . . . . . .  95
+     13.1.  Normative References . . . . . . . . . . . . . . . . . .  95
+     13.2.  Informative References . . . . . . . . . . . . . . . . .  96
+   Appendix A.  Contributor Addresses  . . . . . . . . . . . . . . .  98
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  99
 
 1.  Introduction
 
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Dhody, et al.            Expires March 16, 2017                 [Page 2]
+Dhody, et al.            Expires April 30, 2017                 [Page 2]
 
-Internet-Draft                  PCE-YANG                  September 2016
+Internet-Draft                  PCE-YANG                    October 2016
 
 
    Computation Client (PCC) may make requests to a PCE for paths to be
@@ -165,9 +165,9 @@ Internet-Draft                  PCE-YANG                  September 2016
 
 
 
-Dhody, et al.            Expires March 16, 2017                 [Page 3]
+Dhody, et al.            Expires April 30, 2017                 [Page 3]
 
-Internet-Draft                  PCE-YANG                  September 2016
+Internet-Draft                  PCE-YANG                    October 2016
 
 
    o  PCEP peer: to refer to a remote PCEP speaker.
@@ -199,10 +199,6 @@ Internet-Draft                  PCE-YANG                  September 2016
 
    o  Segment Routing (SR).
 
-   o  Segment Identifier (SID).
-
-   o  Maximum SID Depth (MSD).
-
 3.1.  Tree Diagrams
 
    A graphical representation of the complete data tree is presented in
@@ -211,29 +207,24 @@ Internet-Draft                  PCE-YANG                  September 2016
 
    o  Brackets "[" and "]" enclose list keys.
 
-   o  Curly braces "{" and "}" contain names of optional features that
-      make the corresponding node conditional.
-
    o  Abbreviations before data node names: "rw" means configuration
-      (read-write), and "ro" state data (read-only).
+      (read-write) and "ro" state data (read-only).
 
-
-
-
-
-Dhody, et al.            Expires March 16, 2017                 [Page 4]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
-   o  Symbols after data node names: "?" means an optional node and "*"
-      denotes a "list" or "leaf-list".
+   o  Symbols after data node names: "?" means an optional node, "!"
+      means a presence container, and "*" denotes a list and leaf-list.
 
    o  Parentheses enclose choice and case nodes, and case nodes are also
       marked with a colon (":").
 
    o  Ellipsis ("...") stands for contents of subtrees that are not
       shown.
+
+
+
+Dhody, et al.            Expires April 30, 2017                 [Page 4]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
 
 3.2.  Prefixes in Data Node Names
 
@@ -243,12 +234,15 @@ Internet-Draft                  PCE-YANG                  September 2016
    are prefixed using the standard prefix associated with the
    corresponding YANG module, as shown in Table 1.
 
-                 +--------+-----------------+-----------+
-                 | Prefix | YANG module     | Reference |
-                 +--------+-----------------+-----------+
-                 | yang   | ietf-yang-types | [RFC6991] |
-                 | inet   | ietf-inet-types | [RFC6991] |
-                 +--------+-----------------+-----------+
+     +-----------+-----------------+---------------------------------+
+     | Prefix    | YANG module     | Reference                       |
+     +-----------+-----------------+---------------------------------+
+     | yang      | ietf-yang-types | [RFC6991]                       |
+     | inet      | ietf-inet-types | [RFC6991]                       |
+     | te        | ietf-te         | [I-D.ietf-teas-yang-te]         |
+     | te-types  | ietf-te-types   | [I-D.ietf-teas-yang-te]         |
+     | key-chain | ietf-key-chain  | [I-D.ietf-rtgwg-yang-key-chain] |
+     +-----------+-----------------+---------------------------------+
 
              Table 1: Prefixes and corresponding YANG modules
 
@@ -273,17 +267,20 @@ Internet-Draft                  PCE-YANG                  September 2016
       messages with errors, and messages that could not be sent due to
       errors.
 
-
-
-
-
-Dhody, et al.            Expires March 16, 2017                 [Page 5]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
    o  It should be fairly straightforward to augment the base data model
       for advanced PCE features.
+
+
+
+
+
+
+
+
+Dhody, et al.            Expires April 30, 2017                 [Page 5]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
 
 5.  The Design of PCEP Data Model
 
@@ -297,6 +294,7 @@ module: ietf-pcep
    |     +--rw enabled?                      boolean
    |     +--rw role                          pcep-role
    |     +--rw description?                  string
+   |     +--rw speaker-entity-id?            string {stateful-sync-opt}?
    |     +--rw domain
    |     |  +--rw domain* [domain-type domain]
    |     |     +--rw domain-type    domain-type
@@ -307,19 +305,22 @@ module: ietf-pcep
    |     |  +--rw diverse?               boolean
    |     |  +--rw load-balance?          boolean
    |     |  +--rw synchronize?           boolean {svec}?
-   |     |  +--rw objective-function?    boolean {obj-fn}?
+   |     |  +--rw objective-function?    boolean {objective-function}?
    |     |  +--rw add-path-constraint?   boolean
    |     |  +--rw prioritization?        boolean
    |     |  +--rw multi-request?         boolean
    |     |  +--rw gco?                   boolean {gco}?
    |     |  +--rw p2mp?                  boolean {p2mp}?
    |     |  +--rw stateful {stateful}?
-   |     |  |  +--rw enabled?         boolean
-   |     |  |  +--rw active?          boolean
-   |     |  |  +--rw pce-initiated?   boolean {pce-initiated}?
+   |     |  |  +--rw enabled?                boolean
+   |     |  |  +--rw active?                 boolean
+   |     |  |  +--rw pce-initiated?          boolean {pce-initiated}?
+   |     |  |  +--rw include-db-ver?         boolean {stateful-sync-opt}?
+   |     |  |  +--rw trigger-resync?         boolean {stateful-sync-opt}?
+   |     |  |  +--rw trigger-initial-sync?   boolean {stateful-sync-opt}?
+   |     |  |  +--rw incremental-sync?       boolean {stateful-sync-opt}?
    |     |  +--rw sr {sr}?
    |     |     +--rw enabled?   boolean
-   |     |     +--rw msd?       uint8
    |     +--rw pce-info
    |     |  +--rw scope
    |     |  |  +--rw intra-area-scope?           boolean
@@ -329,50 +330,55 @@ module: ietf-pcep
    |     |  |  +--rw inter-area-pref?            uint8
    |     |  |  +--rw inter-as-scope?             boolean
    |     |  |  +--rw inter-as-scope-default?     boolean
-   |     |  |  +--rw inter-as-pref?              uint8
 
 
 
-Dhody, et al.            Expires March 16, 2017                 [Page 6]
+Dhody, et al.            Expires April 30, 2017                 [Page 6]
 
-Internet-Draft                  PCE-YANG                  September 2016
+Internet-Draft                  PCE-YANG                    October 2016
 
 
+   |     |  |  +--rw inter-as-pref?              uint8
    |     |  |  +--rw inter-layer-scope?          boolean
    |     |  |  +--rw inter-layer-pref?           uint8
    |     |  +--rw neigh-domains
    |     |  |  +--rw domain* [domain-type domain]
    |     |  |     +--rw domain-type    domain-type
    |     |  |     +--rw domain         domain
-   |     |  +--rw (auth-type-selection)?
-   |     |     +--:(auth-key-chain)
-   |     |     |  +--rw key-chain?          key-chain:key-chain-ref
-   |     |     +--:(auth-key)
-   |     |     |  +--rw key?                string
-   |     |     |  +--rw crypto-algorithm
-   |     |     |     +--rw (algorithm)?
-   |     |     |        +--:(hmac-sha-1-12) {crypto-hmac-sha-1-12}?
-   |     |     |        |  +--rw hmac-sha1-12?             empty
-   |     |     |        +--:(aes-cmac-prf-128) {aes-cmac-prf-128}?
-   |     |     |        |  +--rw aes-cmac-prf-128?         empty
-   |     |     |        +--:(md5)
-   |     |     |        |  +--rw md5?                      empty
-   |     |     |        +--:(sha-1)
-   |     |     |        |  +--rw sha-1?                    empty
-   |     |     |        +--:(hmac-sha-1)
-   |     |     |        |  +--rw hmac-sha-1?               empty
-   |     |     |        +--:(hmac-sha-256)
-   |     |     |        |  +--rw hmac-sha-256?             empty
-   |     |     |        +--:(hmac-sha-384)
-   |     |     |        |  +--rw hmac-sha-384?             empty
-   |     |     |        +--:(hmac-sha-512)
-   |     |     |        |  +--rw hmac-sha-512?             empty
-   |     |     |        +--:(clear-text) {clear-text}?
-   |     |     |        |  +--rw clear-text?               empty
-   |     |     |        +--:(replay-protection-only) {replay-protection-only}?
-   |     |     |           +--rw replay-protection-only?   empty
-   |     |     +--:(auth-tls) {tls}?
-   |     |        +--rw tls
+   |     |  +--rw path-key {path-key}?
+   |     |     +--rw enabled?         boolean
+   |     |     +--rw discard-timer?   uint32
+   |     |     +--rw reuse-time?      uint32
+   |     |     +--rw pce-id?          inet:ip-address
+   |     +--rw (auth-type-selection)?
+   |     |  +--:(auth-key-chain)
+   |     |  |  +--rw key-chain?                    key-chain:key-chain-ref
+   |     |  +--:(auth-key)
+   |     |  |  +--rw key?                          string
+   |     |  |  +--rw crypto-algorithm
+   |     |  |     +--rw (algorithm)?
+   |     |  |        +--:(hmac-sha-1-12) {crypto-hmac-sha-1-12}?
+   |     |  |        |  +--rw hmac-sha1-12?             empty
+   |     |  |        +--:(aes-cmac-prf-128) {aes-cmac-prf-128}?
+   |     |  |        |  +--rw aes-cmac-prf-128?         empty
+   |     |  |        +--:(md5)
+   |     |  |        |  +--rw md5?                      empty
+   |     |  |        +--:(sha-1)
+   |     |  |        |  +--rw sha-1?                    empty
+   |     |  |        +--:(hmac-sha-1)
+   |     |  |        |  +--rw hmac-sha-1?               empty
+   |     |  |        +--:(hmac-sha-256)
+   |     |  |        |  +--rw hmac-sha-256?             empty
+   |     |  |        +--:(hmac-sha-384)
+   |     |  |        |  +--rw hmac-sha-384?             empty
+   |     |  |        +--:(hmac-sha-512)
+   |     |  |        |  +--rw hmac-sha-512?             empty
+   |     |  |        +--:(clear-text) {clear-text}?
+   |     |  |        |  +--rw clear-text?               empty
+   |     |  |        +--:(replay-protection-only) {replay-protection-only}?
+   |     |  |           +--rw replay-protection-only?   empty
+   |     |  +--:(auth-tls) {tls}?
+   |     |     +--rw tls
    |     +--rw connect-timer?                uint32
    |     +--rw connect-max-retry?            uint32
    |     +--rw init-backoff-timer?           uint32
@@ -380,20 +386,20 @@ Internet-Draft                  PCE-YANG                  September 2016
    |     +--rw open-wait-timer?              uint32
    |     +--rw keep-wait-timer?              uint32
    |     +--rw keep-alive-timer?             uint32
+
+
+
+Dhody, et al.            Expires April 30, 2017                 [Page 7]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
    |     +--rw dead-timer?                   uint32
    |     +--rw allow-negotiation?            boolean
    |     +--rw max-keep-alive-timer?         uint32
    |     +--rw max-dead-timer?               uint32
    |     +--rw min-keep-alive-timer?         uint32
    |     +--rw min-dead-timer?               uint32
-
-
-
-Dhody, et al.            Expires March 16, 2017                 [Page 7]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
    |     +--rw sync-timer?                   uint32 {svec}?
    |     +--rw request-timer?                uint32
    |     +--rw max-sessions?                 uint32
@@ -404,6 +410,9 @@ Internet-Draft                  PCE-YANG                  September 2016
    |     |  +--rw state-timeout?          uint32
    |     |  +--rw redelegation-timeout?   uint32
    |     |  +--rw rpt-non-pcep-lsp?       boolean
+   |     +--rw of-list {objective-function}?
+   |     |  +--rw objective-function* [of]
+   |     |     +--rw of    objective-function
    |     +--rw peers
    |        +--rw peer* [addr]
    |           +--rw addr                inet:ip-address
@@ -418,19 +427,30 @@ Internet-Draft                  PCE-YANG                  September 2016
    |           |  +--rw diverse?               boolean
    |           |  +--rw load-balance?          boolean
    |           |  +--rw synchronize?           boolean {svec}?
-   |           |  +--rw objective-function?    boolean {obj-fn}?
+   |           |  +--rw objective-function?    boolean {objective-function}?
    |           |  +--rw add-path-constraint?   boolean
    |           |  +--rw prioritization?        boolean
    |           |  +--rw multi-request?         boolean
    |           |  +--rw gco?                   boolean {gco}?
    |           |  +--rw p2mp?                  boolean {p2mp}?
    |           |  +--rw stateful {stateful}?
-   |           |  |  +--rw enabled?         boolean
-   |           |  |  +--rw active?          boolean
-   |           |  |  +--rw pce-initiated?   boolean {pce-initiated}?
+   |           |  |  +--rw enabled?                boolean
+   |           |  |  +--rw active?                 boolean
+   |           |  |  +--rw pce-initiated?          boolean {pce-initiated}?
+   |           |  |  +--rw include-db-ver?         boolean {stateful-sync-opt}?
+   |           |  |  +--rw trigger-resync?         boolean {stateful-sync-opt}?
+   |           |  |  +--rw trigger-initial-sync?   boolean {stateful-sync-opt}?
+   |           |  |  +--rw incremental-sync?       boolean {stateful-sync-opt}?
    |           |  +--rw sr {sr}?
+
+
+
+Dhody, et al.            Expires April 30, 2017                 [Page 8]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
    |           |     +--rw enabled?   boolean
-   |           |     +--rw msd?       uint8
    |           +--rw scope
    |           |  +--rw intra-area-scope?           boolean
    |           |  +--rw intra-area-pref?            uint8
@@ -442,48 +462,51 @@ Internet-Draft                  PCE-YANG                  September 2016
    |           |  +--rw inter-as-pref?              uint8
    |           |  +--rw inter-layer-scope?          boolean
    |           |  +--rw inter-layer-pref?           uint8
-
-
-
-Dhody, et al.            Expires March 16, 2017                 [Page 8]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
    |           +--rw neigh-domains
    |           |  +--rw domain* [domain-type domain]
    |           |     +--rw domain-type    domain-type
    |           |     +--rw domain         domain
    |           +--rw delegation-pref?    uint8 {stateful}?
    |           +--rw (auth-type-selection)?
-   |              +--:(auth-key-chain)
-   |              |  +--rw key-chain?          key-chain:key-chain-ref
-   |              +--:(auth-key)
-   |              |  +--rw key?                string
-   |              |  +--rw crypto-algorithm
-   |              |     +--rw (algorithm)?
-   |              |        +--:(hmac-sha-1-12) {crypto-hmac-sha-1-12}?
-   |              |        |  +--rw hmac-sha1-12?             empty
-   |              |        +--:(aes-cmac-prf-128) {aes-cmac-prf-128}?
-   |              |        |  +--rw aes-cmac-prf-128?         empty
-   |              |        +--:(md5)
-   |              |        |  +--rw md5?                      empty
-   |              |        +--:(sha-1)
-   |              |        |  +--rw sha-1?                    empty
-   |              |        +--:(hmac-sha-1)
-   |              |        |  +--rw hmac-sha-1?               empty
-   |              |        +--:(hmac-sha-256)
-   |              |        |  +--rw hmac-sha-256?             empty
-   |              |        +--:(hmac-sha-384)
-   |              |        |  +--rw hmac-sha-384?             empty
-   |              |        +--:(hmac-sha-512)
-   |              |        |  +--rw hmac-sha-512?             empty
-   |              |        +--:(clear-text) {clear-text}?
-   |              |        |  +--rw clear-text?               empty
-   |              |        +--:(replay-protection-only) {replay-protection-only}?
-   |              |           +--rw replay-protection-only?   empty
-   |              +--:(auth-tls) {tls}?
-   |                 +--rw tls
+   |           |  +--:(auth-key-chain)
+   |           |  |  +--rw key-chain?          key-chain:key-chain-ref
+   |           |  +--:(auth-key)
+   |           |  |  +--rw key?                string
+   |           |  |  +--rw crypto-algorithm
+   |           |  |     +--rw (algorithm)?
+   |           |  |        +--:(hmac-sha-1-12) {crypto-hmac-sha-1-12}?
+   |           |  |        |  +--rw hmac-sha1-12?             empty
+   |           |  |        +--:(aes-cmac-prf-128) {aes-cmac-prf-128}?
+   |           |  |        |  +--rw aes-cmac-prf-128?         empty
+   |           |  |        +--:(md5)
+   |           |  |        |  +--rw md5?                      empty
+   |           |  |        +--:(sha-1)
+   |           |  |        |  +--rw sha-1?                    empty
+   |           |  |        +--:(hmac-sha-1)
+   |           |  |        |  +--rw hmac-sha-1?               empty
+   |           |  |        +--:(hmac-sha-256)
+   |           |  |        |  +--rw hmac-sha-256?             empty
+   |           |  |        +--:(hmac-sha-384)
+   |           |  |        |  +--rw hmac-sha-384?             empty
+   |           |  |        +--:(hmac-sha-512)
+   |           |  |        |  +--rw hmac-sha-512?             empty
+   |           |  |        +--:(clear-text) {clear-text}?
+   |           |  |        |  +--rw clear-text?               empty
+   |           |  |        +--:(replay-protection-only) {replay-protection-only}?
+   |           |  |           +--rw replay-protection-only?   empty
+   |           |  +--:(auth-tls) {tls}?
+   |           |     +--rw tls
+   |           +--rw of-list {objective-function}?
+   |              +--rw objective-function* [of]
+
+
+
+Dhody, et al.            Expires April 30, 2017                 [Page 9]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
+   |                 +--rw of    objective-function
    +--ro pcep-state
       +--ro entity
          +--ro addr?                   inet:ip-address
@@ -491,6 +514,8 @@ Internet-Draft                  PCE-YANG                  September 2016
          +--ro admin-status?           pcep-admin-status
          +--ro oper-status?            pcep-admin-status
          +--ro role?                   pcep-role
+         +--ro description?            string
+         +--ro speaker-entity-id?      string {stateful-sync-opt}?
          +--ro domain
          |  +--ro domain* [domain-type domain]
          |     +--ro domain-type    domain-type
@@ -498,30 +523,25 @@ Internet-Draft                  PCE-YANG                  September 2016
          +--ro capability
          |  +--ro gmpls?                 boolean {gmpls}?
          |  +--ro bi-dir?                boolean
-
-
-
-Dhody, et al.            Expires March 16, 2017                 [Page 9]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
          |  +--ro diverse?               boolean
          |  +--ro load-balance?          boolean
          |  +--ro synchronize?           boolean {svec}?
-         |  +--ro objective-function?    boolean {obj-fn}?
+         |  +--ro objective-function?    boolean {objective-function}?
          |  +--ro add-path-constraint?   boolean
          |  +--ro prioritization?        boolean
          |  +--ro multi-request?         boolean
          |  +--ro gco?                   boolean {gco}?
          |  +--ro p2mp?                  boolean {p2mp}?
          |  +--ro stateful {stateful}?
-         |  |  +--ro enabled?         boolean
-         |  |  +--ro active?          boolean
-         |  |  +--ro pce-initiated?   boolean {pce-initiated}?
+         |  |  +--ro enabled?                boolean
+         |  |  +--ro active?                 boolean
+         |  |  +--ro pce-initiated?          boolean {pce-initiated}?
+         |  |  +--ro include-db-ver?         boolean {stateful-sync-opt}?
+         |  |  +--ro trigger-resync?         boolean {stateful-sync-opt}?
+         |  |  +--ro trigger-initial-sync?   boolean {stateful-sync-opt}?
+         |  |  +--ro incremental-sync?       boolean {stateful-sync-opt}?
          |  +--ro sr {sr}?
          |     +--ro enabled?   boolean
-         |     +--ro msd?       uint8
          +--ro pce-info
          |  +--ro scope
          |  |  +--ro intra-area-scope?           boolean
@@ -534,47 +554,52 @@ Internet-Draft                  PCE-YANG                  September 2016
          |  |  +--ro inter-as-pref?              uint8
          |  |  +--ro inter-layer-scope?          boolean
          |  |  +--ro inter-layer-pref?           uint8
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 10]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
          |  +--ro neigh-domains
          |  |  +--ro domain* [domain-type domain]
          |  |     +--ro domain-type    domain-type
          |  |     +--ro domain         domain
-         |  +--ro (auth-type-selection)?
-         |     +--:(auth-key-chain)
-         |     |  +--ro key-chain?          key-chain:key-chain-ref
-         |     +--:(auth-key)
-         |     |  +--ro key?                string
-         |     |  +--ro crypto-algorithm
-         |     |     +--ro (algorithm)?
-         |     |        +--:(hmac-sha-1-12) {crypto-hmac-sha-1-12}?
-         |     |        |  +--ro hmac-sha1-12?             empty
-         |     |        +--:(aes-cmac-prf-128) {aes-cmac-prf-128}?
-         |     |        |  +--ro aes-cmac-prf-128?         empty
-         |     |        +--:(md5)
-         |     |        |  +--ro md5?                      empty
-         |     |        +--:(sha-1)
-         |     |        |  +--ro sha-1?                    empty
-         |     |        +--:(hmac-sha-1)
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 10]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
-         |     |        |  +--ro hmac-sha-1?               empty
-         |     |        +--:(hmac-sha-256)
-         |     |        |  +--ro hmac-sha-256?             empty
-         |     |        +--:(hmac-sha-384)
-         |     |        |  +--ro hmac-sha-384?             empty
-         |     |        +--:(hmac-sha-512)
-         |     |        |  +--ro hmac-sha-512?             empty
-         |     |        +--:(clear-text) {clear-text}?
-         |     |        |  +--ro clear-text?               empty
-         |     |        +--:(replay-protection-only) {replay-protection-only}?
-         |     |           +--ro replay-protection-only?   empty
-         |     +--:(auth-tls) {tls}?
-         |        +--ro tls
+         |  +--ro path-key {path-key}?
+         |     +--ro enabled?         boolean
+         |     +--ro discard-timer?   uint32
+         |     +--ro reuse-time?      uint32
+         |     +--ro pce-id?          inet:ip-address
+         +--ro (auth-type-selection)?
+         |  +--:(auth-key-chain)
+         |  |  +--ro key-chain?              key-chain:key-chain-ref
+         |  +--:(auth-key)
+         |  |  +--ro key?                    string
+         |  |  +--ro crypto-algorithm
+         |  |     +--ro (algorithm)?
+         |  |        +--:(hmac-sha-1-12) {crypto-hmac-sha-1-12}?
+         |  |        |  +--ro hmac-sha1-12?             empty
+         |  |        +--:(aes-cmac-prf-128) {aes-cmac-prf-128}?
+         |  |        |  +--ro aes-cmac-prf-128?         empty
+         |  |        +--:(md5)
+         |  |        |  +--ro md5?                      empty
+         |  |        +--:(sha-1)
+         |  |        |  +--ro sha-1?                    empty
+         |  |        +--:(hmac-sha-1)
+         |  |        |  +--ro hmac-sha-1?               empty
+         |  |        +--:(hmac-sha-256)
+         |  |        |  +--ro hmac-sha-256?             empty
+         |  |        +--:(hmac-sha-384)
+         |  |        |  +--ro hmac-sha-384?             empty
+         |  |        +--:(hmac-sha-512)
+         |  |        |  +--ro hmac-sha-512?             empty
+         |  |        +--:(clear-text) {clear-text}?
+         |  |        |  +--ro clear-text?               empty
+         |  |        +--:(replay-protection-only) {replay-protection-only}?
+         |  |           +--ro replay-protection-only?   empty
+         |  +--:(auth-tls) {tls}?
+         |     +--ro tls
          +--ro connect-timer?          uint32
          +--ro connect-max-retry?      uint32
          +--ro init-backoff-timer?     uint32
@@ -585,6 +610,14 @@ Internet-Draft                  PCE-YANG                  September 2016
          +--ro dead-timer?             uint32
          +--ro allow-negotiation?      boolean
          +--ro max-keep-alive-timer?   uint32
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 11]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
          +--ro max-dead-timer?         uint32
          +--ro min-keep-alive-timer?   uint32
          +--ro min-dead-timer?         uint32
@@ -598,6 +631,7 @@ Internet-Draft                  PCE-YANG                  September 2016
          |  +--ro redelegation-timeout?   uint32
          |  +--ro rpt-non-pcep-lsp?       boolean
          +--ro lsp-db {stateful}?
+         |  +--ro db-ver?             uint64 {stateful-sync-opt}?
          |  +--ro association-list* [id source global-source extended-id]
          |  |  +--ro type?            assoc-type
          |  |  +--ro id               uint16
@@ -610,14 +644,6 @@ Internet-Draft                  PCE-YANG                  September 2016
          |  +--ro lsp* [plsp-id pcc-id]
          |     +--ro plsp-id               uint32
          |     +--ro pcc-id                inet:ip-address
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 11]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
          |     +--ro lsp-ref
          |     |  +--ro source?               -> /te:te/lsps-state/lsp/source
          |     |  +--ro destination?          -> /te:te/lsps-state/lsp/destination
@@ -640,8 +666,49 @@ Internet-Draft                  PCE-YANG                  September 2016
          |     +--ro association-list* [id source global-source extended-id]
          |        +--ro id               -> /pcep-state/entity/lsp-db/association-list/id
          |        +--ro source           -> /pcep-state/entity/lsp-db/association-list/source
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 12]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
          |        +--ro global-source    -> /pcep-state/entity/lsp-db/association-list/global-source
          |        +--ro extended-id      -> /pcep-state/entity/lsp-db/association-list/extended-id
+         +--ro path-keys {path-key}?
+         |  +--ro path-keys* [path-key]
+         |     +--ro path-key         uint16
+         |     +--ro cps
+         |     |  +--ro explicit-route-objects* [index]
+         |     |     +--ro index                   uint8
+         |     |     +--ro explicit-route-usage?   identityref
+         |     |     +--ro (type)?
+         |     |        +--:(ipv4-address)
+         |     |        |  +--ro v4-address?             inet:ipv4-address
+         |     |        |  +--ro v4-prefix-length?       uint8
+         |     |        |  +--ro v4-loose?               boolean
+         |     |        +--:(ipv6-address)
+         |     |        |  +--ro v6-address?             inet:ipv6-address
+         |     |        |  +--ro v6-prefix-length?       uint8
+         |     |        |  +--ro v6-loose?               boolean
+         |     |        +--:(as-number)
+         |     |        |  +--ro as-number?              uint16
+         |     |        +--:(unnumbered-link)
+         |     |        |  +--ro router-id?              inet:ip-address
+         |     |        |  +--ro interface-id?           uint32
+         |     |        +--:(label)
+         |     |           +--ro value?                  uint32
+         |     +--ro pcc-original?    -> /pcep-state/entity/peers/peer/addr
+         |     +--ro req-id?          uint32
+         |     +--ro retrieved?       boolean
+         |     +--ro pcc-retrieved?   -> /pcep-state/entity/peers/peer/addr
+         |     +--ro creation-time?   yang:timestamp
+         |     +--ro discard-time?    uint32
+         |     +--ro reuse-time?      uint32
+         +--ro of-list {objective-function}?
+         |  +--ro objective-function* [of]
+         |     +--ro of    objective-function
          +--ro peers
             +--ro peer* [addr]
                +--ro addr                    inet:ip-address
@@ -655,28 +722,31 @@ Internet-Draft                  PCE-YANG                  September 2016
                |  +--ro bi-dir?                boolean
                |  +--ro diverse?               boolean
                |  +--ro load-balance?          boolean
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 13]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                |  +--ro synchronize?           boolean {svec}?
-               |  +--ro objective-function?    boolean {obj-fn}?
+               |  +--ro objective-function?    boolean {objective-function}?
                |  +--ro add-path-constraint?   boolean
                |  +--ro prioritization?        boolean
                |  +--ro multi-request?         boolean
                |  +--ro gco?                   boolean {gco}?
                |  +--ro p2mp?                  boolean {p2mp}?
                |  +--ro stateful {stateful}?
-               |  |  +--ro enabled?         boolean
-               |  |  +--ro active?          boolean
-               |  |  +--ro pce-initiated?   boolean {pce-initiated}?
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 12]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
+               |  |  +--ro enabled?                boolean
+               |  |  +--ro active?                 boolean
+               |  |  +--ro pce-initiated?          boolean {pce-initiated}?
+               |  |  +--ro include-db-ver?         boolean {stateful-sync-opt}?
+               |  |  +--ro trigger-resync?         boolean {stateful-sync-opt}?
+               |  |  +--ro trigger-initial-sync?   boolean {stateful-sync-opt}?
+               |  |  +--ro incremental-sync?       boolean {stateful-sync-opt}?
                |  +--ro sr {sr}?
                |     +--ro enabled?   boolean
-               |     +--ro msd?       uint8
                +--ro pce-info
                |  +--ro scope
                |  |  +--ro intra-area-scope?           boolean
@@ -708,6 +778,14 @@ Internet-Draft                  PCE-YANG                  September 2016
                |  |        +--:(md5)
                |  |        |  +--ro md5?                      empty
                |  |        +--:(sha-1)
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 14]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                |  |        |  +--ro sha-1?                    empty
                |  |        +--:(hmac-sha-1)
                |  |        |  +--ro hmac-sha-1?               empty
@@ -722,15 +800,10 @@ Internet-Draft                  PCE-YANG                  September 2016
                |  |        +--:(replay-protection-only) {replay-protection-only}?
                |  |           +--ro replay-protection-only?   empty
                |  +--:(auth-tls) {tls}?
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 13]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                |     +--ro tls
+               +--ro of-list {objective-function}?
+               |  +--ro objective-function* [of]
+               |     +--ro of    objective-function
                +--ro discontinuity-time?     yang:timestamp
                +--ro initiate-session?       boolean
                +--ro session-exists?         boolean
@@ -761,6 +834,14 @@ Internet-Draft                  PCE-YANG                  September 2016
                |  +--ro num-req-sent-nopath-rcvd?   yang:counter32
                |  +--ro num-req-sent-cancel-rcvd?   yang:counter32
                |  +--ro num-req-sent-error-rcvd?    yang:counter32
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 15]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                |  +--ro num-req-sent-timeout?       yang:counter32
                |  +--ro num-req-sent-cancel-sent?   yang:counter32
                |  +--ro num-req-rcvd?               yang:counter32
@@ -778,14 +859,6 @@ Internet-Draft                  PCE-YANG                  September 2016
                |  |  +--ro num-svec-rcvd?       yang:counter32
                |  |  +--ro num-svec-req-rcvd?   yang:counter32
                |  +--ro stateful {stateful}?
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 14]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                |  |  +--ro num-pcrpt-sent?             yang:counter32
                |  |  +--ro num-pcrpt-rcvd?             yang:counter32
                |  |  +--ro num-pcupd-sent?             yang:counter32
@@ -804,6 +877,11 @@ Internet-Draft                  PCE-YANG                  September 2016
                |  |     +--ro num-initiate-sent?              yang:counter32
                |  |     +--ro num-initiate-rcvd?              yang:counter32
                |  |     +--ro num-initiate-rcvd-error-sent?   yang:counter32
+               |  +--ro path-key {path-key}?
+               |  |  +--ro num-unknown-path-key?      yang:counter32
+               |  |  +--ro num-exp-path-key?          yang:counter32
+               |  |  +--ro num-dup-path-key?          yang:counter32
+               |  |  +--ro num-path-key-no-attempt?   yang:counter32
                |  +--ro num-req-sent-closed?        yang:counter32
                |  +--ro num-req-rcvd-closed?        yang:counter32
                +--ro sessions
@@ -812,6 +890,14 @@ Internet-Draft                  PCE-YANG                  September 2016
                      +--ro state-last-change?      yang:timestamp
                      +--ro state?                  pcep-sess-state
                      +--ro session-creation?       yang:timestamp
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 16]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                      +--ro connect-retry?          yang:counter32
                      +--ro local-id?               uint32
                      +--ro remote-id?              uint32
@@ -825,6 +911,11 @@ Internet-Draft                  PCE-YANG                  September 2016
                      +--ro peer-overloaded?        boolean
                      +--ro peer-overload-time?     uint32
                      +--ro lspdb-sync?             sync-state {stateful}?
+                     +--ro recv-db-ver?            uint64 {stateful,stateful-sync-opt}?
+                     +--ro of-list {objective-function}?
+                     |  +--ro objective-function* [of]
+                     |     +--ro of    objective-function
+                     +--ro speaker-entity-id?      string {stateful-sync-opt}?
                      +--ro discontinuity-time?     yang:timestamp
                      +--ro pcep-stats
                         +--ro avg-rsp-time?               uint32
@@ -834,14 +925,6 @@ Internet-Draft                  PCE-YANG                  September 2016
                         +--ro num-pcreq-rcvd?             yang:counter32
                         +--ro num-pcrep-sent?             yang:counter32
                         +--ro num-pcrep-rcvd?             yang:counter32
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 15]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                         +--ro num-pcerr-sent?             yang:counter32
                         +--ro num-pcerr-rcvd?             yang:counter32
                         +--ro num-pcntf-sent?             yang:counter32
@@ -863,6 +946,14 @@ Internet-Draft                  PCE-YANG                  September 2016
                         +--ro num-req-rcvd-ero-sent?      yang:counter32
                         +--ro num-req-rcvd-nopath-sent?   yang:counter32
                         +--ro num-req-rcvd-cancel-sent?   yang:counter32
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 17]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                         +--ro num-req-rcvd-error-sent?    yang:counter32
                         +--ro num-req-rcvd-cancel-rcvd?   yang:counter32
                         +--ro num-rep-rcvd-unknown?       yang:counter32
@@ -873,32 +964,29 @@ Internet-Draft                  PCE-YANG                  September 2016
                         |  +--ro num-svec-rcvd?       yang:counter32
                         |  +--ro num-svec-req-rcvd?   yang:counter32
                         +--ro stateful {stateful}?
-                           +--ro num-pcrpt-sent?             yang:counter32
-                           +--ro num-pcrpt-rcvd?             yang:counter32
-                           +--ro num-pcupd-sent?             yang:counter32
-                           +--ro num-pcupd-rcvd?             yang:counter32
-                           +--ro num-rpt-sent?               yang:counter32
-                           +--ro num-rpt-rcvd?               yang:counter32
-                           +--ro num-rpt-rcvd-error-sent?    yang:counter32
-                           +--ro num-upd-sent?               yang:counter32
-                           +--ro num-upd-rcvd?               yang:counter32
-                           +--ro num-upd-rcvd-unknown?       yang:counter32
-                           +--ro num-upd-rcvd-undelegated?   yang:counter32
-                           +--ro num-upd-rcvd-error-sent?    yang:counter32
-                           +--ro initiation {pce-initiated}?
-                              +--ro num-pcinitiate-sent?            yang:counter32
-                              +--ro num-pcinitiate-rcvd?            yang:counter32
-                              +--ro num-initiate-sent?              yang:counter32
-                              +--ro num-initiate-rcvd?              yang:counter32
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 16]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
-                              +--ro num-initiate-rcvd-error-sent?   yang:counter32
+                        |  +--ro num-pcrpt-sent?             yang:counter32
+                        |  +--ro num-pcrpt-rcvd?             yang:counter32
+                        |  +--ro num-pcupd-sent?             yang:counter32
+                        |  +--ro num-pcupd-rcvd?             yang:counter32
+                        |  +--ro num-rpt-sent?               yang:counter32
+                        |  +--ro num-rpt-rcvd?               yang:counter32
+                        |  +--ro num-rpt-rcvd-error-sent?    yang:counter32
+                        |  +--ro num-upd-sent?               yang:counter32
+                        |  +--ro num-upd-rcvd?               yang:counter32
+                        |  +--ro num-upd-rcvd-unknown?       yang:counter32
+                        |  +--ro num-upd-rcvd-undelegated?   yang:counter32
+                        |  +--ro num-upd-rcvd-error-sent?    yang:counter32
+                        |  +--ro initiation {pce-initiated}?
+                        |     +--ro num-pcinitiate-sent?            yang:counter32
+                        |     +--ro num-pcinitiate-rcvd?            yang:counter32
+                        |     +--ro num-initiate-sent?              yang:counter32
+                        |     +--ro num-initiate-rcvd?              yang:counter32
+                        |     +--ro num-initiate-rcvd-error-sent?   yang:counter32
+                        +--ro path-key {path-key}?
+                           +--ro num-unknown-path-key?      yang:counter32
+                           +--ro num-exp-path-key?          yang:counter32
+                           +--ro num-dup-path-key?          yang:counter32
+                           +--ro num-path-key-no-attempt?   yang:counter32
 notifications:
    +---n pcep-session-up
    |  +--ro peer-addr?           -> /pcep-state/entity/peers/peer/addr
@@ -914,6 +1002,14 @@ notifications:
    |  +--ro peer-addr?           -> /pcep-state/entity/peers/peer/addr
    |  +--ro session-initiator?   -> /pcep-state/entity/peers/peer/sessions/session/initiator
    |  +--ro overloaded?          boolean
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 18]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
    |  +--ro overload-time?       uint32
    +---n pcep-session-local-overload-clear
    |  +--ro peer-addr?    -> /pcep-state/entity/peers/peer/addr
@@ -942,18 +1038,6 @@ notifications:
    leaf MUST contain the value of the corresponding pcePcepEntityIndex
    and only one entity is assumed.
 
-
-
-
-
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 17]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
 5.2.  The Peer Lists
 
    The peer list contains peer(s) that the local PCEP entity knows
@@ -974,6 +1058,13 @@ Internet-Draft                  PCE-YANG                  September 2016
    The data model for PCEP peer presented in this document uses a flat
    list of peers.  Each peer in the list is identified by its IP address
    (addr-type, addr).
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 19]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
 
    There is one list for static peer configuration ("/pcep/entity/
    peers"), and a separate list for the operational state of all peers
@@ -1001,15 +1092,6 @@ Internet-Draft                  PCE-YANG                  September 2016
 
    The data model for PCEP session presented in this document uses a
    flat list of sessions.  Each session in the list is identified by its
-
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 18]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
    initiator.  This index allows two sessions to exist transiently for a
    given peer, as discussed above.
 
@@ -1032,6 +1114,13 @@ Internet-Draft                  PCE-YANG                  September 2016
    o  Capability and Scope
 
    o  Domain information (local/neighbour)
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 20]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
 
    o  Path-Key
 
@@ -1059,13 +1148,6 @@ Internet-Draft                  PCE-YANG                  September 2016
    the list of LSP state are maintained in LSP-DB.  The key is the PLSP-
    ID and the PCC IP address.
 
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 19]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
    The PCEP data model contains the operational state of LSPs (/pcep-
    state/entity/lsp-db/lsp/) with PCEP specific attributes.  The generic
    TE attributes of the LSP are defined in [I-D.ietf-teas-yang-te].  A
@@ -1088,6 +1170,14 @@ Internet-Draft                  PCE-YANG                  September 2016
    A future version of this document would add TLS related
    configurations.
 
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 21]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
 8.  PCEP YANG Module
 
    RFC Ed.: In this section, replace all occurrences of 'XXXX' with the
@@ -1095,7 +1185,7 @@ Internet-Draft                  PCE-YANG                  September 2016
    the date of RFC publication (and remove this note).
 
 
-<CODE BEGINS> file "ietf-pcep@2016-07-07.yang"
+<CODE BEGINS> file "ietf-pcep@2016-10-27.yang"
 module ietf-pcep {
     namespace "urn:ietf:params:xml:ns:yang:ietf-pcep";
     prefix pcep;
@@ -1112,16 +1202,12 @@ module ietf-pcep {
         prefix "te";
     }
 
+    import ietf-te-types {
+       prefix "te-types";
+    }
+
     import ietf-key-chain {
        prefix "key-chain";
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 20]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
     }
 
 
@@ -1140,13 +1226,21 @@ Internet-Draft                  PCE-YANG                  September 2016
          Editor:   Dhruv Dhody
                    <mailto:dhruv.ietf@gmail.com>";
 
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 22]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
     description
         "The YANG module defines a generic configuration and
          operational model for PCEP common across all of the
          vendor implementations.";
 
 
-    revision 2016-07-07 {
+    revision 2016-10-27 {
         description "Initial revision.";
         reference
             "RFC XXXX:  A YANG Data Model for Path Computation
@@ -1170,14 +1264,6 @@ Internet-Draft                  PCE-YANG                  September 2016
             enum unknown {
                 value "0";
                 description
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 21]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                 "An unknown role";
             }
             enum pcc {
@@ -1196,6 +1282,14 @@ Internet-Draft                  PCE-YANG                  September 2016
                 "The role of both Path Computation Client and
                  Path Computation Element";
             }
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 23]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
         }
 
         description
@@ -1226,14 +1320,6 @@ Internet-Draft                  PCE-YANG                  September 2016
         }
 
         description
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 22]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
         "The Admin Status of the PCEP entity.
          Takes one of the following values
              - admin-status-up(1): Admin Status is Up.
@@ -1252,6 +1338,14 @@ Internet-Draft                  PCE-YANG                  September 2016
                 description
                 "The PCEP entity is inactive";
             }
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 24]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
             enum oper-status-going-up {
                 value "3";
                 description
@@ -1282,14 +1376,6 @@ Internet-Draft                  PCE-YANG                  September 2016
              - oper-status-down(2): Inactive
              - oper-status-going-up(3): Activating
              - oper-status-going-down(4): Deactivating
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 23]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
              - oper-status-failed(5): Failed
              - oper-status-failed-perm(6): Failed Permanantly";
     }
@@ -1308,6 +1394,14 @@ Internet-Draft                  PCE-YANG                  September 2016
                 "The remote PCEP peer initiated the session";
             }
         }
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 25]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
         description
         "The initiator of the session, that is, whether the TCP
          connection was initiated by the local PCEP entity or
@@ -1338,14 +1432,6 @@ Internet-Draft                  PCE-YANG                  September 2016
             }
 
             enum session-up {
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 24]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                 value "4";
                 description
                     "The session-up state of PCEP session.";
@@ -1364,6 +1450,14 @@ Internet-Draft                  PCE-YANG                  September 2016
 
     typedef domain-type {
         type enumeration {
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 26]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
             enum ospf-area {
                 value "1";
                 description
@@ -1394,14 +1488,6 @@ Internet-Draft                  PCE-YANG                  September 2016
     }
 
     typedef domain-isis-area {
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 25]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
         type string {
             pattern '[0-9A-Fa-f]{2}\.([0-9A-Fa-f]{4}\.){0,3}';
         }
@@ -1420,6 +1506,14 @@ Internet-Draft                  PCE-YANG                  September 2016
         type union {
             type domain-ospf-area;
             type domain-isis-area;
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 27]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
             type domain-as;
         }
         description
@@ -1450,14 +1544,6 @@ Internet-Draft                  PCE-YANG                  September 2016
                      being released.";
             }
             enum going-up {
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 26]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                 value "4";
                 description
                     "LSP is being signalled.";
@@ -1476,6 +1562,14 @@ Internet-Draft                  PCE-YANG                  September 2016
             }
             enum unknown {
                 value "1";
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 28]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                 description
                     "Unknown reason.";
             }
@@ -1506,14 +1600,6 @@ Internet-Draft                  PCE-YANG                  September 2016
             }
             enum preempted {
                 value "7";
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 27]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                 description
                     "LSP preempted.";
             }
@@ -1532,6 +1618,14 @@ Internet-Draft                  PCE-YANG                  September 2016
             enum pending {
                 value "0";
                 description
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 29]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                     "The state synchronization
                      has not started.";
             }
@@ -1552,30 +1646,22 @@ Internet-Draft                  PCE-YANG                  September 2016
             "The LSP-DB state synchronization operational status.";
     }
 
-        typedef pst{
-                type enumeration{
-                        enum rsvp-te{
-                                value "0";
-                                description
-                                        "RSVP-TE signaling protocol";
-                        }
-                        enum sr{
-                                value "1";
-                                description
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 28]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
-                                        "Segment Routing Traffic Engineering";
-                        }
-                }
+    typedef pst{
+        type enumeration{
+            enum rsvp-te{
+                value "0";
                 description
-                        "The Path Setup Type";
+                    "RSVP-TE signaling protocol";
+            }
+            enum sr{
+                value "1";
+                description
+                    "Segment Routing Traffic Engineering";
+            }
         }
+        description
+            "The Path Setup Type";
+    }
 
     typedef assoc-type{
         type enumeration{
@@ -1587,6 +1673,84 @@ Internet-Draft                  PCE-YANG                  September 2016
         }
         description
             "The PCEP Association Type";
+    }
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 30]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
+    typedef objective-function{
+        type enumeration{
+            enum mcp{
+                value "1";
+                description
+                    "Minimum Cost Path (MCP)";
+            }
+            enum mlp{
+                value "2";
+                description
+                    "Minimum Load Path (MLP)";
+            }
+            enum mbp{
+                value "3";
+                description
+                    "Maximum residual Bandwidth Path (MBP)";
+            }
+            enum mbc{
+                value "4";
+                description
+                    "Minimize aggregate Bandwidth Consumption (MBC)";
+            }
+            enum mll{
+                value "5";
+                description
+                    "Minimize the Load of the most loaded Link (MLL)";
+            }
+            enum mcc{
+                value "6";
+                description
+                    "Minimize the Cumulative Cost of a set of paths
+                    (MCC)";
+            }
+            enum spt{
+                value "7";
+                description
+                    "Shortest Path Tree (SPT)";
+            }
+            enum mct{
+                value "8";
+                description
+                    "Minimum Cost Tree (MCT)";
+            }
+            enum mplp{
+                value "9";
+                description
+                    "Minimum Packet Loss Path (MPLP)";
+            }
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 31]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
+            enum mup{
+                value "10";
+                description
+                    "Maximum Under-Utilized Path (MUP)";
+            }
+            enum mrup{
+                value "11";
+                description
+                    "Maximum Reserved Under-Utilized Path (MRUP)";
+            }
+        }
+        description
+            "The PCEP Objective functions";
     }
 
     /*
@@ -1603,7 +1767,7 @@ Internet-Draft                  PCE-YANG                  September 2016
             "Support GMPLS.";
     }
 
-    feature obj-fn {
+    feature objective-function {
         description
             "Support OF as per RFC 5541.";
     }
@@ -1613,27 +1777,31 @@ Internet-Draft                  PCE-YANG                  September 2016
             "Support GCO as per RFC 5557.";
     }
 
-    feature pathkey {
+    feature path-key {
         description
-            "Support pathkey as per RFC 5520.";
+            "Support path-key as per RFC 5520.";
     }
-
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 29]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
 
     feature p2mp {
         description
             "Support P2MP as per RFC 6006.";
     }
 
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 32]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
     feature stateful {
         description
             "Support stateful PCE.";
+    }
+
+    feature stateful-sync-opt {
+        description
+            "Support stateful sync optimization";
     }
 
     feature pce-initiated {
@@ -1648,7 +1816,7 @@ Internet-Draft                  PCE-YANG                  September 2016
 
     feature sr {
         description
-            "Support Segement Routing for PCE.";
+            "Support Segment Routing for PCE.";
     }
 
     /*
@@ -1677,9 +1845,9 @@ Internet-Draft                  PCE-YANG                  September 2016
 
 
 
-Dhody, et al.            Expires March 16, 2017                [Page 30]
+Dhody, et al.            Expires April 30, 2017                [Page 33]
 
-Internet-Draft                  PCE-YANG                  September 2016
+Internet-Draft                  PCE-YANG                    October 2016
 
 
         }
@@ -1733,9 +1901,9 @@ Internet-Draft                  PCE-YANG                  September 2016
 
 
 
-Dhody, et al.            Expires March 16, 2017                [Page 31]
+Dhody, et al.            Expires April 30, 2017                [Page 34]
 
-Internet-Draft                  PCE-YANG                  September 2016
+Internet-Draft                  PCE-YANG                    October 2016
 
 
                "The time in seconds that the PCEP entity will wait
@@ -1789,9 +1957,9 @@ Internet-Draft                  PCE-YANG                  September 2016
 
 
 
-Dhody, et al.            Expires March 16, 2017                [Page 32]
+Dhody, et al.            Expires April 30, 2017                [Page 35]
 
-Internet-Draft                  PCE-YANG                  September 2016
+Internet-Draft                  PCE-YANG                    October 2016
 
 
             reference
@@ -1804,7 +1972,7 @@ Internet-Draft                  PCE-YANG                  September 2016
                 range "0..255";
             }
             units "seconds";
-            must ". >= ../keep-alive-timer" {
+            must "(. > ../keep-alive-timer)" {
                 error-message "The dead timer must be "
                        + "larger than the keep alive timer";
                 description
@@ -1845,9 +2013,9 @@ Internet-Draft                  PCE-YANG                  September 2016
 
 
 
-Dhody, et al.            Expires March 16, 2017                [Page 33]
+Dhody, et al.            Expires April 30, 2017                [Page 36]
 
-Internet-Draft                  PCE-YANG                  September 2016
+Internet-Draft                  PCE-YANG                    October 2016
 
 
                  entity will allow no Keepalive transmission at
@@ -1901,9 +2069,9 @@ Internet-Draft                  PCE-YANG                  September 2016
 
 
 
-Dhody, et al.            Expires March 16, 2017                [Page 34]
+Dhody, et al.            Expires April 30, 2017                [Page 37]
 
-Internet-Draft                  PCE-YANG                  September 2016
+Internet-Draft                  PCE-YANG                    October 2016
 
 
             units "seconds";
@@ -1918,7 +2086,7 @@ Internet-Draft                  PCE-YANG                  September 2016
                  the SyncTimer all the M path computation requests
                  have not been, received a protocol error is
                  triggered and the PCE MUST cancel the whole set
-                 of path computation  requests.
+                 of path computation requests.
                  The aim of the SyncTimer is to avoid the storage
                  of unused synchronized requests should one of
                  them get lost for some reasons (for example, a
@@ -1957,9 +2125,9 @@ Internet-Draft                  PCE-YANG                  September 2016
 
 
 
-Dhody, et al.            Expires March 16, 2017                [Page 35]
+Dhody, et al.            Expires April 30, 2017                [Page 38]
 
-Internet-Draft                  PCE-YANG                  September 2016
+Internet-Draft                  PCE-YANG                    October 2016
 
 
                willing to accept per minute before terminating
@@ -1990,7 +2158,7 @@ Internet-Draft                  PCE-YANG                  September 2016
 
     }//pcep-entity-info
 
-    grouping  pce-scope{
+    grouping pce-scope{
         description
             "This grouping defines PCE path computation scope
              information which maybe relevant to PCE selection.
@@ -2013,9 +2181,9 @@ Internet-Draft                  PCE-YANG                  September 2016
 
 
 
-Dhody, et al.            Expires March 16, 2017                [Page 36]
+Dhody, et al.            Expires April 30, 2017                [Page 39]
 
-Internet-Draft                  PCE-YANG                  September 2016
+Internet-Draft                  PCE-YANG                    October 2016
 
 
             type uint8{
@@ -2069,9 +2237,9 @@ Internet-Draft                  PCE-YANG                  September 2016
 
 
 
-Dhody, et al.            Expires March 16, 2017                [Page 37]
+Dhody, et al.            Expires April 30, 2017                [Page 40]
 
-Internet-Draft                  PCE-YANG                  September 2016
+Internet-Draft                  PCE-YANG                    October 2016
 
 
         }
@@ -2091,7 +2259,7 @@ Internet-Draft                  PCE-YANG                  September 2016
         }
     }//pce-scope
 
-    grouping  domain{
+    grouping domain{
         description
             "This grouping specifies a Domain where the
              PCEP speaker has topology visibility.";
@@ -2125,9 +2293,9 @@ Internet-Draft                  PCE-YANG                  September 2016
 
 
 
-Dhody, et al.            Expires March 16, 2017                [Page 38]
+Dhody, et al.            Expires April 30, 2017                [Page 41]
 
-Internet-Draft                  PCE-YANG                  September 2016
+Internet-Draft                  PCE-YANG                    October 2016
 
 
             if-feature gmpls;
@@ -2158,7 +2326,7 @@ Internet-Draft                  PCE-YANG                  September 2016
               "Synchronized paths computation.";
         }
         leaf objective-function{
-            if-feature obj-fn;
+            if-feature objective-function;
             type boolean;
             description
               "Support for multiple objective functions.";
@@ -2181,9 +2349,9 @@ Internet-Draft                  PCE-YANG                  September 2016
 
 
 
-Dhody, et al.            Expires March 16, 2017                [Page 39]
+Dhody, et al.            Expires April 30, 2017                [Page 42]
 
-Internet-Draft                  PCE-YANG                  September 2016
+Internet-Draft                  PCE-YANG                    October 2016
 
 
         }
@@ -2221,43 +2389,54 @@ Internet-Draft                  PCE-YANG                  September 2016
                 description
                   "Support for PCE-initiated LSP.";
             }
+            leaf include-db-ver{
+                if-feature stateful-sync-opt;
+                type boolean;
+                description
+                    "Support inclusion of LSP-DB-VERSION
+                    in LSP object";
+            }
+            leaf trigger-resync{
+                if-feature stateful-sync-opt;
+                type boolean;
+                description
+                    "Support PCE triggered re-synchronization";
+            }
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 43]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
+            leaf trigger-initial-sync{
+                if-feature stateful-sync-opt;
+                type boolean;
+                description
+                    "PCE triggered initial synchronization";
+            }
+            leaf incremental-sync{
+                if-feature stateful-sync-opt;
+                type boolean;
+                description
+                    "Support incremental (delta) sync";
+            }
         }
-                container sr{
-                        if-feature sr;
-                        description
-                                "If segment routing is supported";
-                        leaf enabled{
+        container sr{
+            if-feature sr;
+            description
+                "If segment routing is supported";
+            leaf enabled{
                 type boolean;
                 description
                     "Enabled or Disabled";
-                        }
-                        leaf msd{ /*should be in MPLS yang model (?)*/
-                                type uint8;
-                must "((../../role == 'pcc')" +
+            }
 
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 40]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
-                     " or " +
-                    "(../../role == 'pcc-and-pce')))"
-                {
-                    error-message
-                        "The PCEP entity must be PCC";
-                    description
-                        "When PCEP entity is PCC for
-                        MSD to be applicable";
-                }
-                                description
-                                        "Maximum SID Depth";
-                        }
-                }
+        }
     }//capability
 
-    grouping  info{
+    grouping info{
         description
             "This grouping specifies all information which
              maybe relevant to both PCC and PCE.
@@ -2279,25 +2458,27 @@ Internet-Draft                  PCE-YANG                  September 2016
         container capability{
             description
                 "The PCEP entity capability";
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 44]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
             uses capability{
                 description
                     "The PCEP entity supported
                     capabilities.";
             }
         }
+
+
     }//info
 
-    grouping  pce-info{
+    grouping pce-info{
         description
             "This grouping specifies all PCE information
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 41]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
              which maybe relevant to the PCE selection.
              This information corresponds to PCE auto-discovery
              information.";
@@ -2325,7 +2506,7 @@ Internet-Draft                  PCE-YANG                  September 2016
         }
     }//pce-info
 
-    grouping  pcep-stats{
+    grouping pcep-stats{
         description
             "This grouping defines statistics for PCEP. It is used
              for both peer and current session.";
@@ -2333,9 +2514,17 @@ Internet-Draft                  PCE-YANG                  September 2016
             type uint32;
             units "milliseconds";
             must "(/pcep-state/entity/peers/peer/role != 'pcc'" +
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 45]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                  " or " +
                  "(/pcep-state/entity/peers/peer/role = 'pcc'" +
-                 " and avg-rsp-time = 0))" {
+                 " and (. = 0)))" {
                 error-message
                     "Invalid average response time";
                 description
@@ -2346,14 +2535,6 @@ Internet-Draft                  PCE-YANG                  September 2016
               "The average response time.
                If an average response time has not been
                calculated then this leaf has the value zero.";
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 42]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
         }
 
         leaf lwm-rsp-time{
@@ -2362,7 +2543,7 @@ Internet-Draft                  PCE-YANG                  September 2016
             must "(/pcep-state/entity/peers/peer/role != 'pcc'" +
                  " or " +
                  "(/pcep-state/entity/peers/peer/role = 'pcc'" +
-                 " and lwm-rsp-time = 0))" {
+                 " and (. = 0)))" {
                 error-message
                     "Invalid smallest (low-water mark)
                      response time";
@@ -2382,13 +2563,21 @@ Internet-Draft                  PCE-YANG                  September 2016
             must "(/pcep-state/entity/peers/peer/role != 'pcc'" +
                  " or " +
                  "(/pcep-state/entity/peers/peer/role = 'pcc'" +
-                 " and hwm-rsp-time = 0))" {
+                 " and (. = 0)))" {
                 error-message
                     "Invalid greatest (high-water mark)
                      response time seen";
                 description
                     "If role is pcc then this field is
                      meaningless and is set to zero.";
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 46]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
             }
             description
              "The greatest (high-water mark) response time seen.
@@ -2401,14 +2590,6 @@ Internet-Draft                  PCE-YANG                  September 2016
             description
              "The number of PCReq messages sent.";
         }
-
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 43]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
 
         leaf num-pcreq-rcvd{
             type yang:counter32;
@@ -2446,6 +2627,13 @@ Internet-Draft                  PCE-YANG                  September 2016
               "The number of PCNtf messages sent.";
         }
 
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 47]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
         leaf num-pcntf-rcvd{
             type yang:counter32;
             description
@@ -2457,14 +2645,6 @@ Internet-Draft                  PCE-YANG                  September 2016
             description
               "The number of Keepalive messages sent.";
         }
-
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 44]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
 
         leaf num-keepalive-rcvd{
             type yang:counter32;
@@ -2502,6 +2682,14 @@ Internet-Draft                  PCE-YANG                  September 2016
         }
 
         leaf num-req-sent-ero-rcvd{
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 48]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
             type yang:counter32;
             description
                "The number of requests that have been sent for
@@ -2514,17 +2702,9 @@ Internet-Draft                  PCE-YANG                  September 2016
             type yang:counter32;
             description
               "The number of requests that have been sent for
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 45]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                which a response with a NO-PATH object was
                received. Such responses indicate that the peer
-               could not  find a path to satisfy the
+               could not find a path to satisfy the
                request.";
         }
 
@@ -2558,6 +2738,14 @@ Internet-Draft                  PCE-YANG                  September 2016
              long to respond to them.";
         }
 
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 49]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
         leaf num-req-sent-cancel-sent{
             type yang:counter32;
             description
@@ -2570,14 +2758,6 @@ Internet-Draft                  PCE-YANG                  September 2016
             type yang:counter32;
             description
              "The number of requests received.  A request
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 46]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
               corresponds 1:1 with an RP object in a PCReq
               message.
               This might be greater than num-pcreq-rcvd because
@@ -2614,6 +2794,14 @@ Internet-Draft                  PCE-YANG                  September 2016
             type yang:counter32;
             description
              "The number of requests received that were cancelled
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 50]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
               by the local PCEP entity sending a PCNtf message.
               This might be different than num-pcntf-sent because
               not all PCNtf messages are used to cancel requests,
@@ -2626,21 +2814,13 @@ Internet-Draft                  PCE-YANG                  September 2016
             description
              "The number of requests received that were cancelled
               by the local PCEP entity sending a PCErr message.
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 47]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
               This might be different than num-pcerr-sent because
               not all PCErr messages are used to cancel requests,
               and a single PCErr message can cancel multiple
               requests.";
         }
 
-        leaf  num-req-rcvd-cancel-rcvd{
+        leaf num-req-rcvd-cancel-rcvd{
             type yang:counter32;
             description
              "The number of requests that were received from the
@@ -2648,7 +2828,7 @@ Internet-Draft                  PCE-YANG                  September 2016
               a PCNtf.";
         }
 
-        leaf  num-rep-rcvd-unknown{
+        leaf num-rep-rcvd-unknown{
             type yang:counter32;
             description
               "The number of responses to unknown requests
@@ -2658,7 +2838,7 @@ Internet-Draft                  PCE-YANG                  September 2016
                outstanding on the session.";
         }
 
-        leaf  num-req-rcvd-unknown{
+        leaf num-req-rcvd-unknown{
             type yang:counter32;
             description
               "The number of unknown requests that have been
@@ -2670,6 +2850,14 @@ Internet-Draft                  PCE-YANG                  September 2016
         container svec{
             if-feature svec;
             description
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 51]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                 "If synchronized path computation is supported";
             leaf num-svec-sent{
                 type yang:counter32;
@@ -2682,14 +2870,6 @@ Internet-Draft                  PCE-YANG                  September 2016
             leaf num-svec-req-sent{
                 type yang:counter32;
                 description
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 48]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                   "The number of requests sent that appeared in one
                    or more SVEC objects.";
             }
@@ -2726,6 +2906,14 @@ Internet-Draft                  PCE-YANG                  September 2016
             }
 
             leaf num-pcupd-sent{
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 52]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                 type yang:counter32;
                 description
                  "The number of PCUpd messages sent.";
@@ -2738,14 +2926,6 @@ Internet-Draft                  PCE-YANG                  September 2016
             }
 
             leaf num-rpt-sent{
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 49]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                 type yang:counter32;
                 description
                   "The number of LSP Reports sent.  A LSP report
@@ -2766,7 +2946,7 @@ Internet-Draft                  PCE-YANG                  September 2016
                   PCRpt message.";
             }
 
-            leaf  num-rpt-rcvd-error-sent{
+            leaf num-rpt-rcvd-error-sent{
                 type yang:counter32;
                 description
                   "The number of reports of LSPs received that were
@@ -2782,6 +2962,14 @@ Internet-Draft                  PCE-YANG                  September 2016
                    message. This might be greater than
                    num-pcupd-sent because multiple updates can
                    be batched into a single PCUpd message.";
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 53]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
             }
 
             leaf num-upd-rcvd{
@@ -2795,14 +2983,7 @@ Internet-Draft                  PCE-YANG                  September 2016
                   PCUpd message.";
             }
 
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 50]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
-            leaf  num-upd-rcvd-unknown{
+            leaf num-upd-rcvd-unknown{
                 type yang:counter32;
                 description
                   "The number of updates to unknown LSPs
@@ -2812,7 +2993,7 @@ Internet-Draft                  PCE-YANG                  September 2016
                    present.";
             }
 
-            leaf  num-upd-rcvd-undelegated{
+            leaf num-upd-rcvd-undelegated{
                 type yang:counter32;
                 description
                   "The number of updates to not delegated LSPs
@@ -2822,7 +3003,7 @@ Internet-Draft                  PCE-YANG                  September 2016
                    delegated to current PCEP session.";
             }
 
-            leaf  num-upd-rcvd-error-sent{
+            leaf num-upd-rcvd-error-sent{
                 type yang:counter32;
                 description
                   "The number of updates to LSPs received that were
@@ -2837,6 +3018,14 @@ Internet-Draft                  PCE-YANG                  September 2016
                     type yang:counter32;
                     description
                      "The number of PCInitiate messages sent.";
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 54]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                 }
 
                 leaf num-pcinitiate-rcvd{
@@ -2850,14 +3039,6 @@ Internet-Draft                  PCE-YANG                  September 2016
                     description
                       "The number of LSP Initiation sent via PCE.
                        A LSP initiation corresponds 1:1 with an LSP
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 51]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                        object in a PCInitiate message. This might be
                        greater than num-pcinitiate-sent because
                        multiple initiations can be batched into a
@@ -2875,13 +3056,50 @@ Internet-Draft                  PCE-YANG                  September 2016
                        into a single PCInitiate message.";
                 }
 
-                leaf  num-initiate-rcvd-error-sent{
+                leaf num-initiate-rcvd-error-sent{
                     type yang:counter32;
                     description
                       "The number of initiations of LSPs received
                        that were responded by the local PCEP entity
                        by sending a PCErr message.";
                 }
+            }
+        }
+        container path-key {
+            if-feature path-key;
+            description
+                "If Path-Key is supported";
+            leaf num-unknown-path-key{
+                type yang:counter32;
+                description
+                 "The number of attempts to expand an unknown
+                 path-key.";
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 55]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
+            }
+            leaf num-exp-path-key{
+                type yang:counter32;
+                description
+                 "The number of attempts to expand an expired
+                 path-key.";
+            }
+            leaf num-dup-path-key{
+                type yang:counter32;
+                description
+                 "The number of duplicate attempts to expand same
+                 path-key.";
+            }
+            leaf num-path-key-no-attempt{
+                type yang:counter32;
+                description
+                 "The number of expired path-keys with no attempt to
+                 expand it.";
             }
         }
     }//pcep-stats
@@ -2906,20 +3124,19 @@ Internet-Draft                  PCE-YANG                  September 2016
             type inet:ip-address;
             description
                 "The local internet address of the PCC, that
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 52]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                  generated the PLSP-ID.";
         }
 
         container lsp-ref{
             description
                 "reference to ietf-te lsp state";
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 56]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
 
             leaf source {
                 type leafref {
@@ -2962,14 +3179,6 @@ Internet-Draft                  PCE-YANG                  September 2016
                 reference "RFC3209";
             }
             leaf extended-tunnel-id {
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 53]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                 type leafref {
                     path "/te:te/te:lsps-state/te:lsp/te:"
                     + "extended-tunnel-id";
@@ -2977,6 +3186,14 @@ Internet-Draft                  PCE-YANG                  September 2016
                 description
                     "Extended Tunnel ID of the LSP.";
                 reference "RFC3209";
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 57]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
             }
             leaf type {
                 type leafref {
@@ -3008,26 +3225,12 @@ Internet-Draft                  PCE-YANG                  September 2016
                 type leafref {
                     path "/pcep-state/entity/peers/peer/addr";
                 }
-                must "((../enabled == true)" +
-                     " and " +
-                     "((../../role == 'pcc')" +
-                     " or " +
-                    "(../../role == 'pcc-and-pce')))"
+                must "(../enabled = true())"
                 {
                     error-message
-                        "The PCEP entity must be PCC
-                         and the LSP be delegated";
+                        "The LSP must be delegated";
                     description
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 54]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
-                        "When PCEP entity is PCC for
-                        delegated LSP";
+                        "When LSP is a delegated LSP";
                 }
                 description
                     "The reference to the PCE peer to
@@ -3039,6 +3242,14 @@ Internet-Draft                  PCE-YANG                  September 2016
                     "The last SRP-ID-number associated with this
                     LSP.";
             }
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 58]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
         }
         container initiation {
             if-feature pce-initiated;
@@ -3053,7 +3264,7 @@ Internet-Draft                  PCE-YANG                  September 2016
                 type leafref {
                     path "/pcep-state/entity/peers/peer/addr";
                 }
-                must "(../enabled == true)"
+                must "(../enabled = true())"
                 {
                     error-message
                         "The LSP must be PCE-Initiated";
@@ -3074,27 +3285,27 @@ Internet-Draft                  PCE-YANG                  September 2016
             type lsp-error;
             description
                 "The last error for the LSP.";
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 55]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
+        }
+        leaf pst{
+            type pst;
+            default "rsvp-te";
+            description
+                "The Path Setup Type";
 
         }
-                leaf pst{
-                        type pst;
-                        default "rsvp-te";
-                        description
-                                "The Path Setup Type";
-
-                }
 
     }//lsp-state
 
     grouping notification-instance-hdr {
         description
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 59]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
             "This group describes common instance specific data
              for notifications.";
 
@@ -3130,14 +3341,6 @@ Internet-Draft                  PCE-YANG                  September 2016
         leaf state-timeout{
             type uint32;
             units "seconds";
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 56]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
             description
                 "When a PCEP session is terminated, a PCC
                  waits for this time period before flushing
@@ -3148,9 +3351,20 @@ Internet-Draft                  PCE-YANG                  September 2016
         leaf redelegation-timeout{
             type uint32;
             units "seconds";
-            must "((../role == 'pcc')" +
+            must "((/pcep-state/entity/role = 'pcc')" +
                  " or " +
-                 "(../role == 'pcc-and-pce'))"
+                 "(/pcep-state/entity/role = 'pcc-and-pce'))" +
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 60]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
+                 " and " +
+                 "(/pcep/entity/capability/stateful/active"
+                             + "= true())"
             {
                 error-message "The PCEP entity must be PCC";
                 description
@@ -3166,9 +3380,9 @@ Internet-Draft                  PCE-YANG                  September 2016
         }
         leaf rpt-non-pcep-lsp{
             type boolean;
-            must "((../role == 'pcc')" +
+            must "((/pcep-state/entity/role = 'pcc')" +
                  " or " +
-                 "(../role == 'pcc-and-pce'))"
+                 "(/pcep-state/entity/role = 'pcc-and-pce'))"
             {
                 error-message "The PCEP entity must be PCC";
                 description
@@ -3186,14 +3400,6 @@ Internet-Draft                  PCE-YANG                  September 2016
     grouping authentication {
         description "Authentication Information";
         choice auth-type-selection {
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 57]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
             description
                 "Options for expressing authentication setting.";
             case auth-key-chain {
@@ -3204,6 +3410,14 @@ Internet-Draft                  PCE-YANG                  September 2016
                 }
             }
             case auth-key {
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 61]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                 leaf key {
                     type string;
                 description
@@ -3226,6 +3440,169 @@ Internet-Draft                  PCE-YANG                  September 2016
         }
     }
 
+    grouping path-key {
+        description "Path-key related information";
+        leaf enabled{
+            type boolean;
+            description
+                "Enabled or Disabled";
+        }
+        leaf discard-timer {
+            type uint32;
+            units "minutes";
+            default 10;
+            description
+                "A timer to discard unwanted path-keys";
+        }
+        leaf reuse-time {
+            type uint32;
+            units "minutes";
+            default 30;
+            description
+                "A time after which the path-keys could be reused";
+        }
+        leaf pce-id {
+            type inet:ip-address;
+            description
+                "PCE Address to be used in each Path-Key Subobject
+                (PKS)";
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 62]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
+        }
+    }
+
+    grouping path-key-state {
+        description "Table to allow inspection of path-keys";
+        list path-keys{
+            key "path-key";
+
+            description
+                "The list of path-keys generated by the PCE";
+
+            leaf path-key {
+                type uint16;
+                description
+                    "The identifier, or token used to represent
+                     the Confidential Path Segment (CPS) within
+                     the context of the PCE";
+            }
+            container cps {
+                description
+                    "The Confidential Path Segment (CPS)";
+                list explicit-route-objects {
+                    key "index";
+                    description
+                        "List of explicit route objects";
+                    leaf index {
+                        type uint8 {
+                            range "0..255";
+                        }
+                        description
+                            "Index of this explicit route object";
+                    }
+                    leaf explicit-route-usage {
+                        type identityref {
+                            base te-types:route-usage-type;
+                        }
+                        description
+                            "An explicit-route hop action.";
+                    }
+                    uses te-types:explicit-route-subobject;
+                }
+            }
+            leaf pcc-original {
+                type leafref {
+                    path "/pcep-state/entity/peers/peer/addr";
+                }
+                description
+                    "Reference to PCC peer address of
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 63]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
+                    the original request";
+            }
+            leaf req-id {
+                type uint32;
+                description
+                    "The request ID of the original PCReq.";
+            }
+            leaf retrieved  {
+                type boolean;
+                description
+                    "If path-key has been retrieved yet";
+            }
+            leaf pcc-retrieved {
+                type leafref {
+                    path "/pcep-state/entity/peers/peer/addr";
+                }
+                must "(../retrieved = true())"
+                {
+                    error-message
+                        "The Path-key should be retreived";
+                    description
+                        "When Path-Key has been retreived";
+                }
+                description
+                    "Reference to PCC peer address which
+                    retreived the path-key";
+            }
+            leaf creation-time {
+                type yang:timestamp;
+                description
+                    "The timestamp value at the time this Path-Key was
+                    created.";
+            }
+            leaf discard-time {
+                type uint32;
+                units "minutes";
+                description
+                    "A time after which this path-keys will be
+                    discarded";
+            }
+            leaf reuse-time {
+                type uint32;
+                units "minutes";
+                description
+                    "A time after which this path-keys could be
+                    reused";
+            }
+        }
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 64]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
+    }
+
+    grouping of-list {
+        description "List of OF";
+        list objective-function{
+            key "of";
+
+            description
+                "The list of authorized OF";
+
+            leaf of {
+                type objective-function;
+                description
+                    "The OF authorized";
+            }
+        }
+    }
     grouping association {
         description
             "Generic Association parameters";
@@ -3242,14 +3619,6 @@ Internet-Draft                  PCE-YANG                  September 2016
         leaf source {
           type inet:ip-address;
           description
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 58]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                 "PCEP Association Source.";
         }
         leaf global-source {
@@ -3265,6 +3634,14 @@ Internet-Draft                  PCE-YANG                  September 2016
                 support unique identification.";
         }
     }
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 65]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
     grouping association-ref {
         description
             "Generic Association parameters";
@@ -3298,14 +3675,6 @@ Internet-Draft                  PCE-YANG                  September 2016
                 path "/pcep-state/entity/lsp-db/"
                 + "association-list/extended-id";
             }
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 59]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
             description
                 "Additional information to
                 support unique identification.";
@@ -3321,6 +3690,14 @@ Internet-Draft                  PCE-YANG                  September 2016
 
             description
             "Parameters for list of configured PCEP entities
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 66]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
              on the device.";
 
         container entity {
@@ -3354,14 +3731,6 @@ Internet-Draft                  PCE-YANG                  September 2016
                      Entity.";
             }
 
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 60]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
             leaf role {
                 type pcep-role;
                 mandatory true;
@@ -3377,10 +3746,25 @@ Internet-Draft                  PCE-YANG                  September 2016
             }
 
             leaf description {
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 67]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                 type string;
                 description
                     "Description of the PCEP entity configured
                      by the user";
+            }
+
+            leaf speaker-entity-id{
+                if-feature stateful-sync-opt;
+                type string;
+                description
+                    "The Speaker Entity Identifier";
             }
 
             uses info {
@@ -3390,9 +3774,9 @@ Internet-Draft                  PCE-YANG                  September 2016
 
 
             container pce-info {
-                must "((../role == 'pce')" +
-                     " or " +
-                     "(../role == 'pcc-and-pce'))"
+                must "((/pcep-state/entity/role = 'pce')" +
+                 " or " +
+                 "(/pcep-state/entity/role = 'pcc-and-pce'))"
                 {
                     error-message "The PCEP entity must be PCE";
                     description
@@ -3402,23 +3786,33 @@ Internet-Draft                  PCE-YANG                  September 2016
                     description
                         "Local PCE information";
                 }
-                                uses authentication {
-                                        description
-                                                "Local PCE authentication information";
-                        }
-
+                container path-key {
+                    if-feature path-key;
+                    uses path-key {
+                        description
+                            "Path-Key Configuration";
+                    }
+                    description
+                        "Path-Key Configuration";
+                }
 
                 description
                     "The Local PCE Entity PCE information";
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 61]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
             }
+
+            uses authentication {
+                description
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 68]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
+                    "Local PCEP entity authentication information";
+            }
+
 
             uses pcep-entity-info {
                 description
@@ -3444,12 +3838,13 @@ Internet-Draft                  PCE-YANG                  September 2016
 
             container stateful-parameter{
                 if-feature stateful;
-                must "(../info/capability/stateful/active == true)"
+                must "(/pcep/entity/capability/stateful/enabled" +
+                     " = true())"
                 {
                     error-message
-                        "The Active Stateful PCE must be enabled";
+                        "The Stateful PCE must be enabled";
                     description
-                        "When PCEP entity is active stateful
+                        "When PCEP entity is stateful
                          enabled";
                 }
                 uses stateful-pce-parameter;
@@ -3458,22 +3853,39 @@ Internet-Draft                  PCE-YANG                  September 2016
                     "The configured stateful parameters";
             }
 
+            container of-list{
+                if-feature objective-function;
+                must "((/pcep/entity/role = 'pce')" +
+                     " or " +
+                     "(/pcep/entity/role = 'pcc-and-pce'))"
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 69]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
+                {
+                    error-message
+                        "The PCEP entity must be PCE";
+                    description
+                        "The authorized OF-List at PCE";
+                }
+                uses of-list;
+
+                description
+                    "The authorized OF-List at PCE for all peers";
+            }
+
 
             container peers{
-                must "((../role == 'pcc')" +
+                must "((/pcep/entity/role = 'pcc')" +
                      " or " +
-                     "(../role == 'pcc-and-pce'))"
+                     "(/pcep/entity/role = 'pcc-and-pce'))"
                 {
                     error-message
                         "The PCEP entity must be PCC";
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 62]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                     description
                         "When PCEP entity is PCC, as remote
                          PCE peers are configured.";
@@ -3502,6 +3914,14 @@ Internet-Draft                  PCE-YANG                  September 2016
                              configured by the user";
                     }
                     uses info {
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 70]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                         description
                             "PCE Peer information";
                     }
@@ -3515,21 +3935,13 @@ Internet-Draft                  PCE-YANG                  September 2016
                         type uint8{
                             range "0..7";
                         }
-                        must "(../../info/capability/stateful/active"
-                             + "== true)"
+                        must "(/pcep/entity/capability/stateful/active"
+                             + "= true())"
                         {
                             error-message
                                 "The Active Stateful PCE must be
                                  enabled";
                             description
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 63]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                                 "When PCEP entity is active stateful
                                  enabled";
                         }
@@ -3540,8 +3952,32 @@ Internet-Draft                  PCE-YANG                  September 2016
                         description
                             "PCE Peer authentication";
                     }
+                    container of-list{
+                        if-feature objective-function;
+                        must "((/pcep/entity/role = 'pce')" +
+                        " or " +
+                        "(/pcep/entity/role = 'pcc-and-pce'))"
+                        {
+                            error-message
+                                "The PCEP entity must be PCE";
+                            description
+                                "The authorized OF-List at PCE";
+                        }
+                        uses of-list;
+
+                        description
+                            "The authorized OF-List a specific peer";
+                    }
                 }//peer
             }//peers
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 71]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
         }//entity
     }//pcep
 
@@ -3578,14 +4014,6 @@ Internet-Draft                  PCE-YANG                  September 2016
 
             leaf index{
                 type uint32;
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 64]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                 description
                     "The index of the operational PECP
                      entity";
@@ -3598,6 +4026,14 @@ Internet-Draft                  PCE-YANG                  September 2016
                     "The administrative status of this PCEP Entity.
                      This is the desired operational status as
                      currently set by an operator or by default in
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 72]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                      the implementation.  The value of enabled
                      represents the current status of an attempt
                      to reach this desired status.";
@@ -3634,14 +4070,28 @@ Internet-Draft                  PCE-YANG                  September 2016
                      - pce(2): this PCEP entity is a PCE.
                      - pcc-and-pce(3): this PCEP entity is
                        both a PCC and a PCE.";
+            }
+
+            leaf description {
+                type string;
+                description
+                    "Description of the PCEP entity configured
+                     by the user";
+            }
+
+            leaf speaker-entity-id{
+                if-feature stateful-sync-opt;
+                type string;
 
 
 
-Dhody, et al.            Expires March 16, 2017                [Page 65]
+Dhody, et al.            Expires April 30, 2017                [Page 73]
 
-Internet-Draft                  PCE-YANG                  September 2016
+Internet-Draft                  PCE-YANG                    October 2016
 
 
+                description
+                    "The Speaker Entity Identifier";
             }
 
             uses info {
@@ -3650,9 +4100,9 @@ Internet-Draft                  PCE-YANG                  September 2016
             }
 
             container pce-info {
-                when "((../role == 'pce')" +
-                     " or " +
-                     "(../role == 'pcc-and-pce'))"
+                when "((/pcep-state/entity/role = 'pce')" +
+                 " or " +
+                 "(/pcep-state/entity/role = 'pcc-and-pce'))"
                 {
                     description
                         "When PCEP entity is PCE";
@@ -3661,12 +4111,24 @@ Internet-Draft                  PCE-YANG                  September 2016
                     description
                         "Local PCE information";
                 }
-                                uses authentication {
-                                        description
-                                                "Local PCE authentication information";
-                        }
+
+                container path-key {
+                    if-feature path-key;
+                    uses path-key {
+                        description
+                            "Path-Key Configuration";
+                    }
+                    description
+                        "Path-Key Configuration";
+                }
+
                 description
                     "The Local PCE Entity PCE information";
+            }
+
+            uses authentication {
+                description
+                    "Local PCEP Entity authentication information";
             }
 
             uses pcep-entity-info{
@@ -3676,13 +4138,22 @@ Internet-Draft                  PCE-YANG                  September 2016
             }
 
             container stateful-parameter{
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 74]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                 if-feature stateful;
-                must "(../info/capability/stateful/active == true)"
+                must "(/pcep/entity/capability/stateful/enabled" +
+                     " = true())"
                 {
                     error-message
-                        "The Active Stateful PCE must be enabled";
+                        "The Stateful PCE must be enabled";
                     description
-                        "When PCEP entity is active stateful
+                        "When PCEP entity is stateful
                          enabled";
                 }
                 uses stateful-pce-parameter;
@@ -3693,15 +4164,27 @@ Internet-Draft                  PCE-YANG                  September 2016
 
 
 
-Dhody, et al.            Expires March 16, 2017                [Page 66]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
             container lsp-db{
                 if-feature stateful;
                 description
                     "The LSP-DB";
+                leaf db-ver{
+                    if-feature stateful-sync-opt;
+                    type uint64;
+                     must "((/pcep/entity/role = 'pcc')" +
+                     " or " +
+                     "(/pcep/entity/role = 'pcc-and-pce'))"
+                    {
+                        error-message
+                            "The PCEP entity must be PCC";
+                        description
+                            "When PCEP entity is PCC, as remote
+                             PCE peers are configured.";
+                    }
+
+                    description
+                        "The LSP State Database Version Number";
+                }
                 list association-list {
                     key "id source global-source extended-id";
                     description
@@ -3711,6 +4194,14 @@ Internet-Draft                  PCE-YANG                  September 2016
                             "The Association attributes";
                     }
                     list lsp {
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 75]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                         key "plsp-id pcc-id";
                         description
                             "List of all LSP in this association";
@@ -3746,14 +4237,6 @@ Internet-Draft                  PCE-YANG                  September 2016
                         description
                             "List of all PCEP associations";
                         uses association-ref {
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 67]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                             description
                                 "Reference to the Association
                                  attributes";
@@ -3761,6 +4244,45 @@ Internet-Draft                  PCE-YANG                  September 2016
                     }
 
                 }
+            }
+            container path-keys {
+                if-feature path-key;
+                must "((/pcep-state/entity/role = 'pce')" +
+                 " or " +
+                 "(/pcep-state/entity/role = 'pcc-and-pce'))"
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 76]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
+                {
+                    error-message
+                        "The PCEP entity must be PCE";
+                    description
+                        "When PCEP entity is PCE";
+                }
+                uses path-key-state;
+                description
+                    "The path-keys generated by the PCE";
+            }
+            container of-list{
+                if-feature objective-function;
+                must "((/pcep/entity/role = 'pce')" +
+                     " or " +
+                     "(/pcep/entity/role = 'pcc-and-pce'))"
+                {
+                    error-message
+                        "The PCEP entity must be PCE";
+                    description
+                        "The authorized OF-List at PCE";
+                }
+                uses of-list;
+
+                description
+                    "The authorized OF-List at PCE for all peers";
             }
             container peers{
                 description
@@ -3784,6 +4306,14 @@ Internet-Draft                  PCE-YANG                  September 2016
                         description
                             "The role of the PCEP Peer.
                              Takes one of the following values.
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 77]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                              - unknown(0): this PCEP peer role
                                is not known.
                              - pcc(1): this PCEP peer is a PCC.
@@ -3800,17 +4330,10 @@ Internet-Draft                  PCE-YANG                  September 2016
 
 
                     container pce-info {
-                        when "((../role == 'pce')" +
-                        " or " +
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 68]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
-                        "(../role == 'pcc-and-pce'))"
+                        when "((/pcep-state/entity/role = 'pcc')" +
+                             " or " +
+                             "(/pcep-state/entity/role " +
+                             "= 'pcc-and-pce'))"
                         {
                             description
                                 "When PCEP entity is PCE";
@@ -3828,17 +4351,26 @@ Internet-Draft                  PCE-YANG                  September 2016
                         type uint8{
                             range "0..7";
                         }
-                        must "((../../role == 'pcc')" +
+                        must "((/pcep-state/entity/role = 'pcc')" +
                              " or " +
-                             "(../../role == 'pcc-and-pce'))"
+                             "(/pcep-state/entity/role" +
+                             " = 'pcc-and-pce'))"
                         {
                             error-message
                                 "The PCEP entity must be PCC";
                             description
                                 "When PCEP entity is PCC";
                         }
-                        must "(../../info/capability/stateful/active"
-                             + " == true)"
+                        must "(/pcep/entity/capability/stateful/active"
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 78]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
+                             + "= true())"
                         {
                             error-message
                                 "The Active Stateful PCE must be
@@ -3856,16 +4388,25 @@ Internet-Draft                  PCE-YANG                  September 2016
                             "PCE Peer authentication";
                     }
 
+                    container of-list{
+                        if-feature objective-function;
+                        must "((/pcep/entity/role = 'pce')" +
+                        " or " +
+                        "(/pcep/entity/role = 'pcc-and-pce'))"
+                        {
+                            error-message
+                                "The PCEP entity must be PCE";
+                            description
+                                "The authorized OF-List at PCE";
+                        }
+                        uses of-list;
+
+                        description
+                            "The authorized OF-List of a specific
+                            peer";
+                    }
                     leaf discontinuity-time {
                         type yang:timestamp;
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 69]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                         description
                             "The timestamp of the time when the
                              information and statistics were
@@ -3877,6 +4418,14 @@ Internet-Draft                  PCE-YANG                  September 2016
                         description
                             "Indicates whether the local PCEP
                              entity initiates sessions to this peer,
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 79]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                              or waits for the peer to initiate a
                              session.";
                     }
@@ -3913,15 +4462,7 @@ Internet-Draft                  PCE-YANG                  September 2016
                         type yang:timestamp;
                         must "(../num-sess-setup-ok != 0  or " +
                             "(../num-sess-setup-ok = 0  and "  +
-                            "session-up-time = 0))" {
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 70]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
+                            "(. = 0)))" {
                                 error-message
                                     "Invalid Session Up timestamp";
                                 description
@@ -3934,11 +4475,18 @@ Internet-Draft                  PCE-YANG                  September 2016
                             established.";
                     }
 
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 80]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                     leaf session-fail-time{
                         type yang:timestamp;
                         must "(../num-sess-setup-fail != 0  or " +
                             "(../num-sess-setup-fail = 0  and "  +
-                            "session-fail-time = 0))" {
+                            "(. = 0)))" {
                                 error-message
                                     "Invalid Session Fail timestamp";
                                 description
@@ -3955,7 +4503,7 @@ Internet-Draft                  PCE-YANG                  September 2016
                         type yang:timestamp;
                         must "(../num-sess-setup-ok != 0  or "     +
                             "(../num-sess-setup-ok = 0  and "     +
-                            "session-fail-up-time = 0))" {
+                            "(. = 0)))" {
                                 error-message
                                     "Invalid Session Fail from
                                      Up timestamp";
@@ -3970,14 +4518,6 @@ Internet-Draft                  PCE-YANG                  September 2016
                     }
 
                     container pcep-stats {
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 71]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                         description
                             "The container for all statistics at peer
                              level.";
@@ -3990,6 +4530,14 @@ Internet-Draft                  PCE-YANG                  September 2016
                                 statistics contained are an aggregate
                                 of the statistics for all successive
                                 sessions to that peer.";
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 81]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                         }
 
                         leaf num-req-sent-closed{
@@ -4001,7 +4549,7 @@ Internet-Draft                  PCE-YANG                  September 2016
                                  sent over was closed.";
                         }
 
-                        leaf  num-req-rcvd-closed{
+                        leaf num-req-rcvd-closed{
                             type yang:counter32;
                             description
                                 "The number of requests that were
@@ -4026,14 +4574,6 @@ Internet-Draft                  PCE-YANG                  September 2016
                              discovery of a peer, or an incoming
                              TCP connection.";
 
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 72]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                         list session {
                             key "initiator";
 
@@ -4046,6 +4586,14 @@ Internet-Draft                  PCE-YANG                  September 2016
                                 type pcep-initiator;
                                 description
                                     "The initiator of the session,
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 82]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                                      that is, whether the TCP
                                      connection was initiated by
                                      the local PCEP entity or the
@@ -4082,14 +4630,6 @@ Internet-Draft                  PCE-YANG                  September 2016
                                     "The current state of the
                                      session.
                                      The set of possible states
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 73]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                                      excludes the idle state since
                                      entries do not exist in the
                                      idle state.";
@@ -4102,6 +4642,13 @@ Internet-Draft                  PCE-YANG                  September 2016
                                      time this session was
                                      created.";
                             }
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 83]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
 
                             leaf connect-retry {
                                 type yang:counter32;
@@ -4138,20 +4685,12 @@ Internet-Draft                  PCE-YANG                  September 2016
                                 }
                                 must "((../state != 'tcp-pending'" +
                                      "and " +
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 74]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                                      "../state != 'open-wait' )" +
                                      "or " +
                                      "((../state = 'tcp-pending'" +
                                      " or " +
                                      "../state = 'open-wait' )" +
-                                     "and remote-id = 0))" {
+                                     "and (. = 0)))" {
                                         error-message
                                             "Invalid remote-id";
                                         description
@@ -4159,6 +4698,14 @@ Internet-Draft                  PCE-YANG                  September 2016
                                               or open-wait then this
                                               leaf is not used and
                                               MUST be set to zero.";
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 84]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                                     }
                                 description
                                      "The value of the PCEP session
@@ -4175,7 +4722,7 @@ Internet-Draft                  PCE-YANG                  September 2016
                                 must "(../state = 'session-up'" +
                                      "or " +
                                      "(../state != 'session-up'" +
-                                     "and keepalive-timer = 0))" {
+                                     "and (. = 0)))" {
                                         error-message
                                             "Invalid keepalive
                                              timer";
@@ -4194,14 +4741,6 @@ Internet-Draft                  PCE-YANG                  September 2016
                                       PCEP session.  Zero means that
                                       the local PCEP entity never
                                       sends Keepalives on this
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 75]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                                       session.";
                             }
 
@@ -4214,7 +4753,15 @@ Internet-Draft                  PCE-YANG                  September 2016
                                      "or "   +
                                      "(../state != 'session-up'" +
                                      "and " +
-                                     "peer-keepalive-timer = 0))" {
+                                     "(. = 0)))" {
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 85]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                                         error-message
                                             "Invalid Peer keepalive
                                              timer";
@@ -4250,14 +4797,6 @@ Internet-Draft                  PCE-YANG                  September 2016
                                 }
                                 units "seconds";
                                 must "((../state != 'tcp-pending'" +
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 76]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                                      "and " +
                                      "../state != 'open-wait' )" +
                                      "or " +
@@ -4265,12 +4804,20 @@ Internet-Draft                  PCE-YANG                  September 2016
                                      " or " +
                                      "../state = 'open-wait' )" +
                                      "and " +
-                                     "peer-dead-timer = 0))" {
+                                     "(. = 0)))" {
                                         error-message
                                             "Invalid Peer Dead
                                              timer";
                                         description
                                             "If state is tcp-
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 86]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                                              pending or open-wait
                                              then this leaf is not
                                              used and MUST be set to
@@ -4294,7 +4841,7 @@ Internet-Draft                  PCE-YANG                  September 2016
                                      "or " +
                                      "../state = 'open-wait' )" +
                                      "and " +
-                                     "ka-hold-time-rem = 0))" {
+                                     "(. = 0)))" {
                                         error-message
                                             "Invalid Keepalive hold
                                              time remaining";
@@ -4306,14 +4853,6 @@ Internet-Draft                  PCE-YANG                  September 2016
                                     }
                                 description
                                      "The keep alive hold time
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 77]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                                       remaining for this session.";
                             }
 
@@ -4327,12 +4866,20 @@ Internet-Draft                  PCE-YANG                  September 2016
                                       is set to false.";
                             }
 
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 87]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                             leaf overload-time {
                                 type uint32;
                                 units "seconds";
-                                must "(../overloaded = true or" +
-                                    "(../overloaded != true and" +
-                                    " overload-time = 0))" {
+                                must "((../overloaded = true()) or" +
+                                    "((../overloaded != true()) and" +
+                                    " (. = 0)))" {
                                         error-message
                                             "Invalid overload-time";
                                         description
@@ -4362,19 +4909,11 @@ Internet-Draft                  PCE-YANG                  September 2016
                             leaf peer-overload-time {
                                 type uint32;
                                 units "seconds";
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 78]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
-                                must "(../peer-overloaded = true" +
+                                must "((../peer-overloaded = true())" +
                                      " or " +
-                                     "(../peer-overloaded != true" +
+                                     "((../peer-overloaded != true())" +
                                      " and " +
-                                     "peer-overload-time = 0))" {
+                                     "(. = 0)))" {
                                         error-message
                                             "Invalid peer overload
                                              time";
@@ -4383,6 +4922,14 @@ Internet-Draft                  PCE-YANG                  September 2016
                                              if peer-overloaded is
                                              set to true. Otherwise,
                                              it is not used and MUST
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 88]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
                                              be set to zero.";
                                     }
                                 description
@@ -4400,6 +4947,61 @@ Internet-Draft                  PCE-YANG                  September 2016
                                     "The LSP-DB state synchronization
                                     status.";
                             }
+                            leaf recv-db-ver{
+                                if-feature stateful;
+                                if-feature stateful-sync-opt;
+                                type uint64;
+                                 must "((/pcep-state/entity/peers/" +
+                                      "peer/role = 'pcc')" +
+                                      " or " +
+                                      "(/pcep-state/entity/peers/" +
+                                      "peer/role = 'pcc-and-pce'))"
+                                {
+                                    error-message
+                                        "The PCEP peer must be PCC";
+                                    description
+                                        "The PCEP peer must be PCC";
+                                }
+
+                                description
+                                    "The last received LSP State
+                                    Database Version Number";
+                            }
+
+                            container of-list{
+                                if-feature objective-function;
+                                must "((/pcep/entity/role = 'pcc')" +
+                                " or " +
+                                "(/pcep/entity/role = 'pcc-and-pce'))"
+                                {
+                                    error-message
+                                        "The PCEP entity must be PCC";
+                                    description
+                                        "The OF-list received on the
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 89]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
+                                        session";
+                                }
+                                uses of-list;
+
+                                description
+                                    "Indicate the list of supported OF
+                                    on this session";
+                            }
+
+                            leaf speaker-entity-id{
+                                if-feature stateful-sync-opt;
+                                type string;
+                                description
+                                    "The Speaker Entity Identifier";
+                            }
+
                             leaf discontinuity-time {
                                 type yang:timestamp;
                                 description
@@ -4418,14 +5020,6 @@ Internet-Draft                  PCE-YANG                  September 2016
                                          for the current sessions to
                                          that peer. These are lost
                                          when the session goes down.
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 79]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
                                          ";
                                 }
                             }//pcep-stats
@@ -4440,6 +5034,14 @@ Internet-Draft                  PCE-YANG                  September 2016
     /*
      * Notifications
      */
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 90]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
     notification pcep-session-up {
         description
             "This notification is sent when the value of
@@ -4474,14 +5076,6 @@ Internet-Draft                  PCE-YANG                  September 2016
 
         uses notification-instance-hdr;
 
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 80]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
         leaf session-initiator {
             type pcep-initiator;
             description
@@ -4496,6 +5090,14 @@ Internet-Draft                  PCE-YANG                  September 2016
         }
 
         leaf state {
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 91]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
             type pcep-sess-state;
             description
                 "The current state of the session.
@@ -4524,24 +5126,6 @@ Internet-Draft                  PCE-YANG                  September 2016
         leaf overload-time {
             type uint32;
             units "seconds";
-            must "(../overloaded = true or "    +
-                "(../overloaded != true  and "  +
-                "overload-time = 0))" {
-                    error-message
-                        "Invalid overload-time";
-                    description
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 81]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
-                        "This field is only used if overloaded is
-                         set to true. Otherwise, it is not used
-                         and MUST be set to zero.";
-                }
             description
                  "The interval of time that is remaining until the
                  local PCEP entity will cease to be overloaded on
@@ -4562,6 +5146,14 @@ Internet-Draft                  PCE-YANG                  September 2016
                  "If the local PCEP entity has informed the peer
                  that it is currently overloaded, then this is set
                  to true.  Otherwise, it is set to false.";
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 92]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
         }
     } //notification
 
@@ -4585,25 +5177,6 @@ Internet-Draft                  PCE-YANG                  September 2016
         leaf peer-overload-time {
             type uint32;
             units "seconds";
-            must "(../peer-overloaded = true or "    +
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 82]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
-
-                "(../peer-overloaded != true  and "  +
-                "peer-overload-time = 0))" {
-                    error-message
-                        "Invalid peer-overload-time";
-                    description
-                        "This field is only used if
-                         peer-overloaded is set to true.
-                         Otherwise, it is not used and MUST
-                         be set to zero.";
-                }
             description
                 "The interval of time that is remaining until the
                 peer will cease to be overloaded.  If it is not known
@@ -4629,6 +5202,14 @@ Internet-Draft                  PCE-YANG                  September 2016
     } //notification
 }//module
 
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 93]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
 <CODE ENDS>
 
 9.  Security Considerations
@@ -4640,15 +5221,6 @@ Internet-Draft                  PCE-YANG                  September 2016
    [RFC6536] provides the means to restrict access for particular
    NETCONF users to a pre-configured subset of all available NETCONF
    protocol operations and content.
-
-
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 83]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
 
    There are a number of data nodes defined in the YANG module which are
    writable/creatable/deletable (i.e., config true, which is the
@@ -4686,6 +5258,14 @@ Internet-Draft                  PCE-YANG                  September 2016
 
    XML:  N/A; the requested URI is an XML namespace.
 
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 94]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
    This document registers a YANG module in the "YANG Module Names"
    registry [RFC6020].
 
@@ -4693,18 +5273,6 @@ Internet-Draft                  PCE-YANG                  September 2016
        Namespace:    urn:ietf:params:xml:ns:yang:ietf-pcep
        Prefix:       pcep
        Reference:    This I-D
-
-
-
-
-
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 84]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
 
 12.  Acknowledgements
 
@@ -4745,22 +5313,20 @@ Internet-Draft                  PCE-YANG                  September 2016
               Extensions for Stateful PCE", draft-ietf-pce-stateful-
               pce-16 (work in progress), September 2016.
 
+
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 95]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
    [I-D.ietf-pce-pce-initiated-lsp]
               Crabbe, E., Minei, I., Sivabalan, S., and R. Varga, "PCEP
               Extensions for PCE-initiated LSP Setup in a Stateful PCE
               Model", draft-ietf-pce-pce-initiated-lsp-07 (work in
               progress), July 2016.
-
-
-
-
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 85]
-
-Internet-Draft                  PCE-YANG                  September 2016
-
 
    [I-D.ietf-pce-lsp-setup-type]
               Sivabalan, S., Medved, J., Minei, I., Crabbe, E., Varga,
@@ -4770,9 +5336,22 @@ Internet-Draft                  PCE-YANG                  September 2016
 
    [I-D.ietf-pce-segment-routing]
               Sivabalan, S., Medved, J., Filsfils, C., Crabbe, E.,
-              Lopez, V., Tantsura, J., Henderickx, W., and J. Hardwick,
-              "PCEP Extensions for Segment Routing", draft-ietf-pce-
-              segment-routing-07 (work in progress), March 2016.
+              Raszuk, R., Lopez, V., Tantsura, J., Henderickx, W., and
+              J. Hardwick, "PCEP Extensions for Segment Routing", draft-
+              ietf-pce-segment-routing-08 (work in progress), October
+              2016.
+
+   [I-D.ietf-teas-yang-te]
+              Saad, T., Gandhi, R., Liu, X., Beeram, V., Shah, H.,
+              Bryskin, I., Chen, X., Jones, R., and B. Wen, "A YANG Data
+              Model for Traffic Engineering Tunnels and Interfaces",
+              draft-ietf-teas-yang-te-04 (work in progress), July 2016.
+
+   [I-D.ietf-rtgwg-yang-key-chain]
+              Lindem, A., Qu, Y., Yeung, D., Chen, I., Zhang, Z., and Y.
+              Yang, "Routing Key Chain YANG Data Model", draft-ietf-
+              rtgwg-yang-key-chain-09 (work in progress), September
+              2016.
 
 13.2.  Informative References
 
@@ -4790,6 +5369,15 @@ Internet-Draft                  PCE-YANG                  September 2016
               Shell (SSH)", RFC 6242, DOI 10.17487/RFC6242, June 2011,
               <http://www.rfc-editor.org/info/rfc6242>.
 
+
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 96]
+
+Internet-Draft                  PCE-YANG                    October 2016
+
+
    [RFC6536]  Bierman, A. and M. Bjorklund, "Network Configuration
               Protocol (NETCONF) Access Control Model", RFC 6536,
               DOI 10.17487/RFC6536, March 2012,
@@ -4803,75 +5391,47 @@ Internet-Draft                  PCE-YANG                  September 2016
 
    [I-D.ietf-netmod-routing-cfg]
               Lhotka, L. and A. Lindem, "A YANG Data Model for Routing
-              Management", draft-ietf-netmod-routing-cfg-23 (work in
-              progress), August 2016.
+              Management", draft-ietf-netmod-routing-cfg-24 (work in
+              progress), October 2016.
 
    [I-D.ietf-netmod-rfc6087bis]
               Bierman, A., "Guidelines for Authors and Reviewers of YANG
-              Data Model Documents", draft-ietf-netmod-rfc6087bis-08
-              (work in progress), September 2016.
+              Data Model Documents", draft-ietf-netmod-rfc6087bis-09
+              (work in progress), October 2016.
 
 
 
-Dhody, et al.            Expires March 16, 2017                [Page 86]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Dhody, et al.            Expires April 30, 2017                [Page 97]
 
-Internet-Draft                  PCE-YANG                  September 2016
-
-
-   [I-D.ietf-teas-yang-te]
-              Saad, T., Gandhi, R., Liu, X., Beeram, V., Shah, H.,
-              Bryskin, I., Chen, X., Jones, R., and B. Wen, "A YANG Data
-              Model for Traffic Engineering Tunnels and Interfaces",
-              draft-ietf-teas-yang-te-04 (work in progress), July 2016.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Dhody, et al.            Expires March 16, 2017                [Page 87]
-
-Internet-Draft                  PCE-YANG                  September 2016
+Internet-Draft                  PCE-YANG                    October 2016
 
 
 Appendix A.  Contributor Addresses
@@ -4925,9 +5485,9 @@ Appendix A.  Contributor Addresses
 
 
 
-Dhody, et al.            Expires March 16, 2017                [Page 88]
+Dhody, et al.            Expires April 30, 2017                [Page 98]
 
-Internet-Draft                  PCE-YANG                  September 2016
+Internet-Draft                  PCE-YANG                    October 2016
 
 
    Xian Zhang
@@ -4981,4 +5541,4 @@ Authors' Addresses
 
 
 
-Dhody, et al.            Expires March 16, 2017                [Page 89]
+Dhody, et al.            Expires April 30, 2017                [Page 99]
