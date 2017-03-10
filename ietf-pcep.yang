@@ -53,7 +53,7 @@ module ietf-pcep {
          vendor implementations.";
 
 
-    revision 2017-03-09 {
+    revision 2017-03-10 {
         description "Initial revision.";
         reference
             "RFC XXXX:  A YANG Data Model for Path Computation
