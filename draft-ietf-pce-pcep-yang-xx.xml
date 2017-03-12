@@ -11,7 +11,7 @@
 <?rfc compact="yes" ?>
 <?rfc iprnotified="Yes" ?>
 <?rfc strict="no" ?>
-<rfc ipr="trust200902" category="std" docName="draft-ietf-pce-pcep-yang-01" obsoletes="" updates="" submissionType="IETF" xml:lang="en">
+<rfc ipr="trust200902" category="std" docName="draft-ietf-pce-pcep-yang-02" obsoletes="" updates="" submissionType="IETF" xml:lang="en">
   <front>
     <title abbrev="PCE-YANG">A YANG Data Model for Path Computation Element Communications Protocol (PCEP)</title>
 
@@ -73,7 +73,7 @@
       </address>
     </author>
 
-    <date month="October" year="2016" />
+    <date month="March" year="2017" />
     <area>Routing</area>
     <workgroup>PCE Working Group</workgroup>
     <abstract>
@@ -204,7 +204,45 @@
       <t>A graphical representation of the complete data
       tree is presented in <xref target="sec.data-tree" pageno="false" format="default"/>. The
       meaning of the symbols in these diagrams is as follows and as per
-      <xref target="I-D.ietf-netmod-rfc6087bis"/>:
+      <xref target="I-D.ietf-netmod-rfc6087bis"/>. Each
+      node is printed as: 
+      <figure><artwork><![CDATA[
+      <status> <flags> <name> <opts> <type> <if-features>
+
+      <status> is one of:
+        +  for current
+        x  for deprecated
+        o  for obsolete
+
+      <flags> is one of:
+        rw  for configuration data
+        ro  for non-configuration data
+        -x  for rpcs and actions
+        -n  for notifications
+
+      <name> is the name of the node
+        (<name>) means that the node is a choice node
+       :(<name>) means that the node is a case node
+
+      If the node is augmented into the tree from another module,
+      its name is printed as <prefix>:<name>.
+
+      <opts> is one of:
+        ?  for an optional leaf, choice, anydata or anyxml
+        !  for a presence container
+        *  for a leaf-list or list
+        [<keys>] for a list's keys
+
+      <type> is the name of the type for leafs and leaf-lists
+
+        If the type is a leafref, the type is printed as 
+        "-> TARGET", where TARGET is either the leafref path, 
+        with prefixed removed if possible.
+
+      <if-features> is the list of features this node depends on,
+        printed within curly brackets and a question mark "{...}?        
+        ]]></artwork></figure></t>
+      <!--
       <list style="symbols">
         <t>Brackets "[" and "]" enclose list keys.</t>
         <t>Abbreviations before data node names: "rw" means
@@ -218,7 +256,7 @@
         are also marked with a colon (":").</t>
         <t>Ellipsis ("...") stands for contents of subtrees that are
         not shown.</t>
-      </list></t>
+      </list></t>-->
     </section>
     <section title="Prefixes in Data Node Names" toc="default">
       <t>In this document, names of data nodes and other data
@@ -236,6 +274,7 @@
         <c>te</c><c>ietf-te</c><c><xref target="I-D.ietf-teas-yang-te" pageno="false" format="default"/></c>
         <c>te-types</c><c>ietf-te-types</c><c><xref target="I-D.ietf-teas-yang-te" pageno="false" format="default"/></c>
         <c>key-chain</c><c>ietf-key-chain</c><c><xref target="I-D.ietf-rtgwg-yang-key-chain" pageno="false" format="default"/></c>
+        <c>nacm</c><c>ietf-netconf-acm</c><c><xref target="RFC6536" pageno="false" format="default"/></c>
       </texttable>
     </section>
     </section>
@@ -254,7 +293,8 @@
     <t>The data model should include read-only counters in order to
       gather statistics for sent and received PCEP messages,
       received messages with errors, and messages that could not be sent
-      due to errors.</t>
+      due to errors. This could be in a separate model which
+      augments the base data model.</t>
     <t>It should be fairly straightforward to augment the base data model
     for advanced PCE features.</t>
     </list>
@@ -266,636 +306,507 @@
     <figure title="" suppress-title="false" align="left" alt="" width="" height="">
           <artwork xml:space="preserve" name="" type="" align="left" alt="" width="" height=""><![CDATA[
 module: ietf-pcep
-   +--rw pcep!
-   |  +--rw entity
-   |     +--rw addr                          inet:ip-address
-   |     +--rw enabled?                      boolean
-   |     +--rw role                          pcep-role
-   |     +--rw description?                  string
-   |     +--rw speaker-entity-id?            string {stateful-sync-opt}?
-   |     +--rw domain
-   |     |  +--rw domain* [domain-type domain]
-   |     |     +--rw domain-type    domain-type
-   |     |     +--rw domain         domain
-   |     +--rw capability
-   |     |  +--rw gmpls?                 boolean {gmpls}?
-   |     |  +--rw bi-dir?                boolean
-   |     |  +--rw diverse?               boolean
-   |     |  +--rw load-balance?          boolean
-   |     |  +--rw synchronize?           boolean {svec}?
-   |     |  +--rw objective-function?    boolean {objective-function}?
-   |     |  +--rw add-path-constraint?   boolean
-   |     |  +--rw prioritization?        boolean
-   |     |  +--rw multi-request?         boolean
-   |     |  +--rw gco?                   boolean {gco}?
-   |     |  +--rw p2mp?                  boolean {p2mp}?
-   |     |  +--rw stateful {stateful}?
-   |     |  |  +--rw enabled?                boolean
-   |     |  |  +--rw active?                 boolean
-   |     |  |  +--rw pce-initiated?          boolean {pce-initiated}?
-   |     |  |  +--rw include-db-ver?         boolean {stateful-sync-opt}?
-   |     |  |  +--rw trigger-resync?         boolean {stateful-sync-opt}?
-   |     |  |  +--rw trigger-initial-sync?   boolean {stateful-sync-opt}?
-   |     |  |  +--rw incremental-sync?       boolean {stateful-sync-opt}?
-   |     |  +--rw sr {sr}?
-   |     |     +--rw enabled?   boolean
-   |     +--rw pce-info
-   |     |  +--rw scope
-   |     |  |  +--rw intra-area-scope?           boolean
-   |     |  |  +--rw intra-area-pref?            uint8
-   |     |  |  +--rw inter-area-scope?           boolean
-   |     |  |  +--rw inter-area-scope-default?   boolean
-   |     |  |  +--rw inter-area-pref?            uint8
-   |     |  |  +--rw inter-as-scope?             boolean
-   |     |  |  +--rw inter-as-scope-default?     boolean
-   |     |  |  +--rw inter-as-pref?              uint8
-   |     |  |  +--rw inter-layer-scope?          boolean
-   |     |  |  +--rw inter-layer-pref?           uint8
-   |     |  +--rw neigh-domains
-   |     |  |  +--rw domain* [domain-type domain]
-   |     |  |     +--rw domain-type    domain-type
-   |     |  |     +--rw domain         domain
-   |     |  +--rw path-key {path-key}?
-   |     |     +--rw enabled?         boolean
-   |     |     +--rw discard-timer?   uint32
-   |     |     +--rw reuse-time?      uint32
-   |     |     +--rw pce-id?          inet:ip-address
-   |     +--rw (auth-type-selection)?
-   |     |  +--:(auth-key-chain)
-   |     |  |  +--rw key-chain?                    key-chain:key-chain-ref
-   |     |  +--:(auth-key)
-   |     |  |  +--rw key?                          string
-   |     |  |  +--rw crypto-algorithm
-   |     |  |     +--rw (algorithm)?
-   |     |  |        +--:(hmac-sha-1-12) {crypto-hmac-sha-1-12}?
-   |     |  |        |  +--rw hmac-sha1-12?             empty
-   |     |  |        +--:(aes-cmac-prf-128) {aes-cmac-prf-128}?
-   |     |  |        |  +--rw aes-cmac-prf-128?         empty
-   |     |  |        +--:(md5)
-   |     |  |        |  +--rw md5?                      empty
-   |     |  |        +--:(sha-1)
-   |     |  |        |  +--rw sha-1?                    empty
-   |     |  |        +--:(hmac-sha-1)
-   |     |  |        |  +--rw hmac-sha-1?               empty
-   |     |  |        +--:(hmac-sha-256)
-   |     |  |        |  +--rw hmac-sha-256?             empty
-   |     |  |        +--:(hmac-sha-384)
-   |     |  |        |  +--rw hmac-sha-384?             empty
-   |     |  |        +--:(hmac-sha-512)
-   |     |  |        |  +--rw hmac-sha-512?             empty
-   |     |  |        +--:(clear-text) {clear-text}?
-   |     |  |        |  +--rw clear-text?               empty
-   |     |  |        +--:(replay-protection-only) {replay-protection-only}?
-   |     |  |           +--rw replay-protection-only?   empty
-   |     |  +--:(auth-tls) {tls}?
-   |     |     +--rw tls
-   |     +--rw connect-timer?                uint32
-   |     +--rw connect-max-retry?            uint32
-   |     +--rw init-backoff-timer?           uint32
-   |     +--rw max-backoff-timer?            uint32
-   |     +--rw open-wait-timer?              uint32
-   |     +--rw keep-wait-timer?              uint32
-   |     +--rw keep-alive-timer?             uint32
-   |     +--rw dead-timer?                   uint32
-   |     +--rw allow-negotiation?            boolean
-   |     +--rw max-keep-alive-timer?         uint32
-   |     +--rw max-dead-timer?               uint32
-   |     +--rw min-keep-alive-timer?         uint32
-   |     +--rw min-dead-timer?               uint32
-   |     +--rw sync-timer?                   uint32 {svec}?
-   |     +--rw request-timer?                uint32
-   |     +--rw max-sessions?                 uint32
-   |     +--rw max-unknown-reqs?             uint32
-   |     +--rw max-unknown-msgs?             uint32
-   |     +--rw pcep-notification-max-rate    uint32
-   |     +--rw stateful-parameter {stateful}?
-   |     |  +--rw state-timeout?          uint32
-   |     |  +--rw redelegation-timeout?   uint32
-   |     |  +--rw rpt-non-pcep-lsp?       boolean
-   |     +--rw of-list {objective-function}?
-   |     |  +--rw objective-function* [of]
-   |     |     +--rw of    objective-function
-   |     +--rw peers
-   |        +--rw peer* [addr]
-   |           +--rw addr                inet:ip-address
-   |           +--rw description?        string
-   |           +--rw domain
-   |           |  +--rw domain* [domain-type domain]
-   |           |     +--rw domain-type    domain-type
-   |           |     +--rw domain         domain
-   |           +--rw capability
-   |           |  +--rw gmpls?                 boolean {gmpls}?
-   |           |  +--rw bi-dir?                boolean
-   |           |  +--rw diverse?               boolean
-   |           |  +--rw load-balance?          boolean
-   |           |  +--rw synchronize?           boolean {svec}?
-   |           |  +--rw objective-function?    boolean {objective-function}?
-   |           |  +--rw add-path-constraint?   boolean
-   |           |  +--rw prioritization?        boolean
-   |           |  +--rw multi-request?         boolean
-   |           |  +--rw gco?                   boolean {gco}?
-   |           |  +--rw p2mp?                  boolean {p2mp}?
-   |           |  +--rw stateful {stateful}?
-   |           |  |  +--rw enabled?                boolean
-   |           |  |  +--rw active?                 boolean
-   |           |  |  +--rw pce-initiated?          boolean {pce-initiated}?
-   |           |  |  +--rw include-db-ver?         boolean {stateful-sync-opt}?
-   |           |  |  +--rw trigger-resync?         boolean {stateful-sync-opt}?
-   |           |  |  +--rw trigger-initial-sync?   boolean {stateful-sync-opt}?
-   |           |  |  +--rw incremental-sync?       boolean {stateful-sync-opt}?
-   |           |  +--rw sr {sr}?
-   |           |     +--rw enabled?   boolean
-   |           +--rw scope
-   |           |  +--rw intra-area-scope?           boolean
-   |           |  +--rw intra-area-pref?            uint8
-   |           |  +--rw inter-area-scope?           boolean
-   |           |  +--rw inter-area-scope-default?   boolean
-   |           |  +--rw inter-area-pref?            uint8
-   |           |  +--rw inter-as-scope?             boolean
-   |           |  +--rw inter-as-scope-default?     boolean
-   |           |  +--rw inter-as-pref?              uint8
-   |           |  +--rw inter-layer-scope?          boolean
-   |           |  +--rw inter-layer-pref?           uint8
-   |           +--rw neigh-domains
-   |           |  +--rw domain* [domain-type domain]
-   |           |     +--rw domain-type    domain-type
-   |           |     +--rw domain         domain
-   |           +--rw delegation-pref?    uint8 {stateful}?
-   |           +--rw (auth-type-selection)?
-   |           |  +--:(auth-key-chain)
-   |           |  |  +--rw key-chain?          key-chain:key-chain-ref
-   |           |  +--:(auth-key)
-   |           |  |  +--rw key?                string
-   |           |  |  +--rw crypto-algorithm
-   |           |  |     +--rw (algorithm)?
-   |           |  |        +--:(hmac-sha-1-12) {crypto-hmac-sha-1-12}?
-   |           |  |        |  +--rw hmac-sha1-12?             empty
-   |           |  |        +--:(aes-cmac-prf-128) {aes-cmac-prf-128}?
-   |           |  |        |  +--rw aes-cmac-prf-128?         empty
-   |           |  |        +--:(md5)
-   |           |  |        |  +--rw md5?                      empty
-   |           |  |        +--:(sha-1)
-   |           |  |        |  +--rw sha-1?                    empty
-   |           |  |        +--:(hmac-sha-1)
-   |           |  |        |  +--rw hmac-sha-1?               empty
-   |           |  |        +--:(hmac-sha-256)
-   |           |  |        |  +--rw hmac-sha-256?             empty
-   |           |  |        +--:(hmac-sha-384)
-   |           |  |        |  +--rw hmac-sha-384?             empty
-   |           |  |        +--:(hmac-sha-512)
-   |           |  |        |  +--rw hmac-sha-512?             empty
-   |           |  |        +--:(clear-text) {clear-text}?
-   |           |  |        |  +--rw clear-text?               empty
-   |           |  |        +--:(replay-protection-only) {replay-protection-only}?
-   |           |  |           +--rw replay-protection-only?   empty
-   |           |  +--:(auth-tls) {tls}?
-   |           |     +--rw tls
-   |           +--rw of-list {objective-function}?
-   |              +--rw objective-function* [of]
-   |                 +--rw of    objective-function
-   +--ro pcep-state
-      +--ro entity
-         +--ro addr?                   inet:ip-address
-         +--ro index?                  uint32
-         +--ro admin-status?           pcep-admin-status
-         +--ro oper-status?            pcep-admin-status
-         +--ro role?                   pcep-role
-         +--ro description?            string
-         +--ro speaker-entity-id?      string {stateful-sync-opt}?
-         +--ro domain
-         |  +--ro domain* [domain-type domain]
-         |     +--ro domain-type    domain-type
-         |     +--ro domain         domain
-         +--ro capability
-         |  +--ro gmpls?                 boolean {gmpls}?
-         |  +--ro bi-dir?                boolean
-         |  +--ro diverse?               boolean
-         |  +--ro load-balance?          boolean
-         |  +--ro synchronize?           boolean {svec}?
-         |  +--ro objective-function?    boolean {objective-function}?
-         |  +--ro add-path-constraint?   boolean
-         |  +--ro prioritization?        boolean
-         |  +--ro multi-request?         boolean
-         |  +--ro gco?                   boolean {gco}?
-         |  +--ro p2mp?                  boolean {p2mp}?
-         |  +--ro stateful {stateful}?
-         |  |  +--ro enabled?                boolean
-         |  |  +--ro active?                 boolean
-         |  |  +--ro pce-initiated?          boolean {pce-initiated}?
-         |  |  +--ro include-db-ver?         boolean {stateful-sync-opt}?
-         |  |  +--ro trigger-resync?         boolean {stateful-sync-opt}?
-         |  |  +--ro trigger-initial-sync?   boolean {stateful-sync-opt}?
-         |  |  +--ro incremental-sync?       boolean {stateful-sync-opt}?
-         |  +--ro sr {sr}?
-         |     +--ro enabled?   boolean
-         +--ro pce-info
-         |  +--ro scope
-         |  |  +--ro intra-area-scope?           boolean
-         |  |  +--ro intra-area-pref?            uint8
-         |  |  +--ro inter-area-scope?           boolean
-         |  |  +--ro inter-area-scope-default?   boolean
-         |  |  +--ro inter-area-pref?            uint8
-         |  |  +--ro inter-as-scope?             boolean
-         |  |  +--ro inter-as-scope-default?     boolean
-         |  |  +--ro inter-as-pref?              uint8
-         |  |  +--ro inter-layer-scope?          boolean
-         |  |  +--ro inter-layer-pref?           uint8
-         |  +--ro neigh-domains
-         |  |  +--ro domain* [domain-type domain]
-         |  |     +--ro domain-type    domain-type
-         |  |     +--ro domain         domain
-         |  +--ro path-key {path-key}?
-         |     +--ro enabled?         boolean
-         |     +--ro discard-timer?   uint32
-         |     +--ro reuse-time?      uint32
-         |     +--ro pce-id?          inet:ip-address
-         +--ro (auth-type-selection)?
-         |  +--:(auth-key-chain)
-         |  |  +--ro key-chain?              key-chain:key-chain-ref
-         |  +--:(auth-key)
-         |  |  +--ro key?                    string
-         |  |  +--ro crypto-algorithm
-         |  |     +--ro (algorithm)?
-         |  |        +--:(hmac-sha-1-12) {crypto-hmac-sha-1-12}?
-         |  |        |  +--ro hmac-sha1-12?             empty
-         |  |        +--:(aes-cmac-prf-128) {aes-cmac-prf-128}?
-         |  |        |  +--ro aes-cmac-prf-128?         empty
-         |  |        +--:(md5)
-         |  |        |  +--ro md5?                      empty
-         |  |        +--:(sha-1)
-         |  |        |  +--ro sha-1?                    empty
-         |  |        +--:(hmac-sha-1)
-         |  |        |  +--ro hmac-sha-1?               empty
-         |  |        +--:(hmac-sha-256)
-         |  |        |  +--ro hmac-sha-256?             empty
-         |  |        +--:(hmac-sha-384)
-         |  |        |  +--ro hmac-sha-384?             empty
-         |  |        +--:(hmac-sha-512)
-         |  |        |  +--ro hmac-sha-512?             empty
-         |  |        +--:(clear-text) {clear-text}?
-         |  |        |  +--ro clear-text?               empty
-         |  |        +--:(replay-protection-only) {replay-protection-only}?
-         |  |           +--ro replay-protection-only?   empty
-         |  +--:(auth-tls) {tls}?
-         |     +--ro tls
-         +--ro connect-timer?          uint32
-         +--ro connect-max-retry?      uint32
-         +--ro init-backoff-timer?     uint32
-         +--ro max-backoff-timer?      uint32
-         +--ro open-wait-timer?        uint32
-         +--ro keep-wait-timer?        uint32
-         +--ro keep-alive-timer?       uint32
-         +--ro dead-timer?             uint32
-         +--ro allow-negotiation?      boolean
-         +--ro max-keep-alive-timer?   uint32
-         +--ro max-dead-timer?         uint32
-         +--ro min-keep-alive-timer?   uint32
-         +--ro min-dead-timer?         uint32
-         +--ro sync-timer?             uint32 {svec}?
-         +--ro request-timer?          uint32
-         +--ro max-sessions?           uint32
-         +--ro max-unknown-reqs?       uint32
-         +--ro max-unknown-msgs?       uint32
-         +--ro stateful-parameter {stateful}?
-         |  +--ro state-timeout?          uint32
-         |  +--ro redelegation-timeout?   uint32
-         |  +--ro rpt-non-pcep-lsp?       boolean
-         +--ro lsp-db {stateful}?
-         |  +--ro db-ver?             uint64 {stateful-sync-opt}?
-         |  +--ro association-list* [id source global-source extended-id]
-         |  |  +--ro type?            assoc-type
-         |  |  +--ro id               uint16
-         |  |  +--ro source           inet:ip-address
-         |  |  +--ro global-source    uint32
-         |  |  +--ro extended-id      string
-         |  |  +--ro lsp* [plsp-id pcc-id]
-         |  |     +--ro plsp-id    -> /pcep-state/entity/lsp-db/lsp/plsp-id
-         |  |     +--ro pcc-id     -> /pcep-state/entity/lsp-db/lsp/pcc-id
-         |  +--ro lsp* [plsp-id pcc-id]
-         |     +--ro plsp-id               uint32
-         |     +--ro pcc-id                inet:ip-address
-         |     +--ro lsp-ref
-         |     |  +--ro source?               -> /te:te/lsps-state/lsp/source
-         |     |  +--ro destination?          -> /te:te/lsps-state/lsp/destination
-         |     |  +--ro tunnel-id?            -> /te:te/lsps-state/lsp/tunnel-id
-         |     |  +--ro lsp-id?               -> /te:te/lsps-state/lsp/lsp-id
-         |     |  +--ro extended-tunnel-id?   -> /te:te/lsps-state/lsp/extended-tunnel-id
-         |     |  +--ro type?                 -> /te:te/lsps-state/lsp/type
-         |     +--ro admin-state?          boolean
-         |     +--ro operational-state?    operational-state
-         |     +--ro delegated
-         |     |  +--ro enabled?   boolean
-         |     |  +--ro pce?       -> /pcep-state/entity/peers/peer/addr
-         |     |  +--ro srp-id?    uint32
-         |     +--ro initiation {pce-initiated}?
-         |     |  +--ro enabled?   boolean
-         |     |  +--ro pce?       -> /pcep-state/entity/peers/peer/addr
-         |     +--ro symbolic-path-name?   string
-         |     +--ro last-error?           lsp-error
-         |     +--ro pst?                  pst
-         |     +--ro association-list* [id source global-source extended-id]
-         |        +--ro id               -> /pcep-state/entity/lsp-db/association-list/id
-         |        +--ro source           -> /pcep-state/entity/lsp-db/association-list/source
-         |        +--ro global-source    -> /pcep-state/entity/lsp-db/association-list/global-source
-         |        +--ro extended-id      -> /pcep-state/entity/lsp-db/association-list/extended-id
-         +--ro path-keys {path-key}?
-         |  +--ro path-keys* [path-key]
-         |     +--ro path-key         uint16
-         |     +--ro cps
-         |     |  +--ro explicit-route-objects* [index]
-         |     |     +--ro index                   uint8
-         |     |     +--ro explicit-route-usage?   identityref
-         |     |     +--ro (type)?
-         |     |        +--:(ipv4-address)
-         |     |        |  +--ro v4-address?             inet:ipv4-address
-         |     |        |  +--ro v4-prefix-length?       uint8
-         |     |        |  +--ro v4-loose?               boolean
-         |     |        +--:(ipv6-address)
-         |     |        |  +--ro v6-address?             inet:ipv6-address
-         |     |        |  +--ro v6-prefix-length?       uint8
-         |     |        |  +--ro v6-loose?               boolean
-         |     |        +--:(as-number)
-         |     |        |  +--ro as-number?              uint16
-         |     |        +--:(unnumbered-link)
-         |     |        |  +--ro router-id?              inet:ip-address
-         |     |        |  +--ro interface-id?           uint32
-         |     |        +--:(label)
-         |     |           +--ro value?                  uint32
-         |     +--ro pcc-original?    -> /pcep-state/entity/peers/peer/addr
-         |     +--ro req-id?          uint32
-         |     +--ro retrieved?       boolean
-         |     +--ro pcc-retrieved?   -> /pcep-state/entity/peers/peer/addr
-         |     +--ro creation-time?   yang:timestamp
-         |     +--ro discard-time?    uint32
-         |     +--ro reuse-time?      uint32
-         +--ro of-list {objective-function}?
-         |  +--ro objective-function* [of]
-         |     +--ro of    objective-function
-         +--ro peers
-            +--ro peer* [addr]
-               +--ro addr                    inet:ip-address
-               +--ro role?                   pcep-role
-               +--ro domain
-               |  +--ro domain* [domain-type domain]
-               |     +--ro domain-type    domain-type
-               |     +--ro domain         domain
-               +--ro capability
-               |  +--ro gmpls?                 boolean {gmpls}?
-               |  +--ro bi-dir?                boolean
-               |  +--ro diverse?               boolean
-               |  +--ro load-balance?          boolean
-               |  +--ro synchronize?           boolean {svec}?
-               |  +--ro objective-function?    boolean {objective-function}?
-               |  +--ro add-path-constraint?   boolean
-               |  +--ro prioritization?        boolean
-               |  +--ro multi-request?         boolean
-               |  +--ro gco?                   boolean {gco}?
-               |  +--ro p2mp?                  boolean {p2mp}?
-               |  +--ro stateful {stateful}?
-               |  |  +--ro enabled?                boolean
-               |  |  +--ro active?                 boolean
-               |  |  +--ro pce-initiated?          boolean {pce-initiated}?
-               |  |  +--ro include-db-ver?         boolean {stateful-sync-opt}?
-               |  |  +--ro trigger-resync?         boolean {stateful-sync-opt}?
-               |  |  +--ro trigger-initial-sync?   boolean {stateful-sync-opt}?
-               |  |  +--ro incremental-sync?       boolean {stateful-sync-opt}?
-               |  +--ro sr {sr}?
-               |     +--ro enabled?   boolean
-               +--ro pce-info
-               |  +--ro scope
-               |  |  +--ro intra-area-scope?           boolean
-               |  |  +--ro intra-area-pref?            uint8
-               |  |  +--ro inter-area-scope?           boolean
-               |  |  +--ro inter-area-scope-default?   boolean
-               |  |  +--ro inter-area-pref?            uint8
-               |  |  +--ro inter-as-scope?             boolean
-               |  |  +--ro inter-as-scope-default?     boolean
-               |  |  +--ro inter-as-pref?              uint8
-               |  |  +--ro inter-layer-scope?          boolean
-               |  |  +--ro inter-layer-pref?           uint8
-               |  +--ro neigh-domains
-               |     +--ro domain* [domain-type domain]
-               |        +--ro domain-type    domain-type
-               |        +--ro domain         domain
-               +--ro delegation-pref?        uint8 {stateful}?
-               +--ro (auth-type-selection)?
-               |  +--:(auth-key-chain)
-               |  |  +--ro key-chain?              key-chain:key-chain-ref
-               |  +--:(auth-key)
-               |  |  +--ro key?                    string
-               |  |  +--ro crypto-algorithm
-               |  |     +--ro (algorithm)?
-               |  |        +--:(hmac-sha-1-12) {crypto-hmac-sha-1-12}?
-               |  |        |  +--ro hmac-sha1-12?             empty
-               |  |        +--:(aes-cmac-prf-128) {aes-cmac-prf-128}?
-               |  |        |  +--ro aes-cmac-prf-128?         empty
-               |  |        +--:(md5)
-               |  |        |  +--ro md5?                      empty
-               |  |        +--:(sha-1)
-               |  |        |  +--ro sha-1?                    empty
-               |  |        +--:(hmac-sha-1)
-               |  |        |  +--ro hmac-sha-1?               empty
-               |  |        +--:(hmac-sha-256)
-               |  |        |  +--ro hmac-sha-256?             empty
-               |  |        +--:(hmac-sha-384)
-               |  |        |  +--ro hmac-sha-384?             empty
-               |  |        +--:(hmac-sha-512)
-               |  |        |  +--ro hmac-sha-512?             empty
-               |  |        +--:(clear-text) {clear-text}?
-               |  |        |  +--ro clear-text?               empty
-               |  |        +--:(replay-protection-only) {replay-protection-only}?
-               |  |           +--ro replay-protection-only?   empty
-               |  +--:(auth-tls) {tls}?
-               |     +--ro tls
-               +--ro of-list {objective-function}?
-               |  +--ro objective-function* [of]
-               |     +--ro of    objective-function
-               +--ro discontinuity-time?     yang:timestamp
-               +--ro initiate-session?       boolean
-               +--ro session-exists?         boolean
-               +--ro num-sess-setup-ok?      yang:counter32
-               +--ro num-sess-setup-fail?    yang:counter32
-               +--ro session-up-time?        yang:timestamp
-               +--ro session-fail-time?      yang:timestamp
-               +--ro session-fail-up-time?   yang:timestamp
-               +--ro pcep-stats
-               |  +--ro avg-rsp-time?               uint32
-               |  +--ro lwm-rsp-time?               uint32
-               |  +--ro hwm-rsp-time?               uint32
-               |  +--ro num-pcreq-sent?             yang:counter32
-               |  +--ro num-pcreq-rcvd?             yang:counter32
-               |  +--ro num-pcrep-sent?             yang:counter32
-               |  +--ro num-pcrep-rcvd?             yang:counter32
-               |  +--ro num-pcerr-sent?             yang:counter32
-               |  +--ro num-pcerr-rcvd?             yang:counter32
-               |  +--ro num-pcntf-sent?             yang:counter32
-               |  +--ro num-pcntf-rcvd?             yang:counter32
-               |  +--ro num-keepalive-sent?         yang:counter32
-               |  +--ro num-keepalive-rcvd?         yang:counter32
-               |  +--ro num-unknown-rcvd?           yang:counter32
-               |  +--ro num-corrupt-rcvd?           yang:counter32
-               |  +--ro num-req-sent?               yang:counter32
-               |  +--ro num-req-sent-pend-rep?      yang:counter32
-               |  +--ro num-req-sent-ero-rcvd?      yang:counter32
-               |  +--ro num-req-sent-nopath-rcvd?   yang:counter32
-               |  +--ro num-req-sent-cancel-rcvd?   yang:counter32
-               |  +--ro num-req-sent-error-rcvd?    yang:counter32
-               |  +--ro num-req-sent-timeout?       yang:counter32
-               |  +--ro num-req-sent-cancel-sent?   yang:counter32
-               |  +--ro num-req-rcvd?               yang:counter32
-               |  +--ro num-req-rcvd-pend-rep?      yang:counter32
-               |  +--ro num-req-rcvd-ero-sent?      yang:counter32
-               |  +--ro num-req-rcvd-nopath-sent?   yang:counter32
-               |  +--ro num-req-rcvd-cancel-sent?   yang:counter32
-               |  +--ro num-req-rcvd-error-sent?    yang:counter32
-               |  +--ro num-req-rcvd-cancel-rcvd?   yang:counter32
-               |  +--ro num-rep-rcvd-unknown?       yang:counter32
-               |  +--ro num-req-rcvd-unknown?       yang:counter32
-               |  +--ro svec {svec}?
-               |  |  +--ro num-svec-sent?       yang:counter32
-               |  |  +--ro num-svec-req-sent?   yang:counter32
-               |  |  +--ro num-svec-rcvd?       yang:counter32
-               |  |  +--ro num-svec-req-rcvd?   yang:counter32
-               |  +--ro stateful {stateful}?
-               |  |  +--ro num-pcrpt-sent?             yang:counter32
-               |  |  +--ro num-pcrpt-rcvd?             yang:counter32
-               |  |  +--ro num-pcupd-sent?             yang:counter32
-               |  |  +--ro num-pcupd-rcvd?             yang:counter32
-               |  |  +--ro num-rpt-sent?               yang:counter32
-               |  |  +--ro num-rpt-rcvd?               yang:counter32
-               |  |  +--ro num-rpt-rcvd-error-sent?    yang:counter32
-               |  |  +--ro num-upd-sent?               yang:counter32
-               |  |  +--ro num-upd-rcvd?               yang:counter32
-               |  |  +--ro num-upd-rcvd-unknown?       yang:counter32
-               |  |  +--ro num-upd-rcvd-undelegated?   yang:counter32
-               |  |  +--ro num-upd-rcvd-error-sent?    yang:counter32
-               |  |  +--ro initiation {pce-initiated}?
-               |  |     +--ro num-pcinitiate-sent?            yang:counter32
-               |  |     +--ro num-pcinitiate-rcvd?            yang:counter32
-               |  |     +--ro num-initiate-sent?              yang:counter32
-               |  |     +--ro num-initiate-rcvd?              yang:counter32
-               |  |     +--ro num-initiate-rcvd-error-sent?   yang:counter32
-               |  +--ro path-key {path-key}?
-               |  |  +--ro num-unknown-path-key?      yang:counter32
-               |  |  +--ro num-exp-path-key?          yang:counter32
-               |  |  +--ro num-dup-path-key?          yang:counter32
-               |  |  +--ro num-path-key-no-attempt?   yang:counter32
-               |  +--ro num-req-sent-closed?        yang:counter32
-               |  +--ro num-req-rcvd-closed?        yang:counter32
-               +--ro sessions
-                  +--ro session* [initiator]
-                     +--ro initiator               pcep-initiator
-                     +--ro state-last-change?      yang:timestamp
-                     +--ro state?                  pcep-sess-state
-                     +--ro session-creation?       yang:timestamp
-                     +--ro connect-retry?          yang:counter32
-                     +--ro local-id?               uint32
-                     +--ro remote-id?              uint32
-                     +--ro keepalive-timer?        uint32
-                     +--ro peer-keepalive-timer?   uint32
-                     +--ro dead-timer?             uint32
-                     +--ro peer-dead-timer?        uint32
-                     +--ro ka-hold-time-rem?       uint32
-                     +--ro overloaded?             boolean
-                     +--ro overload-time?          uint32
-                     +--ro peer-overloaded?        boolean
-                     +--ro peer-overload-time?     uint32
-                     +--ro lspdb-sync?             sync-state {stateful}?
-                     +--ro recv-db-ver?            uint64 {stateful,stateful-sync-opt}?
-                     +--ro of-list {objective-function}?
-                     |  +--ro objective-function* [of]
-                     |     +--ro of    objective-function
-                     +--ro speaker-entity-id?      string {stateful-sync-opt}?
-                     +--ro discontinuity-time?     yang:timestamp
-                     +--ro pcep-stats
-                        +--ro avg-rsp-time?               uint32
-                        +--ro lwm-rsp-time?               uint32
-                        +--ro hwm-rsp-time?               uint32
-                        +--ro num-pcreq-sent?             yang:counter32
-                        +--ro num-pcreq-rcvd?             yang:counter32
-                        +--ro num-pcrep-sent?             yang:counter32
-                        +--ro num-pcrep-rcvd?             yang:counter32
-                        +--ro num-pcerr-sent?             yang:counter32
-                        +--ro num-pcerr-rcvd?             yang:counter32
-                        +--ro num-pcntf-sent?             yang:counter32
-                        +--ro num-pcntf-rcvd?             yang:counter32
-                        +--ro num-keepalive-sent?         yang:counter32
-                        +--ro num-keepalive-rcvd?         yang:counter32
-                        +--ro num-unknown-rcvd?           yang:counter32
-                        +--ro num-corrupt-rcvd?           yang:counter32
-                        +--ro num-req-sent?               yang:counter32
-                        +--ro num-req-sent-pend-rep?      yang:counter32
-                        +--ro num-req-sent-ero-rcvd?      yang:counter32
-                        +--ro num-req-sent-nopath-rcvd?   yang:counter32
-                        +--ro num-req-sent-cancel-rcvd?   yang:counter32
-                        +--ro num-req-sent-error-rcvd?    yang:counter32
-                        +--ro num-req-sent-timeout?       yang:counter32
-                        +--ro num-req-sent-cancel-sent?   yang:counter32
-                        +--ro num-req-rcvd?               yang:counter32
-                        +--ro num-req-rcvd-pend-rep?      yang:counter32
-                        +--ro num-req-rcvd-ero-sent?      yang:counter32
-                        +--ro num-req-rcvd-nopath-sent?   yang:counter32
-                        +--ro num-req-rcvd-cancel-sent?   yang:counter32
-                        +--ro num-req-rcvd-error-sent?    yang:counter32
-                        +--ro num-req-rcvd-cancel-rcvd?   yang:counter32
-                        +--ro num-rep-rcvd-unknown?       yang:counter32
-                        +--ro num-req-rcvd-unknown?       yang:counter32
-                        +--ro svec {svec}?
-                        |  +--ro num-svec-sent?       yang:counter32
-                        |  +--ro num-svec-req-sent?   yang:counter32
-                        |  +--ro num-svec-rcvd?       yang:counter32
-                        |  +--ro num-svec-req-rcvd?   yang:counter32
-                        +--ro stateful {stateful}?
-                        |  +--ro num-pcrpt-sent?             yang:counter32
-                        |  +--ro num-pcrpt-rcvd?             yang:counter32
-                        |  +--ro num-pcupd-sent?             yang:counter32
-                        |  +--ro num-pcupd-rcvd?             yang:counter32
-                        |  +--ro num-rpt-sent?               yang:counter32
-                        |  +--ro num-rpt-rcvd?               yang:counter32
-                        |  +--ro num-rpt-rcvd-error-sent?    yang:counter32
-                        |  +--ro num-upd-sent?               yang:counter32
-                        |  +--ro num-upd-rcvd?               yang:counter32
-                        |  +--ro num-upd-rcvd-unknown?       yang:counter32
-                        |  +--ro num-upd-rcvd-undelegated?   yang:counter32
-                        |  +--ro num-upd-rcvd-error-sent?    yang:counter32
-                        |  +--ro initiation {pce-initiated}?
-                        |     +--ro num-pcinitiate-sent?            yang:counter32
-                        |     +--ro num-pcinitiate-rcvd?            yang:counter32
-                        |     +--ro num-initiate-sent?              yang:counter32
-                        |     +--ro num-initiate-rcvd?              yang:counter32
-                        |     +--ro num-initiate-rcvd-error-sent?   yang:counter32
-                        +--ro path-key {path-key}?
-                           +--ro num-unknown-path-key?      yang:counter32
-                           +--ro num-exp-path-key?          yang:counter32
-                           +--ro num-dup-path-key?          yang:counter32
-                           +--ro num-path-key-no-attempt?   yang:counter32
-notifications:
-   +---n pcep-session-up
-   |  +--ro peer-addr?           -> /pcep-state/entity/peers/peer/addr
-   |  +--ro session-initiator?   -> /pcep-state/entity/peers/peer/sessions/session/initiator
-   |  +--ro state-last-change?   yang:timestamp
-   |  +--ro state?               pcep-sess-state
-   +---n pcep-session-down
-   |  +--ro peer-addr?           -> /pcep-state/entity/peers/peer/addr
-   |  +--ro session-initiator?   pcep-initiator
-   |  +--ro state-last-change?   yang:timestamp
-   |  +--ro state?               pcep-sess-state
-   +---n pcep-session-local-overload
-   |  +--ro peer-addr?           -> /pcep-state/entity/peers/peer/addr
-   |  +--ro session-initiator?   -> /pcep-state/entity/peers/peer/sessions/session/initiator
-   |  +--ro overloaded?          boolean
-   |  +--ro overload-time?       uint32
-   +---n pcep-session-local-overload-clear
-   |  +--ro peer-addr?    -> /pcep-state/entity/peers/peer/addr
-   |  +--ro overloaded?   boolean
-   +---n pcep-session-peer-overload
-   |  +--ro peer-addr?            -> /pcep-state/entity/peers/peer/addr
-   |  +--ro session-initiator?    -> /pcep-state/entity/peers/peer/sessions/session/initiator
-   |  +--ro peer-overloaded?      boolean
-   |  +--ro peer-overload-time?   uint32
-   +---n pcep-session-peer-overload-clear
-      +--ro peer-addr?         -> /pcep-state/entity/peers/peer/addr
-      +--ro peer-overloaded?   boolean
+    +--rw pcep!
+    |  +--rw entity
+    |     +--rw addr                          inet:ip-address
+    |     +--rw enabled?                      boolean
+    |     +--rw role                          pcep-role
+    |     +--rw description?                  string
+    |     +--rw speaker-entity-id?            string
+    |     |       {stateful-sync-opt}?
+    |     +--rw domain
+    |     |  +--rw domain* [domain-type domain]
+    |     |     +--rw domain-type    domain-type
+    |     |     +--rw domain         domain
+    |     +--rw capability
+    |     |  +--rw gmpls?                 boolean {gmpls}?
+    |     |  +--rw bi-dir?                boolean
+    |     |  +--rw diverse?               boolean
+    |     |  +--rw load-balance?          boolean
+    |     |  +--rw synchronize?           boolean {svec}?
+    |     |  +--rw objective-function?    boolean
+    |     |  |       {objective-function}?
+    |     |  +--rw add-path-constraint?   boolean
+    |     |  +--rw prioritization?        boolean
+    |     |  +--rw multi-request?         boolean
+    |     |  +--rw gco?                   boolean {gco}?
+    |     |  +--rw p2mp?                  boolean {p2mp}?
+    |     |  +--rw stateful {stateful}?
+    |     |  |  +--rw enabled?                boolean
+    |     |  |  +--rw active?                 boolean
+    |     |  |  +--rw pce-initiated?          boolean
+    |     |  |  |       {pce-initiated}?
+    |     |  |  +--rw include-db-ver?         boolean
+    |     |  |  |       {stateful-sync-opt}?
+    |     |  |  +--rw trigger-resync?         boolean
+    |     |  |  |       {stateful-sync-opt}?
+    |     |  |  +--rw trigger-initial-sync?   boolean
+    |     |  |  |       {stateful-sync-opt}?
+    |     |  |  +--rw incremental-sync?       boolean
+    |     |  |          {stateful-sync-opt}?
+    |     |  +--rw sr {sr}?
+    |     |     +--rw enabled?   boolean
+    |     +--rw pce-info
+    |     |  +--rw scope
+    |     |  |  +--rw intra-area-scope?           boolean
+    |     |  |  +--rw intra-area-pref?            uint8
+    |     |  |  +--rw inter-area-scope?           boolean
+    |     |  |  +--rw inter-area-scope-default?   boolean
+    |     |  |  +--rw inter-area-pref?            uint8
+    |     |  |  +--rw inter-as-scope?             boolean
+    |     |  |  +--rw inter-as-scope-default?     boolean
+    |     |  |  +--rw inter-as-pref?              uint8
+    |     |  |  +--rw inter-layer-scope?          boolean
+    |     |  |  +--rw inter-layer-pref?           uint8
+    |     |  +--rw neigh-domains
+    |     |  |  +--rw domain* [domain-type domain]
+    |     |  |     +--rw domain-type    domain-type
+    |     |  |     +--rw domain         domain
+    |     |  +--rw path-key {path-key}?
+    |     |     +--rw enabled?         boolean
+    |     |     +--rw discard-timer?   uint32
+    |     |     +--rw reuse-time?      uint32
+    |     |     +--rw pce-id?          inet:ip-address
+    |     +--rw (auth-type-selection)?
+    |     |  +--:(auth-key-chain)
+    |     |  |  +--rw key-chain?
+    |     |  |          key-chain:key-chain-ref
+    |     |  +--:(auth-key)
+    |     |  |  +--rw crypto-algorithm              identityref
+    |     |  |  +--rw key-string
+    |     |  |     +--rw (key-string-style)?
+    |     |  |        +--:(keystring)
+    |     |  |        |  +--rw keystring?            string
+    |     |  |        +--:(hexadecimal)
+    |     |  |                 {key-chain:hex-key-string}?
+    |     |  |           +--rw hexadecimal-string?   yang:hex-string
+    |     |  +--:(auth-tls) {tls}?
+    |     |     +--rw tls
+    |     +--rw connect-timer?                uint32
+    |     +--rw connect-max-retry?            uint32
+    |     +--rw init-backoff-timer?           uint32
+    |     +--rw max-backoff-timer?            uint32
+    |     +--rw open-wait-timer?              uint32
+    |     +--rw keep-wait-timer?              uint32
+    |     +--rw keep-alive-timer?             uint32
+    |     +--rw dead-timer?                   uint32
+    |     +--rw allow-negotiation?            boolean
+    |     +--rw max-keep-alive-timer?         uint32
+    |     +--rw max-dead-timer?               uint32
+    |     +--rw min-keep-alive-timer?         uint32
+    |     +--rw min-dead-timer?               uint32
+    |     +--rw sync-timer?                   uint32 {svec}?
+    |     +--rw request-timer?                uint32
+    |     +--rw max-sessions?                 uint32
+    |     +--rw max-unknown-reqs?             uint32
+    |     +--rw max-unknown-msgs?             uint32
+    |     +--rw pcep-notification-max-rate    uint32
+    |     +--rw stateful-parameter {stateful}?
+    |     |  +--rw state-timeout?          uint32
+    |     |  +--rw redelegation-timeout?   uint32
+    |     |  +--rw rpt-non-pcep-lsp?       boolean
+    |     +--rw of-list {objective-function}?
+    |     |  +--rw objective-function* [of]
+    |     |     +--rw of    objective-function
+    |     +--rw peers
+    |        +--rw peer* [addr]
+    |           +--rw addr                inet:ip-address
+    |           +--rw description?        string
+    |           +--rw domain
+    |           |  +--rw domain* [domain-type domain]
+    |           |     +--rw domain-type    domain-type
+    |           |     +--rw domain         domain
+    |           +--rw capability
+    |           |  +--rw gmpls?                 boolean {gmpls}?
+    |           |  +--rw bi-dir?                boolean
+    |           |  +--rw diverse?               boolean
+    |           |  +--rw load-balance?          boolean
+    |           |  +--rw synchronize?           boolean {svec}?
+    |           |  +--rw objective-function?    boolean
+    |           |  |       {objective-function}?
+    |           |  +--rw add-path-constraint?   boolean
+    |           |  +--rw prioritization?        boolean
+    |           |  +--rw multi-request?         boolean
+    |           |  +--rw gco?                   boolean {gco}?
+    |           |  +--rw p2mp?                  boolean {p2mp}?
+    |           |  +--rw stateful {stateful}?
+    |           |  |  +--rw enabled?                boolean
+    |           |  |  +--rw active?                 boolean
+    |           |  |  +--rw pce-initiated?          boolean
+    |           |  |  |       {pce-initiated}?
+    |           |  |  +--rw include-db-ver?         boolean
+    |           |  |  |       {stateful-sync-opt}?
+    |           |  |  +--rw trigger-resync?         boolean
+    |           |  |  |       {stateful-sync-opt}?
+    |           |  |  +--rw trigger-initial-sync?   boolean
+    |           |  |  |       {stateful-sync-opt}?
+    |           |  |  +--rw incremental-sync?       boolean
+    |           |  |          {stateful-sync-opt}?
+    |           |  +--rw sr {sr}?
+    |           |     +--rw enabled?   boolean
+    |           +--rw scope
+    |           |  +--rw intra-area-scope?           boolean
+    |           |  +--rw intra-area-pref?            uint8
+    |           |  +--rw inter-area-scope?           boolean
+    |           |  +--rw inter-area-scope-default?   boolean
+    |           |  +--rw inter-area-pref?            uint8
+    |           |  +--rw inter-as-scope?             boolean
+    |           |  +--rw inter-as-scope-default?     boolean
+    |           |  +--rw inter-as-pref?              uint8
+    |           |  +--rw inter-layer-scope?          boolean
+    |           |  +--rw inter-layer-pref?           uint8
+    |           +--rw neigh-domains
+    |           |  +--rw domain* [domain-type domain]
+    |           |     +--rw domain-type    domain-type
+    |           |     +--rw domain         domain
+    |           +--rw delegation-pref?    uint8 {stateful}?
+    |           +--rw (auth-type-selection)?
+    |              +--:(auth-key-chain)
+    |              |  +--rw key-chain?
+    |              |          key-chain:key-chain-ref
+    |              +--:(auth-key)
+    |              |  +--rw crypto-algorithm    identityref
+    |              |  +--rw key-string
+    |              |     +--rw (key-string-style)?
+    |              |        +--:(keystring)
+    |              |        |  +--rw keystring?            string
+    |              |        +--:(hexadecimal)
+    |              |                 {key-chain:hex-key-string}?
+    |              |           +--rw hexadecimal-string?
+    |              |                   yang:hex-string
+    |              +--:(auth-tls) {tls}?
+    |                 +--rw tls
+    +--ro pcep-state
+       +--ro entity
+          +--ro addr?                   inet:ip-address
+          +--ro index?                  uint32
+          +--ro admin-status?           pcep-admin-status
+          +--ro oper-status?            pcep-admin-status
+          +--ro role?                   pcep-role
+          +--ro description?            string
+          +--ro speaker-entity-id?      string
+          |       {stateful-sync-opt}?
+          +--ro domain
+          |  +--ro domain* [domain-type domain]
+          |     +--ro domain-type    domain-type
+          |     +--ro domain         domain
+          +--ro capability
+          |  +--ro gmpls?                 boolean {gmpls}?
+          |  +--ro bi-dir?                boolean
+          |  +--ro diverse?               boolean
+          |  +--ro load-balance?          boolean
+          |  +--ro synchronize?           boolean {svec}?
+          |  +--ro objective-function?    boolean
+          |  |       {objective-function}?
+          |  +--ro add-path-constraint?   boolean
+          |  +--ro prioritization?        boolean
+          |  +--ro multi-request?         boolean
+          |  +--ro gco?                   boolean {gco}?
+          |  +--ro p2mp?                  boolean {p2mp}?
+          |  +--ro stateful {stateful}?
+          |  |  +--ro enabled?                boolean
+          |  |  +--ro active?                 boolean
+          |  |  +--ro pce-initiated?          boolean
+          |  |  |       {pce-initiated}?
+          |  |  +--ro include-db-ver?         boolean
+          |  |  |       {stateful-sync-opt}?
+          |  |  +--ro trigger-resync?         boolean
+          |  |  |       {stateful-sync-opt}?
+          |  |  +--ro trigger-initial-sync?   boolean
+          |  |  |       {stateful-sync-opt}?
+          |  |  +--ro incremental-sync?       boolean
+          |  |          {stateful-sync-opt}?
+          |  +--ro sr {sr}?
+          |     +--ro enabled?   boolean
+          +--ro pce-info
+          |  +--ro scope
+          |  |  +--ro intra-area-scope?           boolean
+          |  |  +--ro intra-area-pref?            uint8
+          |  |  +--ro inter-area-scope?           boolean
+          |  |  +--ro inter-area-scope-default?   boolean
+          |  |  +--ro inter-area-pref?            uint8
+          |  |  +--ro inter-as-scope?             boolean
+          |  |  +--ro inter-as-scope-default?     boolean
+          |  |  +--ro inter-as-pref?              uint8
+          |  |  +--ro inter-layer-scope?          boolean
+          |  |  +--ro inter-layer-pref?           uint8
+          |  +--ro neigh-domains
+          |  |  +--ro domain* [domain-type domain]
+          |  |     +--ro domain-type    domain-type
+          |  |     +--ro domain         domain
+          |  +--ro path-key {path-key}?
+          |     +--ro enabled?         boolean
+          |     +--ro discard-timer?   uint32
+          |     +--ro reuse-time?      uint32
+          |     +--ro pce-id?          inet:ip-address
+          +--ro (auth-type-selection)?
+          |  +--:(auth-key-chain)
+          |  |  +--ro key-chain?
+          |  |          key-chain:key-chain-ref
+          |  +--:(auth-key)
+          |  |  +--ro crypto-algorithm        identityref
+          |  |  +--ro key-string
+          |  |     +--ro (key-string-style)?
+          |  |        +--:(keystring)
+          |  |        |  +--ro keystring?            string
+          |  |        +--:(hexadecimal)
+          |  |                 {key-chain:hex-key-string}?
+          |  |           +--ro hexadecimal-string?   yang:hex-string
+          |  +--:(auth-tls) {tls}?
+          |     +--ro tls
+          +--ro connect-timer?          uint32
+          +--ro connect-max-retry?      uint32
+          +--ro init-backoff-timer?     uint32
+          +--ro max-backoff-timer?      uint32
+          +--ro open-wait-timer?        uint32
+          +--ro keep-wait-timer?        uint32
+          +--ro keep-alive-timer?       uint32
+          +--ro dead-timer?             uint32
+          +--ro allow-negotiation?      boolean
+          +--ro max-keep-alive-timer?   uint32
+          +--ro max-dead-timer?         uint32
+          +--ro min-keep-alive-timer?   uint32
+          +--ro min-dead-timer?         uint32
+          +--ro sync-timer?             uint32 {svec}?
+          +--ro request-timer?          uint32
+          +--ro max-sessions?           uint32
+          +--ro max-unknown-reqs?       uint32
+          +--ro max-unknown-msgs?       uint32
+          +--ro stateful-parameter {stateful}?
+          |  +--ro state-timeout?          uint32
+          |  +--ro redelegation-timeout?   uint32
+          |  +--ro rpt-non-pcep-lsp?       boolean
+          +--ro lsp-db {stateful}?
+          |  +--ro db-ver?             uint64
+          |  |       {stateful-sync-opt}?
+          |  +--ro association-list*
+          |  |       [id source global-source extended-id]
+          |  |  +--ro type?            assoc-type
+          |  |  +--ro id               uint16
+          |  |  +--ro source           inet:ip-address
+          |  |  +--ro global-source    uint32
+          |  |  +--ro extended-id      string
+          |  |  +--ro lsp* [plsp-id pcc-id]
+          |  |     +--ro plsp-id    leafref
+          |  |     +--ro pcc-id     leafref
+          |  +--ro lsp* [plsp-id pcc-id]
+          |     +--ro plsp-id               uint32
+          |     +--ro pcc-id                inet:ip-address
+          |     +--ro lsp-ref
+          |     |  +--ro source?
+          |     |  |       -> /te:te/lsps-state/lsp/source
+          |     |  +--ro destination?
+          |     |  |       -> /te:te/lsps-state/lsp/destination
+          |     |  +--ro tunnel-id?
+          |     |  |       -> /te:te/lsps-state/lsp/tunnel-id
+          |     |  +--ro lsp-id?
+          |     |  |       -> /te:te/lsps-state/lsp/lsp-id
+          |     |  +--ro extended-tunnel-id?   leafref
+          |     |  +--ro type?
+          |     |          -> /te:te/lsps-state/lsp/type
+          |     +--ro admin-state?          boolean
+          |     +--ro operational-state?    operational-state
+          |     +--ro delegated
+          |     |  +--ro enabled?   boolean
+          |     |  +--ro peer?
+          |     |  |       -> /pcep-state/entity/peers/peer/addr
+          |     |  +--ro srp-id?    uint32
+          |     +--ro initiation {pce-initiated}?
+          |     |  +--ro enabled?   boolean
+          |     |  +--ro peer?
+          |     |          -> /pcep-state/entity/peers/peer/addr
+          |     +--ro symbolic-path-name?   string
+          |     +--ro last-error?           lsp-error
+          |     +--ro pst?                  pst
+          |     +--ro association-list*
+          |             [id source global-source extended-id]
+          |        +--ro id               leafref
+          |        +--ro source           leafref
+          |        +--ro global-source    leafref
+          |        +--ro extended-id      leafref
+          +--ro path-keys {path-key}?
+          |  +--ro path-keys* [path-key]
+          |     +--ro path-key         uint16
+          |     +--ro cps
+          |     |  +--ro explicit-route-objects* [index]
+          |     |     +--ro explicit-route-usage?   identityref
+          |     |     +--ro index                   uint32
+          |     |     +--ro (type)?
+          |     |        +--:(ip-address)
+          |     |        |  +--ro ip-address-hop
+          |     |        |     +--ro address?    inet:ip-address
+          |     |        |     +--ro hop-type?   te-hop-type
+          |     |        +--:(as-number)
+          |     |        |  +--ro as-number-hop
+          |     |        |     +--ro as-number?   binary
+          |     |        |     +--ro hop-type?    te-hop-type
+          |     |        +--:(unnumbered-link)
+          |     |        |  +--ro unnumbered-hop
+          |     |        |     +--ro router-id?      inet:ip-address
+          |     |        |     +--ro interface-id?   uint32
+          |     |        |     +--ro hop-type?       te-hop-type
+          |     |        +--:(label)
+          |     |        |  +--ro label-hop
+          |     |        |     +--ro value?
+          |     |        |             rt-types:generalized-label
+          |     |        +--:(sid)
+          |     |           +--ro sid-hop
+          |     |              +--ro sid?
+          |     |                      rt-types:generalized-label
+          |     +--ro pcc-original?
+          |     |       -> /pcep-state/entity/peers/peer/addr
+          |     +--ro req-id?          uint32
+          |     +--ro retrieved?       boolean
+          |     +--ro pcc-retrieved?
+          |     |       -> /pcep-state/entity/peers/peer/addr
+          |     +--ro creation-time?   yang:timestamp
+          |     +--ro discard-time?    uint32
+          |     +--ro reuse-time?      uint32
+          +--ro of-list {objective-function}?
+          |  +--ro objective-function* [of]
+          |     +--ro of    objective-function
+          +--ro peers
+             +--ro peer* [addr]
+                +--ro addr                    inet:ip-address
+                +--ro role?                   pcep-role
+                +--ro domain
+                |  +--ro domain* [domain-type domain]
+                |     +--ro domain-type    domain-type
+                |     +--ro domain         domain
+                +--ro capability
+                |  +--ro gmpls?                 boolean {gmpls}?
+                |  +--ro bi-dir?                boolean
+                |  +--ro diverse?               boolean
+                |  +--ro load-balance?          boolean
+                |  +--ro synchronize?           boolean {svec}?
+                |  +--ro objective-function?    boolean
+                |  |       {objective-function}?
+                |  +--ro add-path-constraint?   boolean
+                |  +--ro prioritization?        boolean
+                |  +--ro multi-request?         boolean
+                |  +--ro gco?                   boolean {gco}?
+                |  +--ro p2mp?                  boolean {p2mp}?
+                |  +--ro stateful {stateful}?
+                |  |  +--ro enabled?                boolean
+                |  |  +--ro active?                 boolean
+                |  |  +--ro pce-initiated?          boolean
+                |  |  |       {pce-initiated}?
+                |  |  +--ro include-db-ver?         boolean
+                |  |  |       {stateful-sync-opt}?
+                |  |  +--ro trigger-resync?         boolean
+                |  |  |       {stateful-sync-opt}?
+                |  |  +--ro trigger-initial-sync?   boolean
+                |  |  |       {stateful-sync-opt}?
+                |  |  +--ro incremental-sync?       boolean
+                |  |          {stateful-sync-opt}?
+                |  +--ro sr {sr}?
+                |     +--ro enabled?   boolean
+                +--ro pce-info
+                |  +--ro scope
+                |  |  +--ro intra-area-scope?           boolean
+                |  |  +--ro intra-area-pref?            uint8
+                |  |  +--ro inter-area-scope?           boolean
+                |  |  +--ro inter-area-scope-default?   boolean
+                |  |  +--ro inter-area-pref?            uint8
+                |  |  +--ro inter-as-scope?             boolean
+                |  |  +--ro inter-as-scope-default?     boolean
+                |  |  +--ro inter-as-pref?              uint8
+                |  |  +--ro inter-layer-scope?          boolean
+                |  |  +--ro inter-layer-pref?           uint8
+                |  +--ro neigh-domains
+                |     +--ro domain* [domain-type domain]
+                |        +--ro domain-type    domain-type
+                |        +--ro domain         domain
+                +--ro delegation-pref?        uint8 {stateful}?
+                +--ro (auth-type-selection)?
+                |  +--:(auth-key-chain)
+                |  |  +--ro key-chain?
+                |  |          key-chain:key-chain-ref
+                |  +--:(auth-key)
+                |  |  +--ro crypto-algorithm        identityref
+                |  |  +--ro key-string
+                |  |     +--ro (key-string-style)?
+                |  |        +--:(keystring)
+                |  |        |  +--ro keystring?            string
+                |  |        +--:(hexadecimal)
+                |  |                 {key-chain:hex-key-string}?
+                |  |           +--ro hexadecimal-string?
+                |  |                   yang:hex-string
+                |  +--:(auth-tls) {tls}?
+                |     +--ro tls
+                +--ro discontinuity-time?     yang:timestamp
+                +--ro initiate-session?       boolean
+                +--ro session-exists?         boolean
+                +--ro session-up-time?        yang:timestamp
+                +--ro session-fail-time?      yang:timestamp
+                +--ro session-fail-up-time?   yang:timestamp
+                +--ro sessions
+                   +--ro session* [initiator]
+                      +--ro initiator               pcep-initiator
+                      +--ro role?                   -> ../../../role
+                      +--ro state-last-change?      yang:timestamp
+                      +--ro state?                  pcep-sess-state
+                      +--ro session-creation?       yang:timestamp
+                      +--ro connect-retry?          yang:counter32
+                      +--ro local-id?               uint32
+                      +--ro remote-id?              uint32
+                      +--ro keepalive-timer?        uint32
+                      +--ro peer-keepalive-timer?   uint32
+                      +--ro dead-timer?             uint32
+                      +--ro peer-dead-timer?        uint32
+                      +--ro ka-hold-time-rem?       uint32
+                      +--ro overloaded?             boolean
+                      +--ro overload-time?          uint32
+                      +--ro peer-overloaded?        boolean
+                      +--ro peer-overload-time?     uint32
+                      +--ro lspdb-sync?             sync-state
+                      |       {stateful}?
+                      +--ro recv-db-ver?            uint64
+                      |       {stateful,stateful-sync-opt}?
+                      +--ro of-list {objective-function}?
+                      |  +--ro objective-function* [of]
+                      |     +--ro of    objective-function
+                      +--ro speaker-entity-id?      string
+                      |       {stateful-sync-opt}?
+                      +--ro discontinuity-time?     yang:timestamp
+
+  rpcs:
+    +---x trigger-resync {stateful,stateful-sync-opt}?
+       +---w input
+          +---w pcc?   -> /pcep-state/entity/peers/peer/addr
+
+  notifications:
+    +---n pcep-session-up
+    |  +--ro peer-addr?
+    |  |       -> /pcep-state/entity/peers/peer/addr
+    |  +--ro session-initiator?   leafref
+    |  +--ro state-last-change?   yang:timestamp
+    |  +--ro state?               pcep-sess-state
+    +---n pcep-session-down
+    |  +--ro peer-addr?
+    |  |       -> /pcep-state/entity/peers/peer/addr
+    |  +--ro session-initiator?   pcep-initiator
+    |  +--ro state-last-change?   yang:timestamp
+    |  +--ro state?               pcep-sess-state
+    +---n pcep-session-local-overload
+    |  +--ro peer-addr?
+    |  |       -> /pcep-state/entity/peers/peer/addr
+    |  +--ro session-initiator?   leafref
+    |  +--ro overloaded?          boolean
+    |  +--ro overload-time?       uint32
+    +---n pcep-session-local-overload-clear
+    |  +--ro peer-addr?    -> /pcep-state/entity/peers/peer/addr
+    |  +--ro overloaded?   boolean
+    +---n pcep-session-peer-overload
+    |  +--ro peer-addr?
+    |  |       -> /pcep-state/entity/peers/peer/addr
+    |  +--ro session-initiator?    leafref
+    |  +--ro peer-overloaded?      boolean
+    |  +--ro peer-overload-time?   uint32
+    +---n pcep-session-peer-overload-clear
+       +--ro peer-addr?
+       |       -> /pcep-state/entity/peers/peer/addr
+       +--ro peer-overloaded?   boolean
 
                   ]]></artwork>
         </figure>
@@ -979,8 +890,150 @@ notifications:
    important events detected during the protocol operation.  The
    notifications defined cover the PCEP MIB notifications.</t>
     </section>
+    <section title="RPC" toc="default">
+    <t>This YANG model defines a RPC to trigger state resynchronization to
+      a particular PCEP peer.</t>
     </section>
+    </section>
+    <section title="The Design of PCEP Statistics Data Model" toc="default" anchor="sec.data-tree-stat">
+    <t> The module, "ietf-pcep-stats", augments the ietf-pcep module to include statistics at the 
+      PCEP peer and session level. 
+    <figure title="" suppress-title="false" align="left" alt="" width="" height="">
+          <artwork xml:space="preserve" name="" type="" align="left" alt="" width="" height=""><![CDATA[
+module: ietf-pcep-stats
+  augment /p:pcep-state/p:entity/p:peers/p:peer:
+    +--ro num-sess-setup-ok?     yang:counter32
+    +--ro num-sess-setup-fail?   yang:counter32
+    +--ro pcep-stats
+       +--ro avg-rsp-time?               uint32
+       +--ro lwm-rsp-time?               uint32
+       +--ro hwm-rsp-time?               uint32
+       +--ro num-pcreq-sent?             yang:counter32
+       +--ro num-pcreq-rcvd?             yang:counter32
+       +--ro num-pcrep-sent?             yang:counter32
+       +--ro num-pcrep-rcvd?             yang:counter32
+       +--ro num-pcerr-sent?             yang:counter32
+       +--ro num-pcerr-rcvd?             yang:counter32
+       +--ro num-pcntf-sent?             yang:counter32
+       +--ro num-pcntf-rcvd?             yang:counter32
+       +--ro num-keepalive-sent?         yang:counter32
+       +--ro num-keepalive-rcvd?         yang:counter32
+       +--ro num-unknown-rcvd?           yang:counter32
+       +--ro num-corrupt-rcvd?           yang:counter32
+       +--ro num-req-sent?               yang:counter32
+       +--ro num-req-sent-pend-rep?      yang:counter32
+       +--ro num-req-sent-ero-rcvd?      yang:counter32
+       +--ro num-req-sent-nopath-rcvd?   yang:counter32
+       +--ro num-req-sent-cancel-rcvd?   yang:counter32
+       +--ro num-req-sent-error-rcvd?    yang:counter32
+       +--ro num-req-sent-timeout?       yang:counter32
+       +--ro num-req-sent-cancel-sent?   yang:counter32
+       +--ro num-req-rcvd?               yang:counter32
+       +--ro num-req-rcvd-pend-rep?      yang:counter32
+       +--ro num-req-rcvd-ero-sent?      yang:counter32
+       +--ro num-req-rcvd-nopath-sent?   yang:counter32
+       +--ro num-req-rcvd-cancel-sent?   yang:counter32
+       +--ro num-req-rcvd-error-sent?    yang:counter32
+       +--ro num-req-rcvd-cancel-rcvd?   yang:counter32
+       +--ro num-rep-rcvd-unknown?       yang:counter32
+       +--ro num-req-rcvd-unknown?       yang:counter32
+       +--ro svec {p:svec}?
+       |  +--ro num-svec-sent?       yang:counter32
+       |  +--ro num-svec-req-sent?   yang:counter32
+       |  +--ro num-svec-rcvd?       yang:counter32
+       |  +--ro num-svec-req-rcvd?   yang:counter32
+       +--ro stateful {p:stateful}?
+       |  +--ro num-pcrpt-sent?             yang:counter32
+       |  +--ro num-pcrpt-rcvd?             yang:counter32
+       |  +--ro num-pcupd-sent?             yang:counter32
+       |  +--ro num-pcupd-rcvd?             yang:counter32
+       |  +--ro num-rpt-sent?               yang:counter32
+       |  +--ro num-rpt-rcvd?               yang:counter32
+       |  +--ro num-rpt-rcvd-error-sent?    yang:counter32
+       |  +--ro num-upd-sent?               yang:counter32
+       |  +--ro num-upd-rcvd?               yang:counter32
+       |  +--ro num-upd-rcvd-unknown?       yang:counter32
+       |  +--ro num-upd-rcvd-undelegated?   yang:counter32
+       |  +--ro num-upd-rcvd-error-sent?    yang:counter32
+       |  +--ro initiation {p:pce-initiated}?
+       |     +--ro num-pcinitiate-sent?            yang:counter32
+       |     +--ro num-pcinitiate-rcvd?            yang:counter32
+       |     +--ro num-initiate-sent?              yang:counter32
+       |     +--ro num-initiate-rcvd?              yang:counter32
+       |     +--ro num-initiate-rcvd-error-sent?   yang:counter32
+       +--ro path-key {p:path-key}?
+       |  +--ro num-unknown-path-key?      yang:counter32
+       |  +--ro num-exp-path-key?          yang:counter32
+       |  +--ro num-dup-path-key?          yang:counter32
+       |  +--ro num-path-key-no-attempt?   yang:counter32
+       +--ro num-req-sent-closed?        yang:counter32
+       +--ro num-req-rcvd-closed?        yang:counter32
+  augment /p:pcep-state/p:entity/p:peers/p:peer/p:sessions/p:session:
+    +--ro pcep-stats
+       +--ro avg-rsp-time?               uint32
+       +--ro lwm-rsp-time?               uint32
+       +--ro hwm-rsp-time?               uint32
+       +--ro num-pcreq-sent?             yang:counter32
+       +--ro num-pcreq-rcvd?             yang:counter32
+       +--ro num-pcrep-sent?             yang:counter32
+       +--ro num-pcrep-rcvd?             yang:counter32
+       +--ro num-pcerr-sent?             yang:counter32
+       +--ro num-pcerr-rcvd?             yang:counter32
+       +--ro num-pcntf-sent?             yang:counter32
+       +--ro num-pcntf-rcvd?             yang:counter32
+       +--ro num-keepalive-sent?         yang:counter32
+       +--ro num-keepalive-rcvd?         yang:counter32
+       +--ro num-unknown-rcvd?           yang:counter32
+       +--ro num-corrupt-rcvd?           yang:counter32
+       +--ro num-req-sent?               yang:counter32
+       +--ro num-req-sent-pend-rep?      yang:counter32
+       +--ro num-req-sent-ero-rcvd?      yang:counter32
+       +--ro num-req-sent-nopath-rcvd?   yang:counter32
+       +--ro num-req-sent-cancel-rcvd?   yang:counter32
+       +--ro num-req-sent-error-rcvd?    yang:counter32
+       +--ro num-req-sent-timeout?       yang:counter32
+       +--ro num-req-sent-cancel-sent?   yang:counter32
+       +--ro num-req-rcvd?               yang:counter32
+       +--ro num-req-rcvd-pend-rep?      yang:counter32
+       +--ro num-req-rcvd-ero-sent?      yang:counter32
+       +--ro num-req-rcvd-nopath-sent?   yang:counter32
+       +--ro num-req-rcvd-cancel-sent?   yang:counter32
+       +--ro num-req-rcvd-error-sent?    yang:counter32
+       +--ro num-req-rcvd-cancel-rcvd?   yang:counter32
+       +--ro num-rep-rcvd-unknown?       yang:counter32
+       +--ro num-req-rcvd-unknown?       yang:counter32
+       +--ro svec {p:svec}?
+       |  +--ro num-svec-sent?       yang:counter32
+       |  +--ro num-svec-req-sent?   yang:counter32
+       |  +--ro num-svec-rcvd?       yang:counter32
+       |  +--ro num-svec-req-rcvd?   yang:counter32
+       +--ro stateful {p:stateful}?
+       |  +--ro num-pcrpt-sent?             yang:counter32
+       |  +--ro num-pcrpt-rcvd?             yang:counter32
+       |  +--ro num-pcupd-sent?             yang:counter32
+       |  +--ro num-pcupd-rcvd?             yang:counter32
+       |  +--ro num-rpt-sent?               yang:counter32
+       |  +--ro num-rpt-rcvd?               yang:counter32
+       |  +--ro num-rpt-rcvd-error-sent?    yang:counter32
+       |  +--ro num-upd-sent?               yang:counter32
+       |  +--ro num-upd-rcvd?               yang:counter32
+       |  +--ro num-upd-rcvd-unknown?       yang:counter32
+       |  +--ro num-upd-rcvd-undelegated?   yang:counter32
+       |  +--ro num-upd-rcvd-error-sent?    yang:counter32
+       |  +--ro initiation {p:pce-initiated}?
+       |     +--ro num-pcinitiate-sent?            yang:counter32
+       |     +--ro num-pcinitiate-rcvd?            yang:counter32
+       |     +--ro num-initiate-sent?              yang:counter32
+       |     +--ro num-initiate-rcvd?              yang:counter32
+       |     +--ro num-initiate-rcvd-error-sent?   yang:counter32
+       +--ro path-key {p:path-key}?
+          +--ro num-unknown-path-key?      yang:counter32
+          +--ro num-exp-path-key?          yang:counter32
+          +--ro num-dup-path-key?          yang:counter32
+          +--ro num-path-key-no-attempt?   yang:counter32
 
+            ]]></artwork></figure></t>
+          </section>
     <section title="Advanced PCE Features" toc="default">
     <t>This document contains a specification of the base PCEP YANG module,
    "ietf-pcep" which provides the basic PCEP <xref target="RFC5440"/> data
@@ -1000,7 +1053,7 @@ notifications:
    <t>Authentication including PCEPS (TLS)</t>
    </list>
    </t>
-   <t>[Editor's Note - Some of them would be added in a future revision.]</t>
+   <t>[Editor's Note - TLS would be added in a future revision]</t>
 <section title="Stateful PCE's LSP-DB" toc="default">
    <t>In the operational state of PCEP which supports stateful PCE mode, the
    list of LSP state are maintained in LSP-DB. The key is the PLSP-ID and the
@@ -1027,17 +1080,23 @@ notifications:
     </section>
 
 
-    <section title="PCEP YANG Module" toc="default">
+    <section title="PCEP YANG Modules" toc="default">
+      <section title="ietf-pcep module" toc="default">
     <t>RFC Ed.: In this section, replace all occurrences of 'XXXX' with the
    actual RFC number and all occurrences of the revision date below with
    the date of RFC publication (and remove this note).</t>
     <figure title="" suppress-title="false" align="left" alt="" width="" height="">
           <artwork xml:space="preserve" name="" type="" align="left" alt="" width="" height="">
           <![CDATA[
-<CODE BEGINS> file "ietf-pcep@2016-10-28.yang"
+<CODE BEGINS> file "ietf-pcep@2017-03-12.yang"
 module ietf-pcep {
+
+    yang-version 1.1;
+
     namespace "urn:ietf:params:xml:ns:yang:ietf-pcep";
     prefix pcep;
+
+
 
     import ietf-inet-types {
         prefix "inet";
@@ -1050,14 +1109,18 @@ module ietf-pcep {
     import ietf-te {
         prefix "te";
     }
-    
+
     import ietf-te-types {
        prefix "te-types";
-    }    
+    }
 
     import ietf-key-chain {
        prefix "key-chain";
     }
+
+    import ietf-netconf-acm {
+       prefix nacm;
+     }
 
 
     organization
@@ -1081,7 +1144,7 @@ module ietf-pcep {
          vendor implementations.";
 
 
-    revision 2016-10-28 {
+    revision 2017-03-12 {
         description "Initial revision.";
         reference
             "RFC XXXX:  A YANG Data Model for Path Computation
@@ -1428,7 +1491,8 @@ module ietf-pcep {
             }
         }
         description
-            "The LSP-DB state synchronization operational status.";
+            "The LSP-DB state synchronization operational
+            status.";
     }
 
     typedef pst{
@@ -1455,11 +1519,21 @@ module ietf-pcep {
                 description
                     "Path Protection Association Type";
             }
+            enum policy{
+                value "2";
+                description
+                    "Policy Association Type";
+            }
+            enum diversity{
+                value "3";
+                description
+                    "Diversity Association Type";
+            }
         }
         description
             "The PCEP Association Type";
     }
-    
+
     typedef objective-function{
         type enumeration{
             enum mcp{
@@ -1480,47 +1554,50 @@ module ietf-pcep {
             enum mbc{
                 value "4";
                 description
-                    "Minimize aggregate Bandwidth Consumption (MBC)";
-            }            
+                    "Minimize aggregate Bandwidth Consumption
+                     (MBC)";
+            }
             enum mll{
                 value "5";
                 description
-                    "Minimize the Load of the most loaded Link (MLL)";
+                    "Minimize the Load of the most loaded Link
+                     (MLL)";
             }
             enum mcc{
                 value "6";
                 description
-                    "Minimize the Cumulative Cost of a set of paths 
-                    (MCC)";
+                    "Minimize the Cumulative Cost of a set of
+                    paths (MCC)";
             }
             enum spt{
                 value "7";
-                description 
+                description
                     "Shortest Path Tree (SPT)";
             }
             enum mct{
                 value "8";
-                description 
+                description
                     "Minimum Cost Tree (MCT)";
             }
             enum mplp{
                 value "9";
-                description 
+                description
                     "Minimum Packet Loss Path (MPLP)";
             }
             enum mup{
                 value "10";
-                description 
+                description
                     "Maximum Under-Utilized Path (MUP)";
             }
             enum mrup{
                 value "11";
-                description 
-                    "Maximum Reserved Under-Utilized Path (MRUP)";
-            }            
+                description
+                    "Maximum Reserved Under-Utilized Path
+                     (MRUP)";
+            }
         }
         description
-            "The PCEP Objective functions";        
+            "The PCEP Objective functions";
     }
 
     /*
@@ -1561,9 +1638,9 @@ module ietf-pcep {
         description
             "Support stateful PCE.";
     }
-    
+
     feature stateful-sync-opt {
-        description 
+        description
             "Support stateful sync optimization";
     }
 
@@ -2084,19 +2161,19 @@ module ietf-pcep {
                 type boolean;
                 description
                     "Support PCE triggered re-synchronization";
-            }            
+            }
             leaf trigger-initial-sync{
                 if-feature stateful-sync-opt;
                 type boolean;
                 description
                     "PCE triggered initial synchronization";
-            }      
+            }
             leaf incremental-sync{
                 if-feature stateful-sync-opt;
                 type boolean;
                 description
                     "Support incremental (delta) sync";
-            } 
+            }
         }
         container sr{
             if-feature sr;
@@ -2139,7 +2216,7 @@ module ietf-pcep {
                     capabilities.";
             }
         }
-        
+
 
     }//info
 
@@ -2172,517 +2249,6 @@ module ietf-pcep {
             }
         }
     }//pce-info
-
-    grouping pcep-stats{
-        description
-            "This grouping defines statistics for PCEP. It is used
-             for both peer and current session.";
-        leaf avg-rsp-time{
-            type uint32;
-            units "milliseconds";
-            must "(/pcep-state/entity/peers/peer/role != 'pcc'" +
-                 " or " +
-                 "(/pcep-state/entity/peers/peer/role = 'pcc'" +
-                 " and (. = 0)))" {
-                error-message
-                    "Invalid average response time";
-                description
-                    "If role is pcc then this leaf is meaningless
-                     and is set to zero.";
-            }
-            description
-              "The average response time.
-               If an average response time has not been
-               calculated then this leaf has the value zero.";
-        }
-
-        leaf lwm-rsp-time{
-            type uint32;
-            units "milliseconds";
-            must "(/pcep-state/entity/peers/peer/role != 'pcc'" +
-                 " or " +
-                 "(/pcep-state/entity/peers/peer/role = 'pcc'" +
-                 " and (. = 0)))" {
-                error-message
-                    "Invalid smallest (low-water mark)
-                     response time";
-                description
-                    "If role is pcc then this leaf is meaningless
-                     and is set to zero.";
-            }
-            description
-             "The smallest (low-water mark) response time seen.
-              If no responses have been received then this
-              leaf has the value zero.";
-        }
-
-        leaf hwm-rsp-time{
-            type uint32;
-            units "milliseconds";
-            must "(/pcep-state/entity/peers/peer/role != 'pcc'" +
-                 " or " +
-                 "(/pcep-state/entity/peers/peer/role = 'pcc'" +
-                 " and (. = 0)))" {
-                error-message
-                    "Invalid greatest (high-water mark)
-                     response time seen";
-                description
-                    "If role is pcc then this field is
-                     meaningless and is set to zero.";
-            }
-            description
-             "The greatest (high-water mark) response time seen.
-              If no responses have been received then this object
-              has the value zero.";
-        }
-
-        leaf num-pcreq-sent{
-            type yang:counter32;
-            description
-             "The number of PCReq messages sent.";
-        }
-
-        leaf num-pcreq-rcvd{
-            type yang:counter32;
-            description
-              "The number of PCReq messages received.";
-        }
-
-        leaf num-pcrep-sent{
-            type yang:counter32;
-            description
-              "The number of PCRep messages sent.";
-        }
-
-        leaf num-pcrep-rcvd{
-            type yang:counter32;
-            description
-              "The number of PCRep messages received.";
-        }
-
-        leaf num-pcerr-sent{
-            type yang:counter32;
-            description
-              "The number of PCErr messages sent.";
-        }
-
-        leaf num-pcerr-rcvd{
-            type yang:counter32;
-            description
-              "The number of PCErr messages received.";
-        }
-
-        leaf num-pcntf-sent{
-            type yang:counter32;
-            description
-              "The number of PCNtf messages sent.";
-        }
-
-        leaf num-pcntf-rcvd{
-            type yang:counter32;
-            description
-              "The number of PCNtf messages received.";
-        }
-
-        leaf num-keepalive-sent{
-            type yang:counter32;
-            description
-              "The number of Keepalive messages sent.";
-        }
-
-        leaf num-keepalive-rcvd{
-            type yang:counter32;
-            description
-              "The number of Keepalive messages received.";
-        }
-
-        leaf num-unknown-rcvd{
-            type yang:counter32;
-            description
-              "The number of unknown messages received.";
-        }
-
-        leaf num-corrupt-rcvd{
-            type yang:counter32;
-            description
-              "The number of corrupted PCEP message received.";
-        }
-
-        leaf num-req-sent{
-            type yang:counter32;
-            description
-              "The number of requests sent.  A request corresponds
-               1:1 with an RP object in a PCReq message. This might
-               be greater than num-pcreq-sent because multiple
-               requests can be batched into a single PCReq
-               message.";
-        }
-
-        leaf num-req-sent-pend-rep{
-            type yang:counter32;
-            description
-              "The number of requests that have been sent for
-               which a response is still pending.";
-        }
-
-        leaf num-req-sent-ero-rcvd{
-            type yang:counter32;
-            description
-               "The number of requests that have been sent for
-                which a response with an ERO object was received.
-                Such responses indicate that a path was
-                successfully computed by the peer.";
-        }
-
-        leaf num-req-sent-nopath-rcvd{
-            type yang:counter32;
-            description
-              "The number of requests that have been sent for
-               which a response with a NO-PATH object was
-               received. Such responses indicate that the peer
-               could not find a path to satisfy the
-               request.";
-        }
-
-        leaf num-req-sent-cancel-rcvd{
-            type yang:counter32;
-            description
-              "The number of requests that were cancelled with
-               a PCNtf message.
-               This might be different than num-pcntf-rcvd because
-               not all PCNtf messages are used to cancel requests,
-               and a single PCNtf message can cancel multiple
-               requests.";
-        }
-
-        leaf num-req-sent-error-rcvd{
-            type yang:counter32;
-            description
-             "The number of requests that were rejected with a
-              PCErr message.
-              This might be different than num-pcerr-rcvd because
-              not all PCErr messages are used to reject requests,
-              and a single PCErr message can reject multiple
-              requests.";
-        }
-
-        leaf num-req-sent-timeout{
-            type yang:counter32;
-            description
-             "The number of requests that have been sent to a peer
-             and have been abandoned because the peer has taken too
-             long to respond to them.";
-        }
-
-        leaf num-req-sent-cancel-sent{
-            type yang:counter32;
-            description
-             "The number of requests that were sent to the peer and
-              explicitly cancelled by the local PCEP entity sending
-              a PCNtf.";
-        }
-
-        leaf num-req-rcvd{
-            type yang:counter32;
-            description
-             "The number of requests received.  A request
-              corresponds 1:1 with an RP object in a PCReq
-              message.
-              This might be greater than num-pcreq-rcvd because
-              multiple requests can be batched into a single
-              PCReq message.";
-        }
-
-        leaf num-req-rcvd-pend-rep{
-            type yang:counter32;
-            description
-             "The number of requests that have been received for
-              which a response is still pending.";
-        }
-
-        leaf num-req-rcvd-ero-sent{
-            type yang:counter32;
-            description
-             "The number of requests that have been received for
-              which a response with an ERO object was sent.  Such
-              responses indicate that a path was successfully
-              computed by the local PCEP entity.";
-        }
-
-        leaf num-req-rcvd-nopath-sent{
-            type yang:counter32;
-            description
-             "The number of requests that have been received for
-              which a response with a NO-PATH object was sent. Such
-              responses indicate that the local PCEP entity could
-              not find a path to satisfy the request.";
-        }
-
-        leaf num-req-rcvd-cancel-sent{
-            type yang:counter32;
-            description
-             "The number of requests received that were cancelled
-              by the local PCEP entity sending a PCNtf message.
-              This might be different than num-pcntf-sent because
-              not all PCNtf messages are used to cancel requests,
-              and a single PCNtf message can cancel multiple
-              requests.";
-        }
-
-        leaf num-req-rcvd-error-sent{
-            type yang:counter32;
-            description
-             "The number of requests received that were cancelled
-              by the local PCEP entity sending a PCErr message.
-              This might be different than num-pcerr-sent because
-              not all PCErr messages are used to cancel requests,
-              and a single PCErr message can cancel multiple
-              requests.";
-        }
-
-        leaf num-req-rcvd-cancel-rcvd{
-            type yang:counter32;
-            description
-             "The number of requests that were received from the
-              peer and explicitly cancelled by the peer sending
-              a PCNtf.";
-        }
-
-        leaf num-rep-rcvd-unknown{
-            type yang:counter32;
-            description
-              "The number of responses to unknown requests
-               received. A response to an unknown request is a
-               response whose RP object does not contain the
-               request ID of any request that is currently
-               outstanding on the session.";
-        }
-
-        leaf num-req-rcvd-unknown{
-            type yang:counter32;
-            description
-              "The number of unknown requests that have been
-               received. An unknown request is a request
-               whose RP object contains a request ID of
-               zero.";
-        }
-
-        container svec{
-            if-feature svec;
-            description
-                "If synchronized path computation is supported";
-            leaf num-svec-sent{
-                type yang:counter32;
-                description
-                  "The number of SVEC objects sent in PCReq messages.
-                   An SVEC object represents a set of synchronized
-                   requests.";
-            }
-
-            leaf num-svec-req-sent{
-                type yang:counter32;
-                description
-                  "The number of requests sent that appeared in one
-                   or more SVEC objects.";
-            }
-
-            leaf num-svec-rcvd{
-                type yang:counter32;
-                description
-                 "The number of SVEC objects received in PCReq
-                  messages. An SVEC object represents a set of
-                  synchronized requests.";
-            }
-
-            leaf num-svec-req-rcvd{
-                type yang:counter32;
-                description
-                  "The number of requests received that appeared
-                   in one or more SVEC objects.";
-            }
-        }
-        container stateful{
-            if-feature stateful;
-            description
-                "Stateful PCE related statistics";
-            leaf num-pcrpt-sent{
-                type yang:counter32;
-                description
-                 "The number of PCRpt messages sent.";
-            }
-
-            leaf num-pcrpt-rcvd{
-                type yang:counter32;
-                description
-                  "The number of PCRpt messages received.";
-            }
-
-            leaf num-pcupd-sent{
-                type yang:counter32;
-                description
-                 "The number of PCUpd messages sent.";
-            }
-
-            leaf num-pcupd-rcvd{
-                type yang:counter32;
-                description
-                  "The number of PCUpd messages received.";
-            }
-
-            leaf num-rpt-sent{
-                type yang:counter32;
-                description
-                  "The number of LSP Reports sent.  A LSP report
-                   corresponds 1:1 with an LSP object in a PCRpt
-                   message. This might be greater than
-                   num-pcrpt-sent because multiple reports can
-                   be batched into a single PCRpt message.";
-            }
-
-            leaf num-rpt-rcvd{
-                type yang:counter32;
-                description
-                 "The number of LSP Reports received.  A LSP report
-                  corresponds 1:1 with an LSP object in a PCRpt
-                  message.
-                  This might be greater than num-pcrpt-rcvd because
-                  multiple reports can be batched into a single
-                  PCRpt message.";
-            }
-
-            leaf num-rpt-rcvd-error-sent{
-                type yang:counter32;
-                description
-                  "The number of reports of LSPs received that were
-                  responded by the local PCEP entity by sending a
-                  PCErr message.";
-            }
-
-            leaf num-upd-sent{
-                type yang:counter32;
-                description
-                  "The number of LSP updates sent.  A LSP update
-                   corresponds 1:1 with an LSP object in a PCUpd
-                   message. This might be greater than
-                   num-pcupd-sent because multiple updates can
-                   be batched into a single PCUpd message.";
-            }
-
-            leaf num-upd-rcvd{
-                type yang:counter32;
-                description
-                 "The number of LSP Updates received.  A LSP update
-                  corresponds 1:1 with an LSP object in a PCUpd
-                  message.
-                  This might be greater than num-pcupd-rcvd because
-                  multiple updates can be batched into a single
-                  PCUpd message.";
-            }
-
-            leaf num-upd-rcvd-unknown{
-                type yang:counter32;
-                description
-                  "The number of updates to unknown LSPs
-                   received. An update to an unknown LSP is a
-                   update whose LSP object does not contain the
-                   PLSP-ID of any LSP that is currently
-                   present.";
-            }
-
-            leaf num-upd-rcvd-undelegated{
-                type yang:counter32;
-                description
-                  "The number of updates to not delegated LSPs
-                   received. An update to an undelegated LSP is a
-                   update whose LSP object does not contain the
-                   PLSP-ID of any LSP that is currently
-                   delegated to current PCEP session.";
-            }
-
-            leaf num-upd-rcvd-error-sent{
-                type yang:counter32;
-                description
-                  "The number of updates to LSPs received that were
-                  responded by the local PCEP entity by sending a
-                  PCErr message.";
-            }
-            container initiation {
-                if-feature pce-initiated;
-                description
-                    "PCE-Initiated related statistics";
-                leaf num-pcinitiate-sent{
-                    type yang:counter32;
-                    description
-                     "The number of PCInitiate messages sent.";
-                }
-
-                leaf num-pcinitiate-rcvd{
-                    type yang:counter32;
-                    description
-                      "The number of PCInitiate messages received.";
-                }
-
-                leaf num-initiate-sent{
-                    type yang:counter32;
-                    description
-                      "The number of LSP Initiation sent via PCE.
-                       A LSP initiation corresponds 1:1 with an LSP
-                       object in a PCInitiate message. This might be
-                       greater than num-pcinitiate-sent because
-                       multiple initiations can be batched into a
-                       single PCInitiate message.";
-                }
-
-                leaf num-initiate-rcvd{
-                    type yang:counter32;
-                    description
-                      "The number of LSP Initiation received from
-                       PCE.  A LSP initiation corresponds 1:1 with
-                       an LSP object in a PCInitiate message. This
-                       might be greater than num-pcinitiate-rcvd
-                       because multiple initiations can be batched
-                       into a single PCInitiate message.";
-                }
-
-                leaf num-initiate-rcvd-error-sent{
-                    type yang:counter32;
-                    description
-                      "The number of initiations of LSPs received
-                       that were responded by the local PCEP entity
-                       by sending a PCErr message.";
-                }
-            }
-        }
-        container path-key {
-            if-feature path-key;
-            description
-                "If Path-Key is supported";
-            leaf num-unknown-path-key{
-                type yang:counter32;
-                description
-                 "The number of attempts to expand an unknown 
-                 path-key.";
-            }
-            leaf num-exp-path-key{
-                type yang:counter32;
-                description
-                 "The number of attempts to expand an expired 
-                 path-key.";
-            }   
-            leaf num-dup-path-key{
-                type yang:counter32;
-                description
-                 "The number of duplicate attempts to expand same
-                 path-key.";
-            }      
-            leaf num-path-key-no-attempt{
-                type yang:counter32;
-                description
-                 "The number of expired path-keys with no attempt to
-                 expand it.";
-            }              
-        }
-    }//pcep-stats
 
     grouping lsp-state{
         description
@@ -2786,7 +2352,7 @@ module ietf-pcep {
                 description
                     "LSP is delegated or not";
             }
-            leaf pce{
+            leaf peer{
                 type leafref {
                     path "/pcep-state/entity/peers/peer/addr";
                 }
@@ -2798,8 +2364,10 @@ module ietf-pcep {
                         "When LSP is a delegated LSP";
                 }
                 description
-                    "The reference to the PCE peer to
-                    which LSP is delegated";
+                    "At the PCC, the reference to the PCEP peer to
+                    which LSP is delegated; At the PCE, the
+                    reference to the PCEP peer which delegated this
+                    LSP";
             }
             leaf srp-id{
                 type uint32;
@@ -2817,7 +2385,7 @@ module ietf-pcep {
                 description
                     "LSP is PCE-initiated or not";
             }
-            leaf pce{
+            leaf peer{
                 type leafref {
                     path "/pcep-state/entity/peers/peer/addr";
                 }
@@ -2829,8 +2397,10 @@ module ietf-pcep {
                         "When the LSP must be PCE-Initiated";
                 }
                 description
-                    "The reference to the PCE
-                    that initiated this LSP";
+                    "At the PCC, the reference to the PCEP peer
+                    that initiated this LSP; At the PCE, the
+                    reference to the PCEP peer where the LSP
+                    is initiated";
             }
         }
         leaf symbolic-path-name{
@@ -2898,19 +2468,15 @@ module ietf-pcep {
                  parameters or behaviours.";
         }
         leaf redelegation-timeout{
+            when "../../role = 'pcc'" +
+                 "or " +
+                 "../../role = 'pcc-and-pce'"
+            {
+                description
+                    "Valid at PCC";
+            }
             type uint32;
             units "seconds";
-            must "((/pcep-state/entity/role = 'pcc')" +
-                 " or " +
-                 "(/pcep-state/entity/role = 'pcc-and-pce'))" +
-                 " and " +
-                 "(/pcep/entity/capability/stateful/active"
-                             + "= true())"
-            {
-                error-message "The PCEP entity must be PCC";
-                description
-                    "When PCEP entity is PCC";
-            }
             description
                 "When a PCEP session is terminated, a PCC
                  waits for this time period before revoking
@@ -2920,15 +2486,15 @@ module ietf-pcep {
                  PCE.";
         }
         leaf rpt-non-pcep-lsp{
-            type boolean;
-            must "((/pcep-state/entity/role = 'pcc')" +
-                 " or " +
-                 "(/pcep-state/entity/role = 'pcc-and-pce'))"
+            when "../../role = 'pcc'" +
+                 "or " +
+                 "../../role = 'pcc-and-pce'"
             {
-                error-message "The PCEP entity must be PCC";
                 description
-                    "When PCEP entity is PCC";
+                    "Valid at PCC";
             }
+            type boolean;
+            default true;
             description
                 "If set, a PCC reports LSPs that are not
                 controlled by any PCE (for example, LSPs
@@ -2951,17 +2517,44 @@ module ietf-pcep {
                 }
             }
             case auth-key {
-                leaf key {
-                    type string;
-                description
-                    "Key string in ASCII format.";
-                }
-                container crypto-algorithm {
-                    uses key-chain:crypto-algorithm-types;
-                        description
-                            "Cryptographic algorithm associated
-                             with key.";
-                }
+               leaf crypto-algorithm {
+                 type identityref {
+                   base key-chain:crypto-algorithm;
+                 }
+                 mandatory true;
+                 description
+                   "Cryptographic algorithm associated with key.";
+               }
+               container key-string {
+                 description
+                   "The key string.";
+                 nacm:default-deny-all;
+                 choice key-string-style {
+                   description
+                     "Key string styles";
+                   case keystring {
+                     leaf keystring {
+                       type string;
+                       description
+                         "Key string in ASCII format.";
+                     }
+                   }
+                   case hexadecimal {
+                     if-feature "key-chain:hex-key-string";
+                     leaf hexadecimal-string {
+                       type yang:hex-string;
+                       description
+                         "Key in hexadecimal string format. When
+                          compared to ASCII, specification in
+                          hexadecimal affords greater key
+                          entropy with the same number of
+                          octets. Additionally, it discourages
+                          usage of well-known words or
+                          numbers.";
+                     }
+                   }
+                 }
+               }
             }
             case auth-tls {
                 if-feature tls;
@@ -3006,10 +2599,10 @@ module ietf-pcep {
         description "Table to allow inspection of path-keys";
         list path-keys{
             key "path-key";
-            
+
             description
                 "The list of path-keys generated by the PCE";
-            
+
             leaf path-key {
                 type uint16;
                 description
@@ -3024,22 +2617,17 @@ module ietf-pcep {
                     key "index";
                     description
                         "List of explicit route objects";
-                    leaf index {
-                        type uint8 {
-                            range "0..255";
-                        }
-                        description
-                            "Index of this explicit route object";
-                    }
+
                     leaf explicit-route-usage {
                         type identityref {
                             base te-types:route-usage-type;
                         }
-                        description 
+                        description
                             "An explicit-route hop action.";
                     }
-                    uses te-types:explicit-route-subobject;
-                }            
+
+                    uses te-types:explicit-route-hop_config;
+                }
             }
             leaf pcc-original {
                 type leafref {
@@ -3051,12 +2639,12 @@ module ietf-pcep {
             }
             leaf req-id {
                 type uint32;
-                description 
+                description
                     "The request ID of the original PCReq.";
             }
             leaf retrieved  {
                 type boolean;
-                description 
+                description
                     "If path-key has been retrieved yet";
             }
             leaf pcc-retrieved {
@@ -3069,7 +2657,7 @@ module ietf-pcep {
                         "The Path-key should be retreived";
                     description
                         "When Path-Key has been retreived";
-                }                
+                }
                 description
                     "Reference to PCC peer address which
                     retreived the path-key";
@@ -3077,23 +2665,23 @@ module ietf-pcep {
             leaf creation-time {
                 type yang:timestamp;
                 description
-                    "The timestamp value at the time this Path-Key was
-                    created.";
+                    "The timestamp value at the time this Path-Key
+                    was created.";
             }
             leaf discard-time {
                 type uint32;
                 units "minutes";
                 description
-                    "A time after which this path-keys will be 
+                    "A time after which this path-keys will be
                     discarded";
             }
             leaf reuse-time {
                 type uint32;
                 units "minutes";
                 description
-                    "A time after which this path-keys could be 
+                    "A time after which this path-keys could be
                     reused";
-            }            
+            }
         }
     }
 
@@ -3101,17 +2689,17 @@ module ietf-pcep {
         description "List of OF";
         list objective-function{
             key "of";
-            
+
             description
                 "The list of authorized OF";
-            
+
             leaf of {
                 type objective-function;
                 description
                     "The OF authorized";
             }
         }
-    }    
+    }
     grouping association {
         description
             "Generic Association parameters";
@@ -3248,10 +2836,10 @@ module ietf-pcep {
             leaf speaker-entity-id{
                 if-feature stateful-sync-opt;
                 type string;
-                description 
+                description
                     "The Speaker Entity Identifier";
             }
-            
+
             uses info {
                 description
                     "Local PCEP entity information";
@@ -3259,13 +2847,12 @@ module ietf-pcep {
 
 
             container pce-info {
-                must "((/pcep-state/entity/role = 'pce')" +
-                 " or " +
-                 "(/pcep-state/entity/role = 'pcc-and-pce'))"
+                when "../role = 'pce'" +
+                     "or " +
+                     "../role = 'pcc-and-pce'"
                 {
-                    error-message "The PCEP entity must be PCE";
                     description
-                        "When PCEP entity is PCE";
+                        "Valid at PCE";
                 }
                 uses pce-info {
                     description
@@ -3304,13 +2891,13 @@ module ietf-pcep {
                 mandatory true;
                 description
                     "This variable indicates the maximum number of
-                     notifications issued per second. If events occur
-                     more rapidly, the implementation may simply fail
-                     to emit these notifications during that period,
-                     or may queue them until an appropriate time. A
-                     value of 0 means no notifications are emitted
-                     and all should be discarded (that is, not
-                     queued).";
+                     notifications issued per second. If events
+                     occur more rapidly, the implementation may
+                     simply fail to emit these notifications during
+                     that period, or may queue them until an
+                     appropriate time. A value of 0 means no
+                     notifications are emitted and all should be
+                     discarded (that is, not queued).";
             }
 
             container stateful-parameter{
@@ -3329,35 +2916,31 @@ module ietf-pcep {
                 description
                     "The configured stateful parameters";
             }
-            
+
             container of-list{
-                if-feature objective-function;
-                must "((/pcep/entity/role = 'pce')" +
-                     " or " +
-                     "(/pcep/entity/role = 'pcc-and-pce'))"
+                when "../role = 'pce'" +
+                     "or " +
+                     "../role = 'pcc-and-pce'"
                 {
-                    error-message
-                        "The PCEP entity must be PCE";
                     description
-                        "The authorized OF-List at PCE";
-                }            
+                        "Valid at PCE";
+                }
+                if-feature objective-function;
+
                 uses of-list;
-                
-                description 
+
+                description
                     "The authorized OF-List at PCE for all peers";
-            }            
+            }
 
 
             container peers{
-                must "((/pcep/entity/role = 'pcc')" +
-                     " or " +
-                     "(/pcep/entity/role = 'pcc-and-pce'))"
+                when "../role = 'pcc'" +
+                     "or " +
+                     "../role = 'pcc-and-pce'"
                 {
-                    error-message
-                        "The PCEP entity must be PCC";
                     description
-                        "When PCEP entity is PCC, as remote
-                         PCE peers are configured.";
+                        "Valid at PCC";
                 }
                 description
                     "The list of configured peers for the
@@ -3396,8 +2979,8 @@ module ietf-pcep {
                         type uint8{
                             range "0..7";
                         }
-                        must "(/pcep/entity/capability/stateful/active"
-                             + "= true())"
+                        must "(/pcep/entity/capability/stateful" +
+                             "/active = true())"
                         {
                             error-message
                                 "The Active Stateful PCE must be
@@ -3412,22 +2995,6 @@ module ietf-pcep {
                     uses authentication {
                         description
                             "PCE Peer authentication";
-                    }
-                    container of-list{
-                        if-feature objective-function;
-                        must "((/pcep/entity/role = 'pce')" +
-                        " or " +
-                        "(/pcep/entity/role = 'pcc-and-pce'))"
-                        {
-                            error-message
-                                "The PCEP entity must be PCE";
-                            description
-                                "The authorized OF-List at PCE";
-                        }            
-                        uses of-list;
-                
-                        description 
-                            "The authorized OF-List a specific peer";
                     }
                 }//peer
             }//peers
@@ -3516,7 +3083,7 @@ module ietf-pcep {
                      - pcc-and-pce(3): this PCEP entity is
                        both a PCC and a PCE.";
             }
-            
+
             leaf description {
                 type string;
                 description
@@ -3527,22 +3094,22 @@ module ietf-pcep {
             leaf speaker-entity-id{
                 if-feature stateful-sync-opt;
                 type string;
-                description 
+                description
                     "The Speaker Entity Identifier";
             }
-            
+
             uses info {
                 description
                     "Local PCEP entity information";
             }
 
             container pce-info {
-                when "((/pcep-state/entity/role = 'pce')" +
-                 " or " +
-                 "(/pcep-state/entity/role = 'pcc-and-pce'))"
+                when "../role = 'pce'" +
+                     "or " +
+                     "../role = 'pcc-and-pce'"
                 {
                     description
-                        "When PCEP entity is PCE";
+                        "Valid at PCE";
                 }
                 uses pce-info {
                     description
@@ -3597,21 +3164,17 @@ module ietf-pcep {
                 if-feature stateful;
                 description
                     "The LSP-DB";
-                leaf db-ver{    
+                leaf db-ver{
+                    when "../../role = 'pcc'" +
+                         "or " +
+                         "../../role = 'pcc-and-pce'"
+                    {
+                        description
+                            "Valid at PCC";
+                    }
                     if-feature stateful-sync-opt;
                     type uint64;
-                     must "((/pcep/entity/role = 'pcc')" +
-                     " or " +
-                     "(/pcep/entity/role = 'pcc-and-pce'))"
-                    {
-                        error-message
-                            "The PCEP entity must be PCC";
-                        description
-                            "When PCEP entity is PCC, as remote
-                             PCE peers are configured.";
-                    }
-                    
-                    description 
+                    description
                         "The LSP State Database Version Number";
                 }
                 list association-list {
@@ -3667,36 +3230,33 @@ module ietf-pcep {
                 }
             }
             container path-keys {
-                if-feature path-key;
-                must "((/pcep-state/entity/role = 'pce')" +
-                 " or " +
-                 "(/pcep-state/entity/role = 'pcc-and-pce'))"
+                when "../role = 'pce'" +
+                     "or " +
+                     "../role = 'pcc-and-pce'"
                 {
-                    error-message
-                        "The PCEP entity must be PCE";
                     description
-                        "When PCEP entity is PCE";
+                        "Valid at PCE";
                 }
+                if-feature path-key;
                 uses path-key-state;
-                description 
+                description
                     "The path-keys generated by the PCE";
             }
             container of-list{
-                if-feature objective-function;
-                must "((/pcep/entity/role = 'pce')" +
-                     " or " +
-                     "(/pcep/entity/role = 'pcc-and-pce'))"
+                when "../role = 'pce'" +
+                     "or " +
+                     "../role = 'pcc-and-pce'"
                 {
-                    error-message
-                        "The PCEP entity must be PCE";
                     description
-                        "The authorized OF-List at PCE";
-                }            
+                        "Valid at PCE";
+                }
+                if-feature objective-function;
+
                 uses of-list;
-                
-                description 
+
+                description
                     "The authorized OF-List at PCE for all peers";
-            }            
+            }
             container peers{
                 description
                         "The list of peers for the entity";
@@ -3735,14 +3295,14 @@ module ietf-pcep {
 
 
                     container pce-info {
-                        when "((/pcep-state/entity/role = 'pcc')" +
-                             " or " +
-                             "(/pcep-state/entity/role " + 
-                             "= 'pcc-and-pce'))"
+                        when "../role = 'pce'" +
+                             "or " +
+                             "../role = 'pcc-and-pce'"
                         {
                             description
-                                "When PCEP entity is PCE";
+                                "When the peer is PCE";
                         }
+
                         uses pce-info {
                             description
                                 "PCE Peer information";
@@ -3752,22 +3312,19 @@ module ietf-pcep {
                     }
 
                     leaf delegation-pref{
+                        when "../role = 'pce'" +
+                             "or " +
+                             "../role = 'pcc-and-pce'"
+                        {
+                            description
+                                "When the peer is PCE";
+                        }
                         if-feature stateful;
                         type uint8{
                             range "0..7";
                         }
-                        must "((/pcep-state/entity/role = 'pcc')" +
-                             " or " +
-                             "(/pcep-state/entity/role" +
-                             " = 'pcc-and-pce'))"
-                        {
-                            error-message
-                                "The PCEP entity must be PCC";
-                            description
-                                "When PCEP entity is PCC";
-                        }
-                        must "(/pcep/entity/capability/stateful/active"
-                             + "= true())"
+                        must "(/pcep/entity/capability/stateful" +
+                             "/active = true())"
                         {
                             error-message
                                 "The Active Stateful PCE must be
@@ -3785,23 +3342,6 @@ module ietf-pcep {
                             "PCE Peer authentication";
                     }
 
-                    container of-list{
-                        if-feature objective-function;
-                        must "((/pcep/entity/role = 'pce')" +
-                        " or " +
-                        "(/pcep/entity/role = 'pcc-and-pce'))"
-                        {
-                            error-message
-                                "The PCEP entity must be PCE";
-                            description
-                                "The authorized OF-List at PCE";
-                        }            
-                        uses of-list;
-                
-                        description 
-                            "The authorized OF-List of a specific
-                            peer";
-                    }
                     leaf discontinuity-time {
                         type yang:timestamp;
                         description
@@ -3826,38 +3366,8 @@ module ietf-pcep {
                              this peer currently exists.";
                     }
 
-                    leaf num-sess-setup-ok{
-                        type yang:counter32;
-                        description
-                            "The number of PCEP sessions successfully
-                             successfully established with the peer,
-                             including any current session.  This
-                             counter is incremented each time a
-                             session with this peer is successfully
-                             established.";
-                    }
-
-                    leaf num-sess-setup-fail{
-                        type yang:counter32;
-                        description
-                           "The number of PCEP sessions with the peer
-                            that have been attempted but failed
-                            before being fully established. This
-                            counter is incremented each time a
-                            session retry to this peer fails.";
-                    }
-
                     leaf session-up-time{
                         type yang:timestamp;
-                        must "(../num-sess-setup-ok != 0  or " +
-                            "(../num-sess-setup-ok = 0  and "  +
-                            "(. = 0)))" {
-                                error-message
-                                    "Invalid Session Up timestamp";
-                                description
-                                    "If num-sess-setup-ok is zero,
-                                     then this leaf contains zero.";
-                            }
                         description
                            "The timestamp value of the last time a
                             session with this peer was successfully
@@ -3866,15 +3376,6 @@ module ietf-pcep {
 
                     leaf session-fail-time{
                         type yang:timestamp;
-                        must "(../num-sess-setup-fail != 0  or " +
-                            "(../num-sess-setup-fail = 0  and "  +
-                            "(. = 0)))" {
-                                error-message
-                                    "Invalid Session Fail timestamp";
-                                description
-                                    "If num-sess-setup-fail is zero,
-                                     then this leaf contains zero.";
-                            }
                         description
                           "The timestamp value of the last time a
                            session with this peer failed to be
@@ -3883,56 +3384,13 @@ module ietf-pcep {
 
                     leaf session-fail-up-time{
                         type yang:timestamp;
-                        must "(../num-sess-setup-ok != 0  or "     +
-                            "(../num-sess-setup-ok = 0  and "     +
-                            "(. = 0)))" {
-                                error-message
-                                    "Invalid Session Fail from
-                                     Up timestamp";
-                                description
-                                    "If num-sess-setup-ok is zero,
-                                     then this leaf contains zero.";
-                            }
                         description
                           "The timestamp value of the last time a
                            session with this peer failed from
                            active.";
                     }
 
-                    container pcep-stats {
-                        description
-                            "The container for all statistics at peer
-                             level.";
-                        uses pcep-stats{
-                            description
-                                "Since PCEP sessions can be
-                                ephemeral, the peer statistics tracks
-                                a peer even when no PCEP session
-                                currently exists to that peer. The
-                                statistics contained are an aggregate
-                                of the statistics for all successive
-                                sessions to that peer.";
-                        }
 
-                        leaf num-req-sent-closed{
-                            type yang:counter32;
-                            description
-                                "The number of requests that were
-                                 sent to the peer and implicitly
-                                 cancelled when the session they were
-                                 sent over was closed.";
-                        }
-
-                        leaf num-req-rcvd-closed{
-                            type yang:counter32;
-                            description
-                                "The number of requests that were
-                                 received from the peer and
-                                 implicitly cancelled when the
-                                 session they were received over
-                                 was closed.";
-                        }
-                    }//pcep-stats
 
 
 
@@ -3971,14 +3429,21 @@ module ietf-pcep {
                                      initiated by one of the
                                      speakers. One of these
                                      sessions is always discarded
-                                     before it leaves OpenWait state.
-                                     However, before it is discarded,
-                                     two sessions to the given peer
-                                     appear transiently in this MIB
-                                     module. The sessions are
-                                     distinguished by who initiated
-                                     them, and so this field is the
-                                     key.";
+                                     before it leaves OpenWait
+                                     state. However, before it is
+                                     discarded, two sessions to the
+                                     given peer appear transiently
+                                     in this MIB module. The
+                                     sessions are distinguished by
+                                     who initiated them, and so this
+                                     field is the key.";
+                            }
+                            leaf role {
+                                type leafref {
+                                    path "../../../role";
+                                }
+                                description
+                                    "The reference to peer role .";
                             }
 
                             leaf state-last-change {
@@ -4053,10 +3518,11 @@ module ietf-pcep {
                                         error-message
                                             "Invalid remote-id";
                                         description
-                                             "If state is tcp-pending
-                                              or open-wait then this
-                                              leaf is not used and
-                                              MUST be set to zero.";
+                                             "If state is tcp-
+                                              pending or open-wait
+                                              then this leaf is not
+                                              used and MUST be set
+                                              to zero.";
                                     }
                                 description
                                      "The value of the PCEP session
@@ -4088,10 +3554,10 @@ module ietf-pcep {
                                 description
                                      "The agreed maximum interval at
                                       which the local PCEP entity
-                                      transmits PCEP messages on this
-                                      PCEP session.  Zero means that
-                                      the local PCEP entity never
-                                      sends Keepalives on this
+                                      transmits PCEP messages on
+                                      this PCEP session.  Zero means
+                                      that the local PCEP entity
+                                      never sends Keepalives on this
                                       session.";
                             }
 
@@ -4196,25 +3662,26 @@ module ietf-pcep {
                                 description
                                      "If the local PCEP entity has
                                       informed the peer that it is
-                                      currently overloaded, then this
-                                      is set to true.  Otherwise, it
-                                      is set to false.";
+                                      currently overloaded, then
+                                      this is set to true.
+                                      Otherwise, it is set to
+                                      false.";
                             }
 
                             leaf overload-time {
                                 type uint32;
                                 units "seconds";
-                                must "((../overloaded = true()) or" +
-                                    "((../overloaded != true()) and" +
-                                    " (. = 0)))" {
+                                must "((../overloaded = true()) " +
+                                 "or ((../overloaded != true()) " +
+                                 "and (. = 0)))" {
                                         error-message
                                             "Invalid overload-time";
                                         description
                                             "This field is only used
                                              if overloaded is set to
                                              true. Otherwise, it is
-                                             not used and MUST be set
-                                             to zero.";
+                                             not used and MUST be
+                                             set to zero.";
                                     }
                                 description
                                      "The interval of time that is
@@ -4228,17 +3695,19 @@ module ietf-pcep {
                                 description
                                      "If the peer has informed the
                                       local PCEP entity that it is
-                                      currently overloaded, then this
-                                      is set to true. Otherwise, it
-                                      is set to false.";
+                                      currently overloaded, then
+                                      this is set to true.
+                                      Otherwise, it is set to
+                                      false.";
                             }
 
                             leaf peer-overload-time {
                                 type uint32;
                                 units "seconds";
-                                must "((../peer-overloaded = true())" +
-                                     " or " +
-                                     "((../peer-overloaded != true())" +
+                                must "((../peer-overloaded = " +
+                                     "true()) or " +
+                                     "((../peer-overloaded !=" +
+                                     "true())" +
                                      " and " +
                                      "(. = 0)))" {
                                         error-message
@@ -4263,78 +3732,61 @@ module ietf-pcep {
                                 if-feature stateful;
                                 type sync-state;
                                 description
-                                    "The LSP-DB state synchronization
-                                    status.";
+                                    "The LSP-DB state
+                                    synchronization status.";
                             }
-                            leaf recv-db-ver{    
+                            leaf recv-db-ver{
+                                when "../role = 'pcc'" +
+                                     "or " +
+                                     "../role = 'pcc-and-pce'"
+                                {
+                                    description
+                                        "Valid for PCEP Peer as
+                                        PCC";
+                                }
+
                                 if-feature stateful;
                                 if-feature stateful-sync-opt;
+
                                 type uint64;
-                                 must "((/pcep-state/entity/peers/" +
-                                      "peer/role = 'pcc')" +
-                                      " or " + 
-                                      "(/pcep-state/entity/peers/" +
-                                      "peer/role = 'pcc-and-pce'))"
-                                {
-                                    error-message
-                                        "The PCEP peer must be PCC";
-                                    description
-                                        "The PCEP peer must be PCC";
-                                }
-                                
-                                description 
-                                    "The last received LSP State  
+
+                                description
+                                    "The last received LSP State
                                     Database Version Number";
                             }
-                            
+
                             container of-list{
-                                if-feature objective-function;
-                                must "((/pcep/entity/role = 'pcc')" +
-                                " or " +
-                                "(/pcep/entity/role = 'pcc-and-pce'))"
+                                when "../role = 'pce'" +
+                                     "or " +
+                                     "../role = 'pcc-and-pce'"
                                 {
-                                    error-message
-                                        "The PCEP entity must be PCC";
                                     description
-                                        "The OF-list received on the 
-                                        session";
-                                }            
+                                        "Valid for PCEP Peer as
+                                        PCE";
+                                }
+                                if-feature objective-function;
+
                                 uses of-list;
-                        
-                                description 
-                                    "Indicate the list of supported OF
-                                    on this session";
+
+                                description
+                                    "Indicate the list of supported
+                                    OF on this session";
                             }
-                            
+
                             leaf speaker-entity-id{
                                 if-feature stateful-sync-opt;
                                 type string;
-                                description 
+                                description
                                     "The Speaker Entity Identifier";
                             }
-                            
+
                             leaf discontinuity-time {
                                 type yang:timestamp;
                                 description
-                                     "The timestamp value of the time
-                                      when the statistics were last
-                                      reset.";
+                                     "The timestamp value of the
+                                      time when the statistics were
+                                      last reset.";
                             }
-
-                            container pcep-stats {
-                                description
-                                    "The container for all statistics
-                                     at session level.";
-                                uses pcep-stats{
-                                    description
-                                        "The statistics contained are
-                                         for the current sessions to
-                                         that peer. These are lost
-                                         when the session goes down.
-                                         ";
-                                }
-                            }//pcep-stats
-
                         } // session
                     } // sessions
                 }//peer
@@ -4358,8 +3810,9 @@ module ietf-pcep {
         leaf state-last-change {
             type yang:timestamp;
             description
-                "The timestamp value at the time this session entered
-                its current state as denoted by the state leaf.";
+                "The timestamp value at the time this session
+                entered its current state as denoted by the state
+                leaf.";
         }
 
         leaf state {
@@ -4388,8 +3841,9 @@ module ietf-pcep {
         leaf state-last-change {
             type yang:timestamp;
             description
-                "The timestamp value at the time this session entered
-                its current state as denoted by the state leaf.";
+                "The timestamp value at the time this session
+                entered its current state as denoted by the state
+                leaf.";
         }
 
         leaf state {
@@ -4413,9 +3867,9 @@ module ietf-pcep {
         leaf overloaded {
             type boolean;
             description
-                 "If the local PCEP entity has informed the peer that
-                 it is currently overloaded, then this is set to
-                 true. Otherwise, it is set to false.";
+                 "If the local PCEP entity has informed the peer
+                 that it is currently overloaded, then this is set
+                 to true. Otherwise, it is set to false.";
         }
 
         leaf overload-time {
@@ -4457,8 +3911,8 @@ module ietf-pcep {
             type boolean;
             description
                 "If the peer has informed the local PCEP entity that
-                it is currently overloaded, then this is set to true.
-                Otherwise, it is set to false.";
+                it is currently overloaded, then this is set to
+                true. Otherwise, it is set to false.";
         }
 
         leaf peer-overload-time {
@@ -4466,9 +3920,9 @@ module ietf-pcep {
             units "seconds";
             description
                 "The interval of time that is remaining until the
-                peer will cease to be overloaded.  If it is not known
-                how long the peer will stay in overloaded state, this
-                leaf is set to zero.";
+                peer will cease to be overloaded.  If it is not
+                known how long the peer will stay in overloaded
+                state, this leaf is set to zero.";
         }
     } //notification
 
@@ -4483,16 +3937,1012 @@ module ietf-pcep {
             type boolean;
             description
                 "If the peer has informed the local PCEP entity that
-                it is currently overloaded, then this is set to true.
-                Otherwise, it is set to false.";
+                it is currently overloaded, then this is set to
+                true. Otherwise, it is set to false.";
         }
     } //notification
+
+    /*
+     * RPC
+     */
+
+    rpc trigger-resync {
+        if-feature stateful;
+        if-feature stateful-sync-opt;
+        description
+            "Trigger the resyncrinization at the PCE";
+        input {
+            leaf pcc {
+                type leafref {
+                    path "/pcep-state/entity/peers/peer/addr";
+                }
+            description
+                "The IP address to identify the PCC. The state
+                 syncronization is re-triggered for all LSPs from
+                 the PCC. The rpc on the PCC will be ignored.";
+            }
+        }
+    }//rpc
+
 }//module
+
+
+
 
 <CODE ENDS>
                      ]]></artwork>
         </figure>
-    </section>
+</section>
+<section title="ietf-pcep-stats module" toc="default">
+      <figure title="" suppress-title="false" align="left" alt="" width="" height="">
+          <artwork xml:space="preserve" name="" type="" align="left" alt="" width="" height="">
+          <![CDATA[
+<CODE BEGINS> file "ietf-pcep-stats@2017-03-12.yang"          
+module ietf-pcep-stats {
+
+    yang-version 1.1;
+
+    namespace "urn:ietf:params:xml:ns:yang:ietf-pcep-stats";
+    prefix ps;
+
+
+    import ietf-pcep {
+       prefix p;
+    }
+
+    import ietf-yang-types {
+        prefix "yang";
+    }
+
+
+
+    organization
+        "IETF PCE (Path Computation Element) Working Group";
+
+    contact
+        "WG Web:   <http://tools.ietf.org/wg/pce/>
+         WG List:  <mailto:pce@ietf.org>
+         WG Chair: JP Vasseur
+                   <mailto:jpv@cisco.com>
+         WG Chair: Julien Meuric
+                   <mailto:julien.meuric@orange.com>
+         WG Chair: Jonathan Hardwick
+                   <mailto:Jonathan.Hardwick@metaswitch.com>
+         Editor:   Dhruv Dhody
+                   <mailto:dhruv.ietf@gmail.com>";
+
+    description
+        "The YANG module augments the PCEP yang operational
+        model with statistics, counters and telemetry data";
+
+
+    revision 2017-03-12 {
+        description "Initial revision.";
+        reference
+            "RFC XXXX:  A YANG Data Model for Path Computation
+                        Element Communications Protocol
+                        (PCEP)";
+    }
+
+
+
+
+    /*
+     * Groupings
+     */
+
+    grouping pcep-stats{
+        description
+            "This grouping defines statistics for PCEP. It is used
+             for both peer and current session.";
+        leaf avg-rsp-time{
+            when "../../p:role = 'pce'" +
+                 "or " +
+                 "../../p:role = 'pcc-and-pce'"
+            {
+                description
+                    "Valid for PCEP Peer as PCE";
+            }
+            type uint32;
+            units "milliseconds";
+
+            description
+              "The average response time.
+               If an average response time has not been
+               calculated then this leaf has the value zero.";
+        }
+
+        leaf lwm-rsp-time{
+            when "../../p:role = 'pce'" +
+                 "or " +
+                 "../../p:role = 'pcc-and-pce'"
+            {
+                description
+                    "Valid for PCEP Peer as PCE";
+            }
+            type uint32;
+            units "milliseconds";
+
+            description
+             "The smallest (low-water mark) response time seen.
+              If no responses have been received then this
+              leaf has the value zero.";
+        }
+
+        leaf hwm-rsp-time{
+            when "../../p:role = 'pce'" +
+                 "or " +
+                 "../../p:role = 'pcc-and-pce'"
+            {
+                description
+                    "Valid for PCEP Peer as PCE";
+            }
+            type uint32;
+            units "milliseconds";
+
+            description
+             "The greatest (high-water mark) response time seen.
+              If no responses have been received then this object
+              has the value zero.";
+        }
+
+        leaf num-pcreq-sent{
+            when "../../p:role = 'pce'" +
+                 "or " +
+                 "../../p:role = 'pcc-and-pce'"
+            {
+                description
+                    "Valid for PCEP Peer as PCE";
+            }
+            type yang:counter32;
+            description
+             "The number of PCReq messages sent.";
+        }
+
+        leaf num-pcreq-rcvd{
+            when "../../p:role = 'pcc'" +
+                 "or " +
+                 "../../p:role = 'pcc-and-pce'"
+            {
+                description
+                    "Valid for PCEP Peer as PCC";
+            }
+            type yang:counter32;
+            description
+              "The number of PCReq messages received.";
+        }
+
+        leaf num-pcrep-sent{
+            when "../../p:role = 'pcc'" +
+                 "or " +
+                 "../../p:role = 'pcc-and-pce'"
+            {
+                description
+                    "Valid for PCEP Peer as PCC";
+            }
+
+            type yang:counter32;
+            description
+              "The number of PCRep messages sent.";
+        }
+
+        leaf num-pcrep-rcvd{
+            when "../../p:role = 'pce'" +
+                 "or " +
+                 "../../p:role = 'pcc-and-pce'"
+            {
+                description
+                    "Valid for PCEP Peer as PCE";
+            }
+
+            type yang:counter32;
+            description
+              "The number of PCRep messages received.";
+        }
+
+        leaf num-pcerr-sent{
+            type yang:counter32;
+            description
+              "The number of PCErr messages sent.";
+        }
+
+        leaf num-pcerr-rcvd{
+            type yang:counter32;
+            description
+              "The number of PCErr messages received.";
+        }
+
+        leaf num-pcntf-sent{
+            type yang:counter32;
+            description
+              "The number of PCNtf messages sent.";
+        }
+
+        leaf num-pcntf-rcvd{
+            type yang:counter32;
+            description
+              "The number of PCNtf messages received.";
+        }
+
+        leaf num-keepalive-sent{
+            type yang:counter32;
+            description
+              "The number of Keepalive messages sent.";
+        }
+
+        leaf num-keepalive-rcvd{
+            type yang:counter32;
+            description
+              "The number of Keepalive messages received.";
+        }
+
+        leaf num-unknown-rcvd{
+            type yang:counter32;
+            description
+              "The number of unknown messages received.";
+        }
+
+        leaf num-corrupt-rcvd{
+            type yang:counter32;
+            description
+              "The number of corrupted PCEP message received.";
+        }
+
+        leaf num-req-sent{
+            when "../../p:role = 'pce'" +
+                 "or " +
+                 "../../p:role = 'pcc-and-pce'"
+            {
+                description
+                    "Valid for PCEP Peer as PCE";
+            }
+            type yang:counter32;
+            description
+              "The number of requests sent.  A request corresponds
+               1:1 with an RP object in a PCReq message. This might
+               be greater than num-pcreq-sent because multiple
+               requests can be batched into a single PCReq
+               message.";
+        }
+
+        leaf num-req-sent-pend-rep{
+            when "../../p:role = 'pce'" +
+                 "or " +
+                 "../../p:role = 'pcc-and-pce'"
+            {
+                description
+                    "Valid for PCEP Peer as PCE";
+            }
+            type yang:counter32;
+            description
+              "The number of requests that have been sent for
+               which a response is still pending.";
+        }
+
+        leaf num-req-sent-ero-rcvd{
+            when "../../p:role = 'pce'" +
+                 "or " +
+                 "../../p:role = 'pcc-and-pce'"
+            {
+                description
+                    "Valid for PCEP Peer as PCE";
+            }
+            type yang:counter32;
+            description
+               "The number of requests that have been sent for
+                which a response with an ERO object was received.
+                Such responses indicate that a path was
+                successfully computed by the peer.";
+        }
+
+        leaf num-req-sent-nopath-rcvd{
+            when "../../p:role = 'pce'" +
+                 "or " +
+                 "../../p:role = 'pcc-and-pce'"
+            {
+                description
+                    "Valid for PCEP Peer as PCE";
+            }
+            type yang:counter32;
+            description
+              "The number of requests that have been sent for
+               which a response with a NO-PATH object was
+               received. Such responses indicate that the peer
+               could not find a path to satisfy the
+               request.";
+        }
+
+        leaf num-req-sent-cancel-rcvd{
+            when "../../p:role = 'pce'" +
+                 "or " +
+                 "../../p:role = 'pcc-and-pce'"
+            {
+                description
+                    "Valid for PCEP Peer as PCE";
+            }
+            type yang:counter32;
+            description
+              "The number of requests that were cancelled with
+               a PCNtf message.
+               This might be different than num-pcntf-rcvd because
+               not all PCNtf messages are used to cancel requests,
+               and a single PCNtf message can cancel multiple
+               requests.";
+        }
+
+        leaf num-req-sent-error-rcvd{
+            when "../../p:role = 'pce'" +
+                 "or " +
+                 "../../p:role = 'pcc-and-pce'"
+            {
+                description
+                    "Valid for PCEP Peer as PCE";
+            }
+            type yang:counter32;
+            description
+             "The number of requests that were rejected with a
+              PCErr message.
+              This might be different than num-pcerr-rcvd because
+              not all PCErr messages are used to reject requests,
+              and a single PCErr message can reject multiple
+              requests.";
+        }
+
+        leaf num-req-sent-timeout{
+            when "../../p:role = 'pce'" +
+                 "or " +
+                 "../../p:role = 'pcc-and-pce'"
+            {
+                description
+                    "Valid for PCEP Peer as PCE";
+            }
+            type yang:counter32;
+            description
+             "The number of requests that have been sent to a peer
+             and have been abandoned because the peer has taken too
+             long to respond to them.";
+        }
+
+        leaf num-req-sent-cancel-sent{
+            when "../../p:role = 'pce'" +
+                 "or " +
+                 "../../p:role = 'pcc-and-pce'"
+            {
+                description
+                    "Valid for PCEP Peer as PCE";
+            }
+            type yang:counter32;
+            description
+             "The number of requests that were sent to the peer and
+              explicitly cancelled by the local PCEP entity sending
+              a PCNtf.";
+        }
+
+        leaf num-req-rcvd{
+            when "../../p:role = 'pcc'" +
+                 "or " +
+                 "../../p:role = 'pcc-and-pce'"
+            {
+                description
+                    "Valid for PCEP Peer as PCC";
+            }
+            type yang:counter32;
+            description
+             "The number of requests received.  A request
+              corresponds 1:1 with an RP object in a PCReq
+              message.
+              This might be greater than num-pcreq-rcvd because
+              multiple requests can be batched into a single
+              PCReq message.";
+        }
+
+        leaf num-req-rcvd-pend-rep{
+            when "../../p:role = 'pcc'" +
+                 "or " +
+                 "../../p:role = 'pcc-and-pce'"
+            {
+                description
+                    "Valid for PCEP Peer as PCC";
+            }
+            type yang:counter32;
+            description
+             "The number of requests that have been received for
+              which a response is still pending.";
+        }
+
+        leaf num-req-rcvd-ero-sent{
+            when "../../p:role = 'pcc'" +
+                 "or " +
+                 "../../p:role = 'pcc-and-pce'"
+            {
+                description
+                    "Valid for PCEP Peer as PCC";
+            }
+            type yang:counter32;
+            description
+             "The number of requests that have been received for
+              which a response with an ERO object was sent.  Such
+              responses indicate that a path was successfully
+              computed by the local PCEP entity.";
+        }
+
+        leaf num-req-rcvd-nopath-sent{
+            when "../../p:role = 'pcc'" +
+                 "or " +
+                 "../../p:role = 'pcc-and-pce'"
+            {
+                description
+                    "Valid for PCEP Peer as PCC";
+            }
+            type yang:counter32;
+            description
+             "The number of requests that have been received for
+              which a response with a NO-PATH object was sent. Such
+              responses indicate that the local PCEP entity could
+              not find a path to satisfy the request.";
+        }
+
+        leaf num-req-rcvd-cancel-sent{
+            when "../../p:role = 'pcc'" +
+                 "or " +
+                 "../../p:role = 'pcc-and-pce'"
+            {
+                description
+                    "Valid for PCEP Peer as PCC";
+            }
+            type yang:counter32;
+            description
+             "The number of requests received that were cancelled
+              by the local PCEP entity sending a PCNtf message.
+              This might be different than num-pcntf-sent because
+              not all PCNtf messages are used to cancel requests,
+              and a single PCNtf message can cancel multiple
+              requests.";
+        }
+
+        leaf num-req-rcvd-error-sent{
+            when "../../p:role = 'pcc'" +
+                 "or " +
+                 "../../p:role = 'pcc-and-pce'"
+            {
+                description
+                    "Valid for PCEP Peer as PCC";
+            }
+            type yang:counter32;
+            description
+             "The number of requests received that were cancelled
+              by the local PCEP entity sending a PCErr message.
+              This might be different than num-pcerr-sent because
+              not all PCErr messages are used to cancel requests,
+              and a single PCErr message can cancel multiple
+              requests.";
+        }
+
+        leaf num-req-rcvd-cancel-rcvd{
+            when "../../p:role = 'pcc'" +
+                 "or " +
+                 "../../p:role = 'pcc-and-pce'"
+            {
+                description
+                    "Valid for PCEP Peer as PCC";
+            }
+            type yang:counter32;
+            description
+             "The number of requests that were received from the
+              peer and explicitly cancelled by the peer sending
+              a PCNtf.";
+        }
+
+        leaf num-rep-rcvd-unknown{
+            when "../../p:role = 'pce'" +
+                 "or " +
+                 "../../p:role = 'pcc-and-pce'"
+            {
+                description
+                    "Valid for PCEP Peer as PCE";
+            }
+            type yang:counter32;
+            description
+              "The number of responses to unknown requests
+               received. A response to an unknown request is a
+               response whose RP object does not contain the
+               request ID of any request that is currently
+               outstanding on the session.";
+        }
+
+        leaf num-req-rcvd-unknown{
+            when "../../p:role = 'pcc'" +
+                 "or " +
+                 "../../p:role = 'pcc-and-pce'"
+            {
+                description
+                    "Valid for PCEP Peer as PCC";
+            }
+            type yang:counter32;
+            description
+              "The number of unknown requests that have been
+               received. An unknown request is a request
+               whose RP object contains a request ID of
+               zero.";
+        }
+
+        container svec{
+            if-feature p:svec;
+            description
+                "If synchronized path computation is supported";
+            leaf num-svec-sent{
+                when "../../../p:role = 'pce'" +
+                     "or " +
+                     "../../../p:role = 'pcc-and-pce'"
+                {
+                    description
+                        "Valid for PCEP Peer as PCE";
+                }
+                type yang:counter32;
+                description
+                  "The number of SVEC objects sent in PCReq messages.
+                   An SVEC object represents a set of synchronized
+                   requests.";
+            }
+
+            leaf num-svec-req-sent{
+                when "../../../p:role = 'pce'" +
+                     "or " +
+                     "../../../p:role = 'pcc-and-pce'"
+                {
+                    description
+                        "Valid for PCEP Peer as PCE";
+                }
+                type yang:counter32;
+                description
+                  "The number of requests sent that appeared in one
+                   or more SVEC objects.";
+            }
+
+            leaf num-svec-rcvd{
+                when "../../../p:role = 'pcc'" +
+                     "or " +
+                     "../../../p:role = 'pcc-and-pce'"
+                {
+                    description
+                        "Valid for PCEP Peer as PCC";
+                }
+                type yang:counter32;
+                description
+                 "The number of SVEC objects received in PCReq
+                  messages. An SVEC object represents a set of
+                  synchronized requests.";
+            }
+
+            leaf num-svec-req-rcvd{
+                when "../../../p:role = 'pcc'" +
+                     "or " +
+                     "../../../p:role = 'pcc-and-pce'"
+                {
+                    description
+                        "Valid for PCEP Peer as PCC";
+                }
+                type yang:counter32;
+                description
+                  "The number of requests received that appeared
+                   in one or more SVEC objects.";
+            }
+        }
+        container stateful{
+            if-feature p:stateful;
+            description
+                "Stateful PCE related statistics";
+            leaf num-pcrpt-sent{
+                when "../../../p:role = 'pce'" +
+                     "or " +
+                     "../../../p:role = 'pcc-and-pce'"
+                {
+                    description
+                        "Valid for PCEP Peer as PCE";
+                }
+                type yang:counter32;
+                description
+                 "The number of PCRpt messages sent.";
+            }
+
+            leaf num-pcrpt-rcvd{
+                when "../../../p:role = 'pcc'" +
+                     "or " +
+                     "../../../p:role = 'pcc-and-pce'"
+                {
+                    description
+                        "Valid for PCEP Peer as PCC";
+                }
+                type yang:counter32;
+                description
+                  "The number of PCRpt messages received.";
+            }
+
+            leaf num-pcupd-sent{
+                when "../../../p:role = 'pcc'" +
+                     "or " +
+                     "../../../p:role = 'pcc-and-pce'"
+                {
+                    description
+                        "Valid for PCEP Peer as PCC";
+                }
+                type yang:counter32;
+                description
+                 "The number of PCUpd messages sent.";
+            }
+
+            leaf num-pcupd-rcvd{
+                when "../../../p:role = 'pce'" +
+                     "or " +
+                     "../../../p:role = 'pcc-and-pce'"
+                {
+                    description
+                        "Valid for PCEP Peer as PCE";
+                }
+                type yang:counter32;
+                description
+                  "The number of PCUpd messages received.";
+            }
+
+            leaf num-rpt-sent{
+                when "../../../p:role = 'pce'" +
+                     "or " +
+                     "../../../p:role = 'pcc-and-pce'"
+                {
+                    description
+                        "Valid for PCEP Peer as PCE";
+                }
+                type yang:counter32;
+                description
+                  "The number of LSP Reports sent.  A LSP report
+                   corresponds 1:1 with an LSP object in a PCRpt
+                   message. This might be greater than
+                   num-pcrpt-sent because multiple reports can
+                   be batched into a single PCRpt message.";
+            }
+
+            leaf num-rpt-rcvd{
+                when "../../../p:role = 'pcc'" +
+                     "or " +
+                     "../../../p:role = 'pcc-and-pce'"
+                {
+                    description
+                        "Valid for PCEP Peer as PCC";
+                }
+                type yang:counter32;
+                description
+                 "The number of LSP Reports received.  A LSP report
+                  corresponds 1:1 with an LSP object in a PCRpt
+                  message.
+                  This might be greater than num-pcrpt-rcvd because
+                  multiple reports can be batched into a single
+                  PCRpt message.";
+            }
+
+            leaf num-rpt-rcvd-error-sent{
+                when "../../../p:role = 'pcc'" +
+                     "or " +
+                     "../../../p:role = 'pcc-and-pce'"
+                {
+                    description
+                        "Valid for PCEP Peer as PCC";
+                }
+                type yang:counter32;
+                description
+                  "The number of reports of LSPs received that were
+                  responded by the local PCEP entity by sending a
+                  PCErr message.";
+            }
+
+            leaf num-upd-sent{
+                when "../../../p:role = 'pcc'" +
+                     "or " +
+                     "../../../p:role = 'pcc-and-pce'"
+                {
+                    description
+                        "Valid for PCEP Peer as PCC";
+                }
+                type yang:counter32;
+                description
+                  "The number of LSP updates sent.  A LSP update
+                   corresponds 1:1 with an LSP object in a PCUpd
+                   message. This might be greater than
+                   num-pcupd-sent because multiple updates can
+                   be batched into a single PCUpd message.";
+            }
+
+            leaf num-upd-rcvd{
+                when "../../../p:role = 'pce'" +
+                     "or " +
+                     "../../../p:role = 'pcc-and-pce'"
+                {
+                    description
+                        "Valid for PCEP Peer as PCE";
+                }
+                type yang:counter32;
+                description
+                 "The number of LSP Updates received.  A LSP update
+                  corresponds 1:1 with an LSP object in a PCUpd
+                  message.
+                  This might be greater than num-pcupd-rcvd because
+                  multiple updates can be batched into a single
+                  PCUpd message.";
+            }
+
+            leaf num-upd-rcvd-unknown{
+                when "../../../p:role = 'pce'" +
+                     "or " +
+                     "../../../p:role = 'pcc-and-pce'"
+                {
+                    description
+                        "Valid for PCEP Peer as PCE";
+                }
+                type yang:counter32;
+                description
+                  "The number of updates to unknown LSPs
+                   received. An update to an unknown LSP is a
+                   update whose LSP object does not contain the
+                   PLSP-ID of any LSP that is currently
+                   present.";
+            }
+
+            leaf num-upd-rcvd-undelegated{
+                when "../../../p:role = 'pce'" +
+                     "or " +
+                     "../../../p:role = 'pcc-and-pce'"
+                {
+                    description
+                        "Valid for PCEP Peer as PCE";
+                }
+                type yang:counter32;
+                description
+                  "The number of updates to not delegated LSPs
+                   received. An update to an undelegated LSP is a
+                   update whose LSP object does not contain the
+                   PLSP-ID of any LSP that is currently
+                   delegated to current PCEP session.";
+            }
+
+            leaf num-upd-rcvd-error-sent{
+                when "../../../p:role = 'pce'" +
+                     "or " +
+                     "../../../p:role = 'pcc-and-pce'"
+                {
+                    description
+                        "Valid for PCEP Peer as PCE";
+                }
+                type yang:counter32;
+                description
+                  "The number of updates to LSPs received that were
+                  responded by the local PCEP entity by sending a
+                  PCErr message.";
+            }
+            container initiation {
+                if-feature p:pce-initiated;
+                description
+                    "PCE-Initiated related statistics";
+                leaf num-pcinitiate-sent{
+                    when "../../../../p:role = 'pcc'" +
+                         "or " +
+                         "../../../../p:role = 'pcc-and-pce'"
+                    {
+                        description
+                            "Valid for PCEP Peer as PCC";
+                    }
+                    type yang:counter32;
+                    description
+                     "The number of PCInitiate messages sent.";
+                }
+
+                leaf num-pcinitiate-rcvd{
+                    when "../../../../p:role = 'pce'" +
+                         "or " +
+                         "../../../../p:role = 'pcc-and-pce'"
+                    {
+                        description
+                            "Valid for PCEP Peer as PCE";
+                    }
+                    type yang:counter32;
+                    description
+                      "The number of PCInitiate messages received.";
+                }
+
+                leaf num-initiate-sent{
+                    when "../../../../p:role = 'pcc'" +
+                         "or " +
+                         "../../../../p:role = 'pcc-and-pce'"
+                    {
+                        description
+                            "Valid for PCEP Peer as PCC";
+                    }
+                    type yang:counter32;
+                    description
+                      "The number of LSP Initiation sent via PCE.
+                       A LSP initiation corresponds 1:1 with an LSP
+                       object in a PCInitiate message. This might be
+                       greater than num-pcinitiate-sent because
+                       multiple initiations can be batched into a
+                       single PCInitiate message.";
+                }
+
+                leaf num-initiate-rcvd{
+                    when "../../../../p:role = 'pce'" +
+                         "or " +
+                         "../../../../p:role = 'pcc-and-pce'"
+                    {
+                        description
+                            "Valid for PCEP Peer as PCE";
+                    }
+                    type yang:counter32;
+                    description
+                      "The number of LSP Initiation received from
+                       PCE.  A LSP initiation corresponds 1:1 with
+                       an LSP object in a PCInitiate message. This
+                       might be greater than num-pcinitiate-rcvd
+                       because multiple initiations can be batched
+                       into a single PCInitiate message.";
+                }
+
+                leaf num-initiate-rcvd-error-sent{
+                    when "../../../../p:role = 'pce'" +
+                         "or " +
+                         "../../../../p:role = 'pcc-and-pce'"
+                    {
+                        description
+                            "Valid for PCEP Peer as PCE";
+                    }
+                    type yang:counter32;
+                    description
+                      "The number of initiations of LSPs received
+                       that were responded by the local PCEP entity
+                       by sending a PCErr message.";
+                }
+            }
+        }
+        container path-key {
+            when "../../p:role = 'pcc'" +
+                 "or " +
+                 "../../p:role = 'pcc-and-pce'"
+            {
+                description
+                    "Valid for PCEP Peer as PCC";
+            }
+            if-feature p:path-key;
+            description
+                "If Path-Key is supported";
+            leaf num-unknown-path-key{
+                type yang:counter32;
+                description
+                 "The number of attempts to expand an unknown
+                 path-key.";
+            }
+            leaf num-exp-path-key{
+                type yang:counter32;
+                description
+                 "The number of attempts to expand an expired
+                 path-key.";
+            }
+            leaf num-dup-path-key{
+                type yang:counter32;
+                description
+                 "The number of duplicate attempts to expand same
+                 path-key.";
+            }
+            leaf num-path-key-no-attempt{
+                type yang:counter32;
+                description
+                 "The number of expired path-keys with no attempt to
+                 expand it.";
+            }
+        }
+    }//pcep-stats
+
+    /*
+     * Augment modules to add statistics
+     */
+
+    augment "/p:pcep-state/p:entity/p:peers/p:peer" {
+        description
+            "Augmenting the statistics";
+        leaf num-sess-setup-ok{
+            type yang:counter32;
+            description
+                "The number of PCEP sessions successfully
+                 successfully established with the peer,
+                 including any current session.  This
+                 counter is incremented each time a
+                 session with this peer is successfully
+                 established.";
+        }
+
+        leaf num-sess-setup-fail{
+            type yang:counter32;
+            description
+               "The number of PCEP sessions with the peer
+                that have been attempted but failed
+                before being fully established. This
+                counter is incremented each time a
+                session retry to this peer fails.";
+        }
+        container pcep-stats {
+            description
+                "The container for all statistics at peer
+                 level.";
+            uses pcep-stats{
+                description
+                    "Since PCEP sessions can be
+                    ephemeral, the peer statistics tracks
+                    a peer even when no PCEP session
+                    currently exists to that peer. The
+                    statistics contained are an aggregate
+                    of the statistics for all successive
+                    sessions to that peer.";
+            }
+
+            leaf num-req-sent-closed{
+                when "../../p:role = 'pce'" +
+                     "or " +
+                     "../../p:role = 'pcc-and-pce'"
+                {
+                    description
+                        "Valid for PCEP Peer as PCE";
+                }
+                type yang:counter32;
+                description
+                    "The number of requests that were
+                     sent to the peer and implicitly
+                     cancelled when the session they were
+                     sent over was closed.";
+            }
+
+            leaf num-req-rcvd-closed{
+                when "../../p:role = 'pcc'" +
+                     "or " +
+                     "../../p:role = 'pcc-and-pce'"
+                {
+                    description
+                        "Valid for PCEP Peer as PCC";
+                }
+                type yang:counter32;
+                description
+                    "The number of requests that were
+                     received from the peer and
+                     implicitly cancelled when the
+                     session they were received over
+                     was closed.";
+            }
+        }//pcep-stats
+    }//augment
+
+    augment "/p:pcep-state/p:entity/p:peers/p:peer/" +
+            "p:sessions/p:session" {
+        description
+            "Augmenting the statistics";
+        container pcep-stats {
+            description
+                "The container for all statistics
+                 at session level.";
+            uses pcep-stats{
+                description
+                    "The statistics contained are
+                     for the current sessions to
+                     that peer. These are lost
+                     when the session goes down.
+                     ";
+            }
+        }//pcep-stats
+    }//augment
+
+}//module
+
+
+
+
+<CODE ENDS>
+                     ]]></artwork>
+        </figure>  
+  </section>
+  </section>
 
 
 
@@ -4510,32 +4960,46 @@ module ietf-pcep {
    default).  These data nodes may be considered sensitive or vulnerable
    in some network environments.  Write operations (e.g.,  &lt;edit-config&gt;)
    to these data nodes without proper protection can have a negative
-   effect on network operations.</t>
+   effect on network operations. These are the subtrees and data nodes and 
+   their sensitivity/vulnerability:
+   <list>
+   <t>/pcep/entity/ - configure local parameters, capabilities etc.</t>
+   <t>/pcep/entity/peers - configure remote peers to setup PCEP session.</t>
+   </list></t>
 
-   <t>TBD: List specific Subtrees and data nodes and their sensitivity/
-   vulnerability.</t>
+   <t>Unauthorized access to above list can adversely affect the
+   PCEP session between the local entity and the peers.  This may
+   lead to inability to compute new paths, stateful operations on 
+   the delegated as well as PCE-initiated LSPs.</t>
+
+   <t>Some of the readable data nodes in this YANG module may be considered 
+    sensitive or vulnerable in some network environments. It is thus important 
+    to control read access (e.g., via get, get-config, or notification) to 
+    these data nodes. These are the subtrees and data nodes and their 
+    sensitivity/vulnerability:
+
+   <list>
+    <t>/pcep-state/lsp-db - All the LSPs in the network. Unauthorized access to 
+      this could provide the all path and network usage information.</t>
+    <t>/pcep-state/path-keys/ - The Confidential Path Segments (CPS) are hidden
+      using path-keys. Unauthorized access to this could leak confidential
+      path information.
+    </t>
+  </list></t>
+
+  <t>Some of the RPC operations in this YANG module may be considered sensitive 
+    or vulnerable in some network environments. It is thus important to control
+    access to these operations. These are the operations and their 
+    sensitivity/vulnerability:
+    <list>
+
+  <t>trigger-resync - trigger resynchronization with the PCE. Unauthorized access to 
+      this could force a PCEP session into continuous state synchronization. </t>
+  </list></t>
+
     </section>
 
-    <section title="Manageability Considerations" toc="default">
-      <section title="Control of Function and Policy" toc="default">
-        <t></t>
-      </section>
-      <section title="Information and Data Models" toc="default">
-        <t></t>
-      </section>
-      <section title="Liveness Detection and Monitoring" toc="default">
-        <t></t>
-      </section>
-      <section title="Verify Correct Operations" toc="default">
-        <t></t>
-      </section>
-      <section title="Requirements On Other Protocols" toc="default">
-        <t></t>
-      </section>
-      <section title="Impact On Network Operations" toc="default">
-        <t></t>
-      </section>
-    </section>
+    
     <section title="IANA Considerations" toc="default">
     <t>This document registers a URI in the "IETF XML Registry"
     <xref target="RFC3688"/>.
@@ -4577,6 +5041,7 @@ module ietf-pcep {
     <?rfc include="reference.RFC.3688.xml" ?>
     <?rfc include="reference.RFC.5440.xml" ?>
     <?rfc include="reference.RFC.6020.xml" ?>
+    <?rfc include="reference.RFC.6536.xml" ?>
     <?rfc include="reference.RFC.6991.xml" ?>
     <?rfc include="reference.I-D.ietf-pce-stateful-pce"?>
     <?rfc include="reference.I-D.ietf-pce-pce-initiated-lsp"?>
@@ -4589,7 +5054,6 @@ module ietf-pcep {
       <?rfc include="reference.RFC.4655.xml" ?>
       <?rfc include="reference.RFC.6241.xml" ?>
       <?rfc include="reference.RFC.6242.xml" ?>
-      <?rfc include="reference.RFC.6536.xml" ?>
       <?rfc include="reference.RFC.7420.xml" ?>
       <?rfc include="reference.I-D.ietf-netmod-routing-cfg.xml" ?>
       <?rfc include="reference.I-D.ietf-netmod-rfc6087bis.xml" ?>
@@ -4623,9 +5087,12 @@ Canada
 EMail: zali@cisco.com
 
 Xufeng Liu
-Kuatro Technologies
+Jabil
+8281 Greensboro Drive, Suite 200
+McLean  VA 22102
+USA
 
-EMail: xliu@kuatrotech.com
+EMail: Xufeng_Liu@jabil.com
 
 Young Lee
 Huawei Technologies
