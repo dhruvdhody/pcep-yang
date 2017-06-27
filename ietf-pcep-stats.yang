@@ -36,7 +36,7 @@ module ietf-pcep-stats {
         model with statistics, counters and telemetry data";
 
 
-    revision 2017-03-12 {
+    revision 2017-06-21 {
         description "Initial revision.";
         reference
             "RFC XXXX:  A YANG Data Model for Path Computation
@@ -861,11 +861,12 @@ module ietf-pcep-stats {
      * Augment modules to add statistics
      */
 
-    augment "/p:pcep-state/p:entity/p:peers/p:peer" {
+    augment "/p:pcep/p:entity/p:peers/p:peer" {
         description
             "Augmenting the statistics";
         leaf num-sess-setup-ok{
             type yang:counter32;
+            config false;
             description
                 "The number of PCEP sessions successfully
                  successfully established with the peer,
@@ -877,6 +878,7 @@ module ietf-pcep-stats {
 
         leaf num-sess-setup-fail{
             type yang:counter32;
+            config false;
             description
                "The number of PCEP sessions with the peer
                 that have been attempted but failed
@@ -885,6 +887,7 @@ module ietf-pcep-stats {
                 session retry to this peer fails.";
         }
         container pcep-stats {
+            config false;
             description
                 "The container for all statistics at peer
                  level.";
@@ -934,7 +937,7 @@ module ietf-pcep-stats {
         }//pcep-stats
     }//augment
 
-    augment "/p:pcep-state/p:entity/p:peers/p:peer/" +
+    augment "/p:pcep/p:entity/p:peers/p:peer/" +
             "p:sessions/p:session" {
         description
             "Augmenting the statistics";
