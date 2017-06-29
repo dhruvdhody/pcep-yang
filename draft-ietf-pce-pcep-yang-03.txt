@@ -14,7 +14,7 @@ Expires: December 31, 2017                                    Metaswitch
 
  A YANG Data Model for Path Computation Element Communications Protocol
                                  (PCEP)
-                      draft-ietf-pce-pcep-yang-04
+                      draft-ietf-pce-pcep-yang-03
 
 Abstract
 
