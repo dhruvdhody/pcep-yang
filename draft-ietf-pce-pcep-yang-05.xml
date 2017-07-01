@@ -73,7 +73,7 @@
       </address>
     </author>
 
-    <date day="30" month="June" year="2017" />
+    <date day="01" month="July" year="2017" />
     <area>Routing</area>
     <workgroup>PCE Working Group</workgroup>
     <abstract>
@@ -954,7 +954,7 @@ module: ietf-pcep-stats
     <figure title="" suppress-title="false" align="left" alt="" width="" height="">
           <artwork xml:space="preserve" name="" type="" align="left" alt="" width="" height="">
           <![CDATA[
-<CODE BEGINS> file "ietf-pcep@2017-06-30.yang"
+<CODE BEGINS> file "ietf-pcep@2017-07-01.yang"
 module ietf-pcep {
 
     yang-version 1.1;
@@ -1015,7 +1015,7 @@ module ietf-pcep {
          vendor implementations.";
 
 
-    revision 2017-06-30 {
+    revision 2017-07-01 {
         description "Initial revision.";
         reference
             "RFC XXXX:  A YANG Data Model for Path Computation
@@ -2194,12 +2194,6 @@ module ietf-pcep {
                     "Extended Tunnel ID of the LSP.";
                 reference "RFC3209";
             }
-            leaf type {
-                type leafref {
-                    path "/te:te/te:lsps-state/te:lsp/te:type";
-                }
-                description "LSP type P2P or P2MP";
-            }
         }
 
         leaf admin-state{
@@ -3340,6 +3334,7 @@ module ietf-pcep {
 
                     leaf role {
                         type pcep-role;
+                        mandatory true;
                         description
                             "The role of the PCEP Peer.
                              Takes one of the following values.
@@ -3363,14 +3358,6 @@ module ietf-pcep {
                     }
 
                     container pce-info {
-                        when "../role = 'pce'" +
-                             "or " +
-                             "../role = 'pcc-and-pce'"
-                        {
-                            description
-                                "Valid at PCE";
-                        }
-
                         uses pce-info {
                             description
                                 "PCE Peer information";
@@ -3635,6 +3622,7 @@ module ietf-pcep {
     }//rpc
 
 }//module
+
 <CODE ENDS>
                      ]]></artwork>
         </figure>
@@ -3643,7 +3631,7 @@ module ietf-pcep {
       <figure title="" suppress-title="false" align="left" alt="" width="" height="">
           <artwork xml:space="preserve" name="" type="" align="left" alt="" width="" height="">
           <![CDATA[
-<CODE BEGINS> file "ietf-pcep-stats@2017-06-30.yang"
+<CODE BEGINS> file "ietf-pcep-stats@2017-07-01.yang"
 module ietf-pcep-stats {
 
     yang-version 1.1;
@@ -3682,7 +3670,7 @@ module ietf-pcep-stats {
         model with statistics, counters and telemetry data";
 
 
-    revision 2017-06-30 {
+    revision 2017-07-01 {
         description "Initial revision.";
         reference
             "RFC XXXX:  A YANG Data Model for Path Computation
