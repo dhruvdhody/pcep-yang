@@ -58,7 +58,7 @@ module ietf-pcep {
          vendor implementations.";
 
 
-    revision 2017-07-01 {
+    revision 2018-01-05 {
         description "Initial revision.";
         reference
             "RFC XXXX:  A YANG Data Model for Path Computation
@@ -1732,7 +1732,7 @@ module ietf-pcep {
                          these sessions is always discarded before it
                          leaves OpenWait state. However, before it is
                          discarded, two sessions to the given peer
-                         appear transiently in this MIB module. The
+                         appear transiently in this yang module. The
                          sessions are distinguished by who initiated
                          them, and so this field is the key.";
                 }

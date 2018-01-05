@@ -3,6 +3,7 @@ module ietf-pcep-stats {
     yang-version 1.1;
 
     namespace "urn:ietf:params:xml:ns:yang:ietf-pcep-stats";
+
     prefix ps;
 
 
@@ -13,8 +14,6 @@ module ietf-pcep-stats {
     import ietf-yang-types {
         prefix "yang";
     }
-
-
 
     organization
         "IETF PCE (Path Computation Element) Working Group";
@@ -36,16 +35,13 @@ module ietf-pcep-stats {
         model with statistics, counters and telemetry data";
 
 
-    revision 2017-07-01 {
+    revision 2018-01-05 {
         description "Initial revision.";
         reference
             "RFC XXXX:  A YANG Data Model for Path Computation
                         Element Communications Protocol
                         (PCEP)";
     }
-
-
-
 
     /*
      * Groupings
