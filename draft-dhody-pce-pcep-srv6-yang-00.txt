@@ -286,20 +286,21 @@ Internet-Draft                  PCE-YANG                    October 2018
        prefix ps;
 
 
+       import ietf-srv6-types {
+           prefix "st";
+           reference "RFC XXXX";
+       }
+
        import ietf-te-types {
           prefix "te-types";
           reference "RFC XXXX";
        }
 
        import ietf-pcep {
-          prefix p;
+          prefix "p";
           reference "RFC XXXX";
        }
 
-       import ietf-srv6-types {
-           prefix st;
-           reference "RFC XXXX";
-       }
 
        organization
            "IETF PCE (Path Computation Element) Working Group";
@@ -329,7 +330,6 @@ Internet-Draft                  PCE-YANG                    October 2018
            description
              "SRv6 path setup type";
        }
-
 
 
 
@@ -423,7 +423,7 @@ Internet-Draft                  PCE-YANG                    October 2018
            description
                "Augmenting SRv6";
            container srv6 {
-               when "/p:pcep/p:entity/p:lsp-db/p:lsp/pst
+               when "/p:pcep/p:entity/p:lsp-db/p:lsp/p:pst
                      = 'path-setup-srv6'" {
                    description
                        "For SRv6 path";
@@ -436,11 +436,11 @@ Internet-Draft                  PCE-YANG                    October 2018
        }
 
    }//module
+   }//module
 
 
 
    <CODE ENDS>
-
 
 
 
