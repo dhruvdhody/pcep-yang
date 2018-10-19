@@ -5,8 +5,8 @@
 PCE Working Group                                          D. Dhody, Ed.
 Internet-Draft                                       Huawei Technologies
 Intended status: Standards Track                            S. Sivabalan
-Expires: April 18, 2019                              Cisco Systems, Inc.
-                                                        October 15, 2018
+Expires: April 22, 2019                              Cisco Systems, Inc.
+                                                        October 19, 2018
 
 
   A YANG Data Model for Segment Routing in IPv6 (SRv6) support in Path
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 18, 2019.
+   This Internet-Draft will expire on April 22, 2019.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Dhody & Sivabalan        Expires April 18, 2019                 [Page 1]
+Dhody & Sivabalan        Expires April 22, 2019                 [Page 1]
 
 Internet-Draft                  PCE-YANG                    October 2018
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Dhody & Sivabalan        Expires April 18, 2019                 [Page 2]
+Dhody & Sivabalan        Expires April 22, 2019                 [Page 2]
 
 Internet-Draft                  PCE-YANG                    October 2018
 
@@ -165,7 +165,7 @@ Internet-Draft                  PCE-YANG                    October 2018
 
 
 
-Dhody & Sivabalan        Expires April 18, 2019                 [Page 3]
+Dhody & Sivabalan        Expires April 22, 2019                 [Page 3]
 
 Internet-Draft                  PCE-YANG                    October 2018
 
@@ -221,7 +221,7 @@ Internet-Draft                  PCE-YANG                    October 2018
 
 
 
-Dhody & Sivabalan        Expires April 18, 2019                 [Page 4]
+Dhody & Sivabalan        Expires April 22, 2019                 [Page 4]
 
 Internet-Draft                  PCE-YANG                    October 2018
 
@@ -270,14 +270,14 @@ Internet-Draft                  PCE-YANG                    October 2018
    the date of RFC publication (and remove this note).
 
 
-   <CODE BEGINS> file "ietf-pcep-srv6@2018-10-15.yang"
+   <CODE BEGINS> file "ietf-pcep-srv6@2018-10-19.yang"
    module ietf-pcep-srv6 {
 
        yang-version 1.1;
 
 
 
-Dhody & Sivabalan        Expires April 18, 2019                 [Page 5]
+Dhody & Sivabalan        Expires April 22, 2019                 [Page 5]
 
 Internet-Draft                  PCE-YANG                    October 2018
 
@@ -315,7 +315,7 @@ Internet-Draft                  PCE-YANG                    October 2018
            model with SRv6";
 
 
-       revision 2018-10-15 {
+       revision 2018-10-19 {
            description "Initial revision.";
            reference
                "RFC XXXX:  A YANG Data Model for Path Computation
@@ -324,7 +324,7 @@ Internet-Draft                  PCE-YANG                    October 2018
                            (SRv6)";
        }
 
-
+       /* Identity */
        identity path-setup-srv6 {
            base te-types:path-signaling-type;
            description
@@ -333,16 +333,18 @@ Internet-Draft                  PCE-YANG                    October 2018
 
 
 
-Dhody & Sivabalan        Expires April 18, 2019                 [Page 6]
+Dhody & Sivabalan        Expires April 22, 2019                 [Page 6]
 
 Internet-Draft                  PCE-YANG                    October 2018
 
 
+       /* Features */
        feature srv6 {
            description
                "Support Segment Routing in IPv6 (SRv6) for PCE.";
        }
 
+       /* Groupings */
        grouping srv6 {
            description
                "SRv6";
@@ -385,15 +387,14 @@ Internet-Draft                  PCE-YANG                    October 2018
            }
        }
 
-       grouping segment-properties {
 
 
-
-Dhody & Sivabalan        Expires April 18, 2019                 [Page 7]
+Dhody & Sivabalan        Expires April 22, 2019                 [Page 7]
 
 Internet-Draft                  PCE-YANG                    October 2018
 
 
+       grouping segment-properties {
            description "Segment properties grouping";
            leaf index {
                type uint32;
@@ -436,16 +437,15 @@ Internet-Draft                  PCE-YANG                    October 2018
        }
 
    }//module
-   }//module
-
-
 
    <CODE ENDS>
 
 
 
 
-Dhody & Sivabalan        Expires April 18, 2019                 [Page 8]
+
+
+Dhody & Sivabalan        Expires April 22, 2019                 [Page 8]
 
 Internet-Draft                  PCE-YANG                    October 2018
 
@@ -501,7 +501,7 @@ Internet-Draft                  PCE-YANG                    October 2018
 
 
 
-Dhody & Sivabalan        Expires April 18, 2019                 [Page 9]
+Dhody & Sivabalan        Expires April 22, 2019                 [Page 9]
 
 Internet-Draft                  PCE-YANG                    October 2018
 
@@ -557,7 +557,7 @@ Internet-Draft                  PCE-YANG                    October 2018
 
 
 
-Dhody & Sivabalan        Expires April 18, 2019                [Page 10]
+Dhody & Sivabalan        Expires April 22, 2019                [Page 10]
 
 Internet-Draft                  PCE-YANG                    October 2018
 
@@ -613,7 +613,7 @@ Internet-Draft                  PCE-YANG                    October 2018
 
 
 
-Dhody & Sivabalan        Expires April 18, 2019                [Page 11]
+Dhody & Sivabalan        Expires April 22, 2019                [Page 11]
 
 Internet-Draft                  PCE-YANG                    October 2018
 
@@ -635,7 +635,7 @@ Internet-Draft                  PCE-YANG                    October 2018
               Dhody, D., Hardwick, J., Beeram, V., and J. Tantsura, "A
               YANG Data Model for Path Computation Element
               Communications Protocol (PCEP)", draft-ietf-pce-pcep-
-              yang-08 (work in progress), June 2018.
+              yang-09 (work in progress), October 2018.
 
    [I-D.negi-pce-segment-routing-ipv6]
               Negi, M., Kaladharan, P., Dhody, D., and S. Sivabalan,
@@ -669,7 +669,7 @@ Authors' Addresses
 
 
 
-Dhody & Sivabalan        Expires April 18, 2019                [Page 12]
+Dhody & Sivabalan        Expires April 22, 2019                [Page 12]
 
 Internet-Draft                  PCE-YANG                    October 2018
 
@@ -725,4 +725,4 @@ Internet-Draft                  PCE-YANG                    October 2018
 
 
 
-Dhody & Sivabalan        Expires April 18, 2019                [Page 13]
+Dhody & Sivabalan        Expires April 22, 2019                [Page 13]

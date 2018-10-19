@@ -254,7 +254,7 @@ module: ietf-pcep-srv6
     <figure title="" suppress-title="false" align="left" alt="" width="" height="">
           <artwork xml:space="preserve" name="" type="" align="left" alt="" width="" height="">
           <![CDATA[
-<CODE BEGINS> file "ietf-pcep-srv6@2018-10-15.yang"
+<CODE BEGINS> file "ietf-pcep-srv6@2018-10-19.yang"
 module ietf-pcep-srv6 {
 
     yang-version 1.1;
@@ -292,7 +292,7 @@ module ietf-pcep-srv6 {
         model with SRv6";
 
 
-    revision 2018-10-15 {
+    revision 2018-10-19 {
         description "Initial revision.";
         reference
             "RFC XXXX:  A YANG Data Model for Path Computation
@@ -301,18 +301,20 @@ module ietf-pcep-srv6 {
                         (SRv6)";
     }
 
-
+    /* Identity */
     identity path-setup-srv6 {
         base te-types:path-signaling-type;
         description
           "SRv6 path setup type";
     }
-
+    
+    /* Features */
     feature srv6 {
         description
             "Support Segment Routing in IPv6 (SRv6) for PCE.";
     }
 
+    /* Groupings */
     grouping srv6 {
         description
             "SRv6";
@@ -398,9 +400,6 @@ module ietf-pcep-srv6 {
     }
     
 }//module
-}//module
-
-
 
 <CODE ENDS>
                      ]]></artwork>
