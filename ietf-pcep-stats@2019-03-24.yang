@@ -13,7 +13,7 @@ module ietf-pcep-stats {
 
     import ietf-yang-types {
         prefix "yang";
-        reference "RFC 6991";
+        reference "RFC 6991: Common YANG Data Types";
     }
 
     organization

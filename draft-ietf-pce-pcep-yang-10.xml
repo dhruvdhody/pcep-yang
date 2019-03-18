@@ -269,6 +269,7 @@
         <c>Path Computation Element Communication Protocol (PCEP) Extensions for PCE-Initiated LSP Setup in a Stateful PCE Model</c><c><xref target="RFC8281" pageno="false" format="default"/></c>
         <c>Extensions to the Path Computation Element Communication Protocol (PCEP) for Point-to-Multipoint Traffic Engineering Label Switched Paths</c><c><xref target="RFC8306" pageno="false" format="default"/></c>
         <c>Network Configuration Access Control Model</c><c><xref target="RFC8341" pageno="false" format="default"/></c>
+        <c>Conveying Path Setup Type in PCE Communication Protocol (PCEP) Messages</c><c><xref target="RFC8408" pageno="false" format="default"/></c>
 
         <c>Traffic Engineering Common YANG Types</c><c><xref target="I-D.ietf-teas-yang-te-types" pageno="false" format="default"/></c>
         <c>A YANG Data Model for Traffic Engineering Tunnels and Interfaces</c><c><xref target="I-D.ietf-teas-yang-te" pageno="false" format="default"/></c>
