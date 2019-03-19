@@ -81,8 +81,7 @@
     Path Computation Element communications Protocol (PCEP) for
     communications between a Path Computation Client (PCC) and a Path
     Computation Element (PCE), or between two PCEs. The data model
-    includes configuration data and state data (status information and
-    counters for the collection of statistics).</t>
+    includes configuration and state data.</t>
     </abstract>
   </front>
   <middle>
@@ -105,8 +104,7 @@
    for the management of PCEP speakers. It is important to
    establish a common data model for how PCEP speakers are identified,
    configured, and monitored. The data model includes configuration data
-   and state data (status information and counters for the collection of
-   statistics).</t>
+   and state data.</t>
 
    <t>This document contains a specification of the PCEP YANG module,
    "ietf-pcep" which provides the PCEP <xref target="RFC5440"/> data
@@ -205,6 +203,15 @@
 
         </list>
         </t>
+        <t>
+          <xref target='RFC6241'/> :
+          <list style='symbols'>
+            <t>Configuration data.</t>
+            <t>State data.</t>
+
+
+        </list>
+        </t>
 
     <section anchor="sec.tree-symbols" title="Tree Diagrams" toc="default">
       <t>A simplified graphical representation of the data model is used in this
@@ -250,17 +257,18 @@
       </texttable>
     </section>
     <section title="Refrences in the Model" toc="default">
-      <t>Following documents are refrenced in the model defined in this document - 
+      <t>Following documents are refrenced in the model defined in this document - </t>
         <texttable anchor="tab.ref" title="Refrences in the YANG modules" suppress-title="false" align="center" style="full">
         <ttcol align="left">Documents</ttcol>
         <ttcol align="left">Reference</ttcol>
-        <c>RSVP-TE: Extensions to RSVP for LSP Tunnels</c><c><xref target="RFC3029" pageno="false" format="default"/></c>
+        <c>RSVP-TE: Extensions to RSVP for LSP Tunnels</c><c><xref target="RFC3209" pageno="false" format="default"/></c>
         <c>OSPF Protocol Extensions for Path Computation Element (PCE) Discovery</c><c><xref target="RFC5088" pageno="false" format="default"/></c>
         <c>IS-IS Protocol Extensions for Path Computation Element (PCE) Discovery</c><c><xref target="RFC5089" pageno="false" format="default"/></c>
         <c>Path Computation Element (PCE) Communication Protocol (PCEP)</c><c><xref target="RFC5440" pageno="false" format="default"/></c>
         <c>Preserving Topology Confidentiality in Inter-Domain Path Computation Using a Path-Key-Based Mechanism</c><c><xref target="RFC5520" pageno="false" format="default"/></c>
         <c>Encoding of Objective Functions in the Path Computation Element Communication Protocol (PCEP)</c><c><xref target="RFC5541" pageno="false" format="default"/></c>
         <c>Path Computation Element Communication Protocol (PCEP) Requirements and Protocol Extensions in Support of Global Concurrent Optimization</c><c><xref target="RFC5557" pageno="false" format="default"/></c>
+        <c>Network Configuration Protocol (NETCONF) Access Control Model</c><c><xref target="RFC6536" pageno="false" format="default"/></c>
         <c>Common YANG Data Types</c><c><xref target="RFC6991" pageno="false" format="default"/></c>
         <c>YANG Data Model for Key Chains</c><c><xref target="RFC8177" pageno="false" format="default"/></c>
         <c>Path Computation Element Communication Protocol (PCEP) Extensions for Stateful PCE</c><c><xref target="RFC8231" pageno="false" format="default"/></c>
@@ -278,13 +286,9 @@
         <c>PCEP Extensions for Establishing Relationships Between Sets of LSPs</c><c><xref target="I-D.ietf-pce-association-group" pageno="false" format="default"/></c>
         <c>YANG Data Model for OSPF Protocol</c><c><xref target="I-D.ietf-ospf-yang" pageno="false" format="default"/></c>
         <c>YANG Data Model for IS-IS Protocol</c><c><xref target="I-D.ietf-isis-yang-isis-cfg" pageno="false" format="default"/></c>
-        
-
-        
-        
-        
+        <c>PCEP extensions for GMPLS</c><c><xref target="I-D.ietf-pce-gmpls-pcep-extensions" pageno="false" format="default"/></c>
       </texttable>
-      </t>
+      
     </section>
     </section>
 
@@ -382,6 +386,85 @@ module: ietf-pcep
         </figure>
       </t>
 </section>
+
+    <section title="The Entity" toc="default">
+    <t>The PCEP yang module may contain status information for the
+    local PCEP entity.</t>
+    <t>The entity has an IP address
+   (using ietf-inet-types <xref target="RFC6991"/>) and a "role"
+   leaf (the local entity PCEP role) as mandatory. </t>
+    <t>Note that, the PCEP MIB module <xref target="RFC7420"/> uses an
+    entity list and a system generated entity index as a primary index
+    to the read only entity
+    table. If the device implements the PCEP MIB, the "index" leaf MUST contain
+    the value of the corresponding pcePcepEntityIndex and only one entity
+    is assumed.</t>
+    </section>
+    <section title="The Peer Lists" toc="default">
+        <t>
+          The peer list contains peer(s) that the
+          local PCEP entity knows about. A PCEP speaker is identified by its
+          IP address.  If there is a PCEP
+          speaker in the network that uses multiple IP addresses
+          then it looks like multiple distinct peers to the other PCEP
+          speakers in the network.
+        </t>
+        <t>
+          Since PCEP sessions
+          can be ephemeral, the peer list tracks a peer even when no
+          PCEP session currently exists to that peer.  The statistics contained
+          are an aggregate of the statistics for all
+          successive sessions to that peer.
+        </t>
+        <t>
+          To limit the quantity of information that is stored, an
+          implementation MAY choose to discard this information
+          if and only if no PCEP session exists to the corresponding peer.
+        </t>
+
+   <t>The data model for PCEP peer presented in this document uses a flat
+   list of peers.  Each peer in the list is identified by its
+   IP address (addr-type, addr).</t>
+   <t> There is a list for static peer configuration and operational state of
+   all peers (i.e.static as well as discovered)("/pcep/entity/peers"). The list
+   is used to enable remote PCE configuration at PCC (or PCE) and has the
+   operational state of these peers as well as the remote PCE peer which were
+   discovered and PCC peers that have initiated session.</t>
+    </section>
+    <section title="The Session Lists" toc="default">
+ <t>
+          The session list contains PCEP session that the
+          PCEP entity (PCE or PCC) is currently participating in.
+          The statistics in
+          session are semantically different from those in
+          peer since the former applies to the current session only,
+          whereas the latter is the aggregate for all sessions that have
+          existed to that peer.
+        </t>
+        <t>
+          Although <xref target="RFC5440"/> forbids more than one
+          active PCEP session between a given pair of PCEP entities
+          at any given time, there is a window during session
+          establishment where two sessions may exist for a given pair,
+          one representing a session initiated by the local PCEP
+          entity and the other representing a session initiated by
+          the peer.  If either of these sessions reaches active state
+          first, then the other is discarded.
+        </t>
+<t>The data model for PCEP session presented in this document uses a flat
+   list of sessions.  Each session in the list is identified by its
+   initiator. This index allows two sessions to exist transiently for a
+          given peer, as discussed above.</t>
+    </section>
+    <section title="Notifications" toc="default">
+    <t>This YANG model defines a list of notifications to inform client of
+   important events detected during the protocol operation.  The
+   notifications defined cover the PCEP MIB notifications.</t>
+    </section>
+    <section title="RPC" toc="default">
+    <t>This YANG model defines a RPC to trigger state resynchronization to
+      a particular PCEP peer.</t>
+    </section>
 <section title="The Full PCEP Data Model" toc="default" anchor="sec.full.data-tree">
     <t> The module, "ietf-pcep", defines the basic components of a PCE speaker.
     <figure title="" suppress-title="false" align="left" alt="" width="" height="">
@@ -1093,85 +1176,7 @@ module: ietf-pcep
                 ]]></artwork>
       </figure>
     </t>
-</section>
-    <section title="The Entity" toc="default">
-    <t>The PCEP yang module may contain status information for the
-    local PCEP entity.</t>
-    <t>The entity has an IP address
-   (using ietf-inet-types <xref target="RFC6991"/>) and a "role"
-   leaf (the local entity PCEP role) as mandatory. </t>
-    <t>Note that, the PCEP MIB module <xref target="RFC7420"/> uses an
-    entity list and a system generated entity index as a primary index
-    to the read only entity
-    table. If the device implements the PCEP MIB, the "index" leaf MUST contain
-    the value of the corresponding pcePcepEntityIndex and only one entity
-    is assumed.</t>
-    </section>
-    <section title="The Peer Lists" toc="default">
-        <t>
-          The peer list contains peer(s) that the
-          local PCEP entity knows about. A PCEP speaker is identified by its
-          IP address.  If there is a PCEP
-          speaker in the network that uses multiple IP addresses
-          then it looks like multiple distinct peers to the other PCEP
-          speakers in the network.
-        </t>
-        <t>
-          Since PCEP sessions
-          can be ephemeral, the peer list tracks a peer even when no
-          PCEP session currently exists to that peer.  The statistics contained
-          are an aggregate of the statistics for all
-          successive sessions to that peer.
-        </t>
-        <t>
-          To limit the quantity of information that is stored, an
-          implementation MAY choose to discard this information
-          if and only if no PCEP session exists to the corresponding peer.
-        </t>
-
-   <t>The data model for PCEP peer presented in this document uses a flat
-   list of peers.  Each peer in the list is identified by its
-   IP address (addr-type, addr).</t>
-   <t> There is a list for static peer configuration and operational state of
-   all peers (i.e.static as well as discovered)("/pcep/entity/peers"). The list
-   is used to enable remote PCE configuration at PCC (or PCE) and has the
-   operational state of these peers as well as the remote PCE peer which were
-   discovered and PCC peers that have initiated session.</t>
-    </section>
-    <section title="The Session Lists" toc="default">
- <t>
-          The session list contains PCEP session that the
-          PCEP entity (PCE or PCC) is currently participating in.
-          The statistics in
-          session are semantically different from those in
-          peer since the former applies to the current session only,
-          whereas the latter is the aggregate for all sessions that have
-          existed to that peer.
-        </t>
-        <t>
-          Although <xref target="RFC5440"/> forbids more than one
-          active PCEP session between a given pair of PCEP entities
-          at any given time, there is a window during session
-          establishment where two sessions may exist for a given pair,
-          one representing a session initiated by the local PCEP
-          entity and the other representing a session initiated by
-          the peer.  If either of these sessions reaches active state
-          first, then the other is discarded.
-        </t>
-<t>The data model for PCEP session presented in this document uses a flat
-   list of sessions.  Each session in the list is identified by its
-   initiator. This index allows two sessions to exist transiently for a
-          given peer, as discussed above.</t>
-    </section>
-    <section title="Notifications" toc="default">
-    <t>This YANG model defines a list of notifications to inform client of
-   important events detected during the protocol operation.  The
-   notifications defined cover the PCEP MIB notifications.</t>
-    </section>
-    <section title="RPC" toc="default">
-    <t>This YANG model defines a RPC to trigger state resynchronization to
-      a particular PCEP peer.</t>
-    </section>
+</section>    
     </section>
     <section title="The Design of PCEP Statistics Data Model" toc="default" anchor="sec.data-tree-stat">
     <t> The module, "ietf-pcep-stats", augments the ietf-pcep module to include statistics at the 
@@ -1507,8 +1512,7 @@ module ietf-pcep {
 
     description
         "The YANG module defines a generic configuration and
-        operational model for PCEP common across all of the
-        vendor implementations.
+        operational model for PCEP.
 
         Copyright (c) 2018 IETF Trust and the persons identified as
         authors of the code.  All rights reserved.
@@ -5233,8 +5237,14 @@ module ietf-pcep-stats {
   <back>
     <references title="Normative References">
     <?rfc include="reference.RFC.2119.xml" ?>
+    <?rfc include="reference.RFC.3209.xml" ?>
     <?rfc include="reference.RFC.3688.xml" ?>
+    <?rfc include="reference.RFC.5088.xml" ?>
+    <?rfc include="reference.RFC.5089.xml" ?>
     <?rfc include="reference.RFC.5440.xml" ?>
+    <?rfc include="reference.RFC.5520.xml" ?>
+    <?rfc include="reference.RFC.5541.xml" ?>
+    <?rfc include="reference.RFC.5557.xml" ?>
     
     <?rfc include="reference.RFC.6020.xml" ?>
     <?rfc include="reference.RFC.6241.xml" ?>
@@ -5246,32 +5256,38 @@ module ietf-pcep-stats {
     <?rfc include="reference.RFC.8040.xml" ?>
     <?rfc include="reference.RFC.8174.xml"?>
     <?rfc include="reference.RFC.8231.xml"?>
+    <?rfc include="reference.RFC.8232.xml"?>
     <?rfc include="reference.RFC.8253.xml"?>
     <?rfc include="reference.RFC.8281.xml"?>
+    <?rfc include="reference.RFC.8306.xml"?>
     <?rfc include="reference.RFC.8340.xml"?>
     <?rfc include="reference.RFC.8341.xml" ?>
     <?rfc include="reference.RFC.8408.xml" ?>
     <?rfc include="reference.RFC.8446.xml" ?>
     
     
-    <?rfc include="reference.I-D.ietf-pce-segment-routing"?>
     <?rfc include="reference.I-D.ietf-teas-yang-te"?>
     <?rfc include="reference.I-D.ietf-teas-yang-te-types"?>
+
     <?rfc include="reference.I-D.ietf-netconf-tls-client-server"?>
+    <?rfc include="reference.I-D.ietf-pce-association-group"?>
+    <?rfc include="reference.I-D.ietf-pce-segment-routing"?>
+    <?rfc include="reference.I-D.ietf-isis-yang-isis-cfg"?>
+    <?rfc include="reference.I-D.ietf-ospf-yang"?>
+    <?rfc include="reference.I-D.ietf-pce-gmpls-pcep-extensions"?>
 
     </references>
     <references title="Informative References">
-      <?rfc include="reference.RFC.3209.xml" ?>
+      
       <?rfc include="reference.RFC.4655.xml" ?>
-      <?rfc include="reference.RFC.5088.xml" ?>
-      <?rfc include="reference.RFC.5089.xml" ?>
-      <?rfc include="reference.RFC.5520.xml" ?>
-      <?rfc include="reference.RFC.5541.xml" ?>
-      <?rfc include="reference.RFC.5557.xml" ?>
+      
+      
+      
+      
       <?rfc include="reference.RFC.6536.xml" ?>
       <?rfc include="reference.RFC.7420.xml" ?>      
-      <?rfc include="reference.RFC.8232.xml"?>
-      <?rfc include="reference.RFC.8306.xml"?>
+      
+      
       <?rfc include="reference.RFC.8342.xml"?>
 
           
