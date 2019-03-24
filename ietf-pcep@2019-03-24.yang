@@ -32,7 +32,7 @@ module ietf-pcep {
   }
 
   import ietf-key-chain {
-    prefix "key-chain";
+    prefix "kc";
     reference 
       "RFC 8177: YANG Data Model for Key Chains";
   }
@@ -444,7 +444,7 @@ module ietf-pcep {
       (PCEP) Extensions for Stateful PCE";
   }
 
-  feature stateful-sync-opt {
+  feature sync-opt {
     description
       "Support stateful sync optimization
       as per RFC 8232";
@@ -813,26 +813,26 @@ module ietf-pcep {
             "Support for PCE-initiated LSP.";
         }
         leaf include-db-ver{
-          if-feature stateful-sync-opt;
+          if-feature sync-opt;
           type boolean;
           description
             "Support inclusion of LSP-DB-VERSION
             in LSP object";
         }
         leaf trigger-resync{
-          if-feature stateful-sync-opt;
+          if-feature sync-opt;
           type boolean;
           description
             "Support PCE triggered re-synchronization";
         }
         leaf trigger-initial-sync{
-          if-feature stateful-sync-opt;
+          if-feature sync-opt;
           type boolean;
           description
             "PCE triggered initial synchronization";
         }
         leaf incremental-sync{
-          if-feature stateful-sync-opt;
+          if-feature sync-opt;
           type boolean;
           description
             "Support incremental (delta) sync";
@@ -1029,7 +1029,7 @@ module ietf-pcep {
       }
 
       leaf speaker-entity-id{
-        if-feature stateful-sync-opt;
+        if-feature sync-opt;
         type string;
         description
           "The Speaker Entity Identifier";
@@ -1102,7 +1102,7 @@ module ietf-pcep {
             "Path-Key Configuration";
           reference
             "RFC 5520: Preserving Topology Confidentiality in Inter-
-            Domain Path Computation Using a Path-Key-Based Mechanism";    
+            Domain Path Computation Using a Path-Key-Based Mechanism";
           leaf enabled {
             type boolean;
             description
@@ -1484,7 +1484,7 @@ module ietf-pcep {
             PCC). ";
           }
           reference
-            "RFC 8231: Path Computation Element Communication Protocol 
+            "RFC 8231: Path Computation Element Communication Protocol
             (PCEP) Extensions for Stateful PCE";
         }
         container of-list{
@@ -1515,7 +1515,7 @@ module ietf-pcep {
               description
                 "Valid at PCC";
             }
-            if-feature stateful-sync-opt;
+            if-feature sync-opt;
             type uint64;
             description
               "The LSP State Database Version Number";
@@ -1989,7 +1989,7 @@ module ietf-pcep {
                   setting.";
                 case auth-key-chain {
                   leaf key-chain {
-                    type key-chain:key-chain-ref;
+                    type kc:key-chain-ref;
                     description
                       "key-chain name.";
                   }
@@ -1997,7 +1997,7 @@ module ietf-pcep {
                 case auth-key {
                   leaf crypto-algorithm {
                     type identityref {
-                      base key-chain:crypto-algorithm;
+                      base kc:crypto-algorithm;
                     }
                     mandatory true;
                     description
@@ -2237,7 +2237,7 @@ module ietf-pcep {
                   never sends Keepalives on this session.";
                 reference
                   "RFC 5440: Path Computation Element (PCE)  
-                  Communication Protocol (PCEP)";                         
+                  Communication Protocol (PCEP)";
               }
 
               leaf peer-keepalive-timer {
@@ -2264,7 +2264,7 @@ module ietf-pcep {
                   on this session.";
                 reference
                   "RFC 5440: Path Computation Element (PCE)  
-                  Communication Protocol (PCEP)";                         
+                  Communication Protocol (PCEP)";
               }
 
               leaf dead-timer {
@@ -2276,7 +2276,7 @@ module ietf-pcep {
                   "The dead timer interval for this PCEP session.";
                 reference
                   "RFC 5440: Path Computation Element (PCE)  
-                  Communication Protocol (PCEP)";                         
+                  Communication Protocol (PCEP)";
               }
 
               leaf peer-dead-timer {
@@ -2304,7 +2304,7 @@ module ietf-pcep {
                   for this PCEP session.";
                 reference
                   "RFC 5440: Path Computation Element (PCE)  
-                  Communication Protocol (PCEP)";                         
+                  Communication Protocol (PCEP)";
               }
 
               leaf ka-hold-time-rem {
@@ -2339,7 +2339,7 @@ module ietf-pcep {
                   Otherwise, it is set to false.";
                 reference
                   "RFC 5440: Path Computation Element (PCE)  
-                  Communication Protocol (PCEP)";                         
+                  Communication Protocol (PCEP)";
               }
               leaf overload-time {
                 type uint32;
@@ -2360,7 +2360,7 @@ module ietf-pcep {
                   this session.";
                 reference
                   "RFC 5440: Path Computation Element (PCE)  
-                  Communication Protocol (PCEP)";                         
+                  Communication Protocol (PCEP)";
               }
               leaf peer-overloaded {
                 type boolean;
@@ -2396,7 +2396,7 @@ module ietf-pcep {
                   overloaded state, this leaf is set to zero.";
                 reference
                   "RFC 5440: Path Computation Element (PCE)  
-                  Communication Protocol (PCEP)";                         
+                  Communication Protocol (PCEP)";
               }
               leaf lspdb-sync {
                 if-feature stateful;
@@ -2418,7 +2418,7 @@ module ietf-pcep {
                 }
 
                 if-feature stateful;
-                if-feature stateful-sync-opt;
+                if-feature sync-opt;
 
                 type uint64;
 
@@ -2427,7 +2427,7 @@ module ietf-pcep {
                   Number";
                 reference
                   "RFC 8231: Path Computation Element Communication  
-                  Protocol (PCEP) Extensions for Stateful PCE";                         
+                  Protocol (PCEP) Extensions for Stateful PCE";
               }
               container of-list{
                 when "../role = 'pce'" +
@@ -2507,7 +2507,7 @@ module ietf-pcep {
                 }
               }
               leaf speaker-entity-id{
-                if-feature stateful-sync-opt;
+                if-feature sync-opt;
                 type string;
                 description
                   "The Speaker Entity Identifier";
@@ -2702,12 +2702,12 @@ module ietf-pcep {
 
   rpc trigger-resync {
     if-feature stateful;
-    if-feature stateful-sync-opt;
+    if-feature sync-opt;
     description
       "Trigger the resyncrinization at the PCE";
     reference
       "RFC 8232: Optimizations of Label Switched Path State 
-      Synchronization Procedures for a Stateful PCE";                
+      Synchronization Procedures for a Stateful PCE";
     input {
       leaf pcc {
         type leafref {
