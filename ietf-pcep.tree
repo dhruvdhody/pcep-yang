@@ -5,9 +5,8 @@ module: ietf-pcep
           +--rw enabled?                      boolean
           +--rw role                          pcep-role
           +--rw description?                  string
-          +--rw speaker-entity-id?            string
-          |       {stateful-sync-opt}?
-          +--rw admin-status?                 pcep-admin-status
+          +--rw speaker-entity-id?            string {stateful-sync-opt}?
+          +--rw admin-status?                 boolean
           +--ro index?                        uint32
           +--ro oper-status?                  pcep-oper-status
           +--rw domain
@@ -20,28 +19,29 @@ module: ietf-pcep
           |  +--rw diverse?               boolean
           |  +--rw load-balance?          boolean
           |  +--rw synchronize?           boolean {svec}?
-          |  +--rw objective-function?    boolean
-          |  |       {objective-function}?
+          |  +--rw objective-function?    boolean {objective-function}?
           |  +--rw add-path-constraint?   boolean
           |  +--rw prioritization?        boolean
           |  +--rw multi-request?         boolean
-          |  +--rw gco?                   boolean {gco}?
+          |  +--rw global-concurrent?     boolean {global-concurrent}?
           |  +--rw p2mp?                  boolean {p2mp}?
           |  +--rw stateful {stateful}?
           |  |  +--rw enabled?                boolean
           |  |  +--rw active?                 boolean
-          |  |  +--rw pce-initiated?          boolean
-          |  |  |       {pce-initiated}?
-          |  |  +--rw include-db-ver?         boolean
-          |  |  |       {stateful-sync-opt}?
-          |  |  +--rw trigger-resync?         boolean
-          |  |  |       {stateful-sync-opt}?
-          |  |  +--rw trigger-initial-sync?   boolean
-          |  |  |       {stateful-sync-opt}?
-          |  |  +--rw incremental-sync?       boolean
-          |  |          {stateful-sync-opt}?
+          |  |  +--rw pce-initiated?          boolean {pce-initiated}?
+          |  |  +--rw include-db-ver?         boolean {stateful-sync-opt}?
+          |  |  +--rw trigger-resync?         boolean {stateful-sync-opt}?
+          |  |  +--rw trigger-initial-sync?   boolean {stateful-sync-opt}?
+          |  |  +--rw incremental-sync?       boolean {stateful-sync-opt}?
+          |  |  +--rw p2mp?                   boolean {p2mp}?
+          |  |  +--rw p2mp-active?            boolean {p2mp}?
+          |  |  +--rw p2mp-pce-initiated?     boolean
+          |  |          {p2mp,pce-initiated}?
           |  +--rw sr {sr}?
-          |     +--rw enabled?   boolean
+          |     +--rw enabled?     boolean
+          |     +--rw msd?         uint8
+          |     +--rw msd-limit?   boolean
+          |     +--rw nai?         boolean
           +--rw pce-info
           |  +--rw scope
           |  |  +--rw intra-area-scope?           boolean
@@ -88,12 +88,13 @@ module: ietf-pcep
           |  +--rw rpt-non-pcep-lsp?       boolean
           +--rw of-list {objective-function}?
           |  +--rw objective-function* [of]
-          |     +--rw of    objective-function
+          |     +--rw of    identityref
           +--ro lsp-db {stateful}?
           |  +--ro db-ver?             uint64 {stateful-sync-opt}?
           |  +--ro association-list*
-          |  |       [id source global-source extended-id]
-          |  |  +--ro type?            assoc-type
+          |  |       [type id source global-source extended-id]
+          |  |       {association}?
+          |  |  +--ro type             identityref
           |  |  +--ro id               uint16
           |  |  +--ro source           inet:ip-address
           |  |  +--ro global-source    uint32
@@ -105,15 +106,14 @@ module: ietf-pcep
           |     +--ro plsp-id               uint32
           |     +--ro pcc-id                inet:ip-address
           |     +--ro lsp-ref
-          |     |  +--ro source?
-          |     |  |       -> /te:te/lsps-state/lsp/source
+          |     |  +--ro source?               -> /te:te/lsps-state/lsp/source
           |     |  +--ro destination?
           |     |  |       -> /te:te/lsps-state/lsp/destination
           |     |  +--ro tunnel-id?
           |     |  |       -> /te:te/lsps-state/lsp/tunnel-id
-          |     |  +--ro lsp-id?
-          |     |  |       -> /te:te/lsps-state/lsp/lsp-id
-          |     |  +--ro extended-tunnel-id?   leafref
+          |     |  +--ro lsp-id?               -> /te:te/lsps-state/lsp/lsp-id
+          |     |  +--ro extended-tunnel-id?
+          |     |          -> /te:te/lsps-state/lsp/extended-tunnel-id
           |     +--ro admin-state?          boolean
           |     +--ro operational-state?    operational-state
           |     +--ro delegated
@@ -124,13 +124,17 @@ module: ietf-pcep
           |     |  +--ro enabled?   boolean
           |     |  +--ro peer?      -> /pcep/entity/peers/peer/addr
           |     +--ro symbolic-path-name?   string
-          |     +--ro last-error?           lsp-error
-          |     +--ro pst?                  pst
+          |     +--ro last-error?           identityref
+          |     +--ro pst?                  identityref
           |     +--ro association-list*
-          |             [id source global-source extended-id]
+          |             [type id source global-source extended-id]
+          |             {association}?
+          |        +--ro type
+          |        |       -> /pcep/entity/lsp-db/association-list/type
           |        +--ro id
           |        |       -> /pcep/entity/lsp-db/association-list/id
-          |        +--ro source           leafref
+          |        +--ro source
+          |        |       -> /pcep/entity/lsp-db/association-list/source
           |        +--ro global-source    leafref
           |        +--ro extended-id      leafref
           +--ro path-keys {path-key}?
@@ -138,32 +142,7 @@ module: ietf-pcep
           |     +--ro path-key         uint16
           |     +--ro cps
           |     |  +--ro explicit-route-objects* [index]
-          |     |     +--ro explicit-route-usage?   identityref
-          |     |     +--ro index                   uint32
-          |     |     +--ro (type)?
-          |     |        +--:(numbered)
-          |     |        |  +--ro numbered-hop
-          |     |        |     +--ro address?     te-types:te-tp-id
-          |     |        |     +--ro hop-type?    te-hop-type
-          |     |        |     +--ro direction?   te-link-direction
-          |     |        +--:(as-number)
-          |     |        |  +--ro as-number-hop
-          |     |        |     +--ro as-number?   binary
-          |     |        |     +--ro hop-type?    te-hop-type
-          |     |        +--:(unnumbered)
-          |     |        |  +--ro unnumbered-hop
-          |     |        |     +--ro node-id?      te-types:te-node-id
-          |     |        |     +--ro link-tp-id?   te-types:te-tp-id
-          |     |        |     +--ro hop-type?     te-hop-type
-          |     |        |     +--ro direction?    te-link-direction
-          |     |        +--:(label)
-          |     |           +--ro label-hop
-          |     |              +--ro te-label
-          |     |                 +--ro (technology)?
-          |     |                 |  +--:(generic)
-          |     |                 |     +--ro generic?
-          |     |                 |             rt-types:generalized-label
-          |     |                 +--ro direction?   te-label-direction
+          |     |     +--ro index    uint32
           |     +--ro pcc-original?    -> /pcep/entity/peers/peer/addr
           |     +--ro req-id?          uint32
           |     +--ro retrieved?       boolean
@@ -191,7 +170,8 @@ module: ietf-pcep
                 |  +--rw add-path-constraint?   boolean
                 |  +--rw prioritization?        boolean
                 |  +--rw multi-request?         boolean
-                |  +--rw gco?                   boolean {gco}?
+                |  +--rw global-concurrent?     boolean
+                |  |       {global-concurrent}?
                 |  +--rw p2mp?                  boolean {p2mp}?
                 |  +--rw stateful {stateful}?
                 |  |  +--rw enabled?                boolean
@@ -205,9 +185,16 @@ module: ietf-pcep
                 |  |  +--rw trigger-initial-sync?   boolean
                 |  |  |       {stateful-sync-opt}?
                 |  |  +--rw incremental-sync?       boolean
-                |  |          {stateful-sync-opt}?
+                |  |  |       {stateful-sync-opt}?
+                |  |  +--rw p2mp?                   boolean {p2mp}?
+                |  |  +--rw p2mp-active?            boolean {p2mp}?
+                |  |  +--rw p2mp-pce-initiated?     boolean
+                |  |          {p2mp,pce-initiated}?
                 |  +--rw sr {sr}?
-                |     +--rw enabled?   boolean
+                |     +--rw enabled?     boolean
+                |     +--rw msd?         uint8
+                |     +--rw msd-limit?   boolean
+                |     +--rw nai?         boolean
                 +--rw pce-info
                 |  +--rw scope
                 |  |  +--rw intra-area-scope?           boolean
@@ -228,100 +215,16 @@ module: ietf-pcep
                 +--rw auth
                 |  +--rw (auth-type-selection)?
                 |     +--:(auth-key-chain)
-                |     |  +--rw key-chain?
-                |     |          key-chain:key-chain-ref
+                |     |  +--rw key-chain?          key-chain:key-chain-ref
                 |     +--:(auth-key)
                 |     |  +--rw crypto-algorithm    identityref
-                |     |  +--rw key-string
-                |     |     +--rw (key-string-style)?
-                |     |        +--:(keystring)
-                |     |        |  +--rw keystring?            string
-                |     |        +--:(hexadecimal)
-                |     |                 {key-chain:hex-key-string}?
-                |     |           +--rw hexadecimal-string?
-                |     |                   yang:hex-string
+                |     |  +--rw key?                string
                 |     +--:(auth-tls) {tls}?
                 |        +--rw (role)?
                 |           +--:(server)
                 |           |  +--rw tls-server
-                |           |     +--rw server-identity
-                |           |     |  +--rw algorithm?
-                |           |     |  |       identityref
-                |           |     |  +--rw private-key?
-                |           |     |  |       union
-                |           |     |  +--rw public-key?
-                |           |     |  |       binary
-                |           |     |  +---x generate-private-key
-                |           |     |  |  +---w input
-                |           |     |  |     +---w algorithm
-                |           |     |  |             identityref
-                |           |     |  +--rw certificates
-                |           |     |  |  +--rw certificate* [name]
-                |           |     |  |     +--rw name     string
-                |           |     |  |     +--rw value?   binary
-                |           |     |  +---x generate-certificate-signing-request
-                |           |     |     +---w input
-                |           |     |     |  +---w subject       binary
-                |           |     |     |  +---w attributes?   binary
-                |           |     |     +--ro output
-                |           |     |        +--ro certificate-signing-request
-                |           |     |                binary
-                |           |     +--rw client-auth
-                |           |     |  +--rw pinned-ca-certs?
-                |           |     |  |       ks:pinned-certificates
-                |           |     |  +--rw pinned-client-certs?
-                |           |     |          ks:pinned-certificates
-                |           |     +--rw hello-params
-                |           |             {tls-server-hello-params-config}?
-                |           |        +--rw tls-versions
-                |           |        |  +--rw tls-version*   identityref
-                |           |        +--rw cipher-suites
-                |           |           +--rw cipher-suite*
-                |           |                   identityref
                 |           +--:(client)
                 |              +--rw tls-client
-                |                 +--rw client-identity
-                |                 |  +--rw (auth-type)?
-                |                 |     +--:(certificate)
-                |                 |        +--rw certificate
-                |                 |           +--rw algorithm?
-                |                 |           |       identityref
-                |                 |           +--rw private-key?
-                |                 |           |       union
-                |                 |           +--rw public-key?
-                |                 |           |       binary
-                |                 |           +---x generate-private-key
-                |                 |           |  +---w input
-                |                 |           |     +---w algorithm
-                |                 |           |             identityref
-                |                 |           +--rw certificates
-                |                 |           |  +--rw certificate*
-                |                 |           |          [name]
-                |                 |           |     +--rw name
-                |                 |           |     |       string
-                |                 |           |     +--rw value?
-                |                 |           |             binary
-                |                 |           +---x generate-certificate-signing-request
-                |                 |              +---w input
-                |                 |              |  +---w subject
-                |                 |              |  |       binary
-                |                 |              |  +---w attributes?
-                |                 |              |          binary
-                |                 |              +--ro output
-                |                 |                 +--ro certificate-signing-request
-                |                 |                         binary
-                |                 +--rw server-auth
-                |                 |  +--rw pinned-ca-certs?
-                |                 |  |       ks:pinned-certificates
-                |                 |  +--rw pinned-server-certs?
-                |                 |          ks:pinned-certificates
-                |                 +--rw hello-params
-                |                         {tls-client-hello-params-config}?
-                |                    +--rw tls-versions
-                |                    |  +--rw tls-version*   identityref
-                |                    +--rw cipher-suites
-                |                       +--rw cipher-suite*
-                |                               identityref
                 +--ro discontinuity-time?     yang:timestamp
                 +--ro initiate-session?       boolean
                 +--ro session-exists?         boolean
@@ -347,13 +250,18 @@ module: ietf-pcep
                       +--ro overload-time?          uint32
                       +--ro peer-overloaded?        boolean
                       +--ro peer-overload-time?     uint32
-                      +--ro lspdb-sync?             sync-state
-                      |       {stateful}?
+                      +--ro lspdb-sync?             sync-state {stateful}?
                       +--ro recv-db-ver?            uint64
                       |       {stateful,stateful-sync-opt}?
                       +--ro of-list {objective-function}?
                       |  +--ro objective-function* [of]
-                      |     +--ro of    objective-function
+                      |     +--ro of    identityref
+                      +--ro pst-list
+                      |  +--ro path-setup-type* [pst]
+                      |     +--ro pst    identityref
+                      +--ro assoc-type-list {association}?
+                      |  +--ro assoc-type* [at]
+                      |     +--ro at    identityref
                       +--ro speaker-entity-id?      string
                       |       {stateful-sync-opt}?
                       +--ro discontinuity-time?     yang:timestamp
