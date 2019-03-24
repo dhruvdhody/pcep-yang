@@ -597,12 +597,39 @@ module ietf-pcep {
       Computation Element (PCE) Discovery
       RFC 5089: IS-IS Protocol Extensions for Path
       Computation Element (PCE) Discovery";
-    leaf intra-area-scope{
-      type boolean;
-      default true;
+    leaf path-scope{
+      type bits{
+        bit intra-area-scope{
+          description
+            "PCE can compute intra-area paths.";  
+        }
+        bit inter-area-scope{
+          description
+            "PCE can compute inter-area paths.";
+        }
+        bit inter-area-scope-default{
+          description
+            "PCE can act as a default PCE for inter-area
+            path computation.";
+        }
+        bit inter-as-scope{
+          description
+            "PCE can compute inter-AS paths.";
+        }
+        bit inter-as-scope-default{
+          description
+            "PCE can act as a default PCE for inter-AS
+            path computation.";            
+        }
+        bit inter-layer-scope{
+          description
+            "PCE can compute inter-layer paths.";
+        } 
+      }
       description
-        "PCE can compute intra-area paths.";
-    }
+        "The field corresponding to the path scope bits";
+    }  
+
     leaf intra-area-pref{
       type uint8{
         range "0..7";
@@ -611,19 +638,7 @@ module ietf-pcep {
         "The PCE's preference for intra-area TE LSP
         computation.";
     }
-    leaf inter-area-scope{
-      type boolean;
-      default false;
-      description
-        "PCE can compute inter-area paths.";
-    }
-    leaf inter-area-scope-default{
-      type boolean;
-      default false;
-      description
-        "PCE can act as a default PCE for inter-area
-        path computation.";
-    }
+
     leaf inter-area-pref{
       type uint8{
         range "0..7";
@@ -632,19 +647,7 @@ module ietf-pcep {
         "The PCE's preference for inter-area TE LSP
         computation.";
     }
-    leaf inter-as-scope{
-      type boolean;
-      default false;
-      description
-        "PCE can compute inter-AS paths.";
-    }
-    leaf inter-as-scope-default{
-      type boolean;
-      default false;
-      description
-        "PCE can act as a default PCE for inter-AS
-        path computation.";
-    }
+
     leaf inter-as-pref{
       type uint8{
         range "0..7";
@@ -653,12 +656,7 @@ module ietf-pcep {
         "The PCE's preference for inter-AS TE LSP
         computation.";
     }
-    leaf inter-layer-scope{
-      type boolean;
-      default false;
-      description
-        "PCE can compute inter-layer paths.";
-    }
+
     leaf inter-layer-pref{
       type uint8{
       range "0..7";
@@ -717,150 +715,161 @@ module ietf-pcep {
         Computation Element (PCE) Discovery
         RFC 5089: IS-IS Protocol Extensions for Path
         Computation Element (PCE) Discovery";
-      leaf gmpls{
-        if-feature gmpls;
+      leaf capability{
+        type bits{
+          bit gmpls{
+            if-feature gmpls;
+            description
+              "Path computation with GMPLS link
+              constraints.";
+          }
+          bit bi-dir{
+            description
+              "Bidirectional path computation.";
+          }
+          bit diverse{
+            description
+              "Diverse path computation.";
+          }
+          bit load-balance{
+            description
+              "Load-balanced path computation.";
+          }
+          bit synchronize{
+            if-feature svec;
+            description
+              "Synchronized paths computation.";
+          }
+          bit objective-function{
+            if-feature objective-function;
+            description
+              "Support for multiple objective functions.";
+          }
+          bit add-path-constraint{
+            description
+              "Support for additive path constraints (max
+              hop count, etc.).";
+          }
+          bit prioritization{
+            description
+              "Support for request prioritization.";
+          }
+          bit multi-request{
+            description
+              "Support for multiple requests per message.";
+          }
+          bit global-concurrent{
+            if-feature global-concurrent;
+            description
+              "Support for Global Concurrent Optimization
+              (GCO).";
+          }
+          bit p2mp{
+            if-feature p2mp;
+            description
+              "Support for P2MP path computation.";
+          }                      
+          bit active{
+            if-feature stateful;
+            description
+              "Support for active stateful PCE.";
+          }
+          bit passive{
+            if-feature stateful;
+            description
+              "Support for passive stateful PCE.";
+          }
+          bit p2mp-active{
+            if-feature stateful;
+            if-feature p2mp;
+            description
+              "Support for active stateful PCE for P2MP.";
+          }
+          bit p2mp-passive{
+            if-feature stateful;
+            if-feature p2mp;
+            description
+              "Support for passive stateful PCE for P2MP.";
+          }
+          bit p2mp-pce-initiated{
+            if-feature stateful;
+            if-feature pce-initiated;
+            if-feature p2mp;
+            description
+              "Support for PCE-initiated LSP for P2MP.";
+          }
+        }
+        description
+          "The bits string indicating the capabiliies";
+        reference
+          "RFC 5088: OSPF Protocol Extensions for Path
+          Computation Element (PCE) Discovery
+          RFC 5089: IS-IS Protocol Extensions for Path
+          Computation Element (PCE) Discovery";       
+      }
+      leaf pce-initiated{
+        if-feature pce-initiated;
         type boolean;
         description
-          "Path computation with GMPLS link
-          constraints.";
+          "Set to true if PCE-initiated LSP capability is 
+          enabled.";
+        reference
+          "RFC 8281: Path Computation Element Communication 
+          Protocol (PCEP) Extensions for PCE-Initiated LSP 
+          Setup in a Stateful PCE Model";            
       }
-      leaf bi-dir{
-        type boolean;
-        description
-          "Bidirectional path computation.";
-      }
-      leaf diverse{
-        type boolean;
-        description
-          "Diverse path computation.";
-      }
-      leaf load-balance{
-        type boolean;
-        description
-          "Load-balanced path computation.";
-      }
-      leaf synchronize{
-        if-feature svec;
-        type boolean;
-        description
-          "Synchronized paths computation.";
-      }
-      leaf objective-function{
-        if-feature objective-function;
-        type boolean;
-        description
-          "Support for multiple objective functions.";
-      }
-      leaf add-path-constraint{
-        type boolean;
-        description
-          "Support for additive path constraints (max
-          hop count, etc.).";
-      }
-      leaf prioritization{
-        type boolean;
-        description
-          "Support for request prioritization.";
-      }
-      leaf multi-request{
-        type boolean;
-        description
-          "Support for multiple requests per message.";
-      }
-      leaf global-concurrent{
-        if-feature global-concurrent;
-        type boolean;
-        description
-          "Support for Global Concurrent Optimization
-          (GCO).";
-      }
-      leaf p2mp{
-        if-feature p2mp;
-        type boolean;
-        description
-          "Support for P2MP path computation.";
-      }
-
-      container stateful{
+      leaf include-db-ver{
         if-feature stateful;
+        if-feature sync-opt;
+        type boolean;
         description
-          "If stateful PCE feature is present";
-        leaf enabled{
-          type boolean;
-          description
-            "Enabled or Disabled";
-        }
-        leaf active{
-          type boolean;
-          description
-            "Support for active stateful PCE.";
-        }
-        leaf pce-initiated{
-          if-feature pce-initiated;
-          type boolean;
-          description
-            "Support for PCE-initiated LSP.";
-        }
-        leaf include-db-ver{
-          if-feature sync-opt;
-          type boolean;
-          description
-            "Support inclusion of LSP-DB-VERSION
-            in LSP object";
-        }
-        leaf trigger-resync{
-          if-feature sync-opt;
-          type boolean;
-          description
-            "Support PCE triggered re-synchronization";
-        }
-        leaf trigger-initial-sync{
-          if-feature sync-opt;
-          type boolean;
-          description
-            "PCE triggered initial synchronization";
-        }
-        leaf incremental-sync{
-          if-feature sync-opt;
-          type boolean;
-          description
-            "Support incremental (delta) sync";
-        }
-        leaf p2mp{
-          if-feature p2mp;
-          type boolean;
-          description
-            "Support for Passive Stateful operations for 
-            P2MP.";
-        }            
-        leaf p2mp-active{
-          if-feature p2mp;
-          type boolean;
-          description
-            "Support for Active Stateful operations for 
-            P2MP.";
-        }            
-        leaf p2mp-pce-initiated{
-          if-feature p2mp;
-          if-feature pce-initiated;
-          type boolean;
-          description
-            "Support for PCE-Initiated P2MP TE LSP.";
-        }            
+          "Support inclusion of LSP-DB-VERSION
+          in LSP object";
+        reference
+          "RFC 8232: Optimizations of Label Switched Path State 
+          Synchronization Procedures for a Stateful PCE";          
+      }
+      leaf trigger-resync{
+        if-feature stateful;
+        if-feature sync-opt;
+        type boolean;
+        description
+          "Support PCE triggered re-synchronization";
+        reference
+          "RFC 8232: Optimizations of Label Switched Path State 
+          Synchronization Procedures for a Stateful PCE";          
+      }
+      leaf trigger-initial-sync{
+        if-feature stateful;
+        if-feature sync-opt;
+        type boolean;
+        description
+          "PCE triggered initial synchronization";
+        reference
+          "RFC 8232: Optimizations of Label Switched Path State 
+          Synchronization Procedures for a Stateful PCE";          
+      }
+      leaf incremental-sync{
+        if-feature stateful;
+        if-feature sync-opt;
+        type boolean;
+        description
+          "Support incremental (delta) sync";
+        reference
+          "RFC 8232: Optimizations of Label Switched Path State 
+          Synchronization Procedures for a Stateful PCE";          
       }
       container sr{
         if-feature sr;
         description
           "If segment routing is supported";
+        reference
+          "I-D.ietf-pce-segment-routing: PCEP Extensions for Segment 
+          Routing";           
         leaf enabled{
           type boolean;
           description
-            "Enabled or Disabled";
-        }
-        leaf msd{
-          type uint8;
-          description
-            "Maximum SID Depth";
+            "Set to true if SR is enabled";
         }
         leaf msd-limit{
           type boolean;
@@ -876,7 +885,16 @@ module ietf-pcep {
             "True indicates capability to resolve NAI
             to SID";
         }
-      }
+      }//sr      
+    }//capability  
+    leaf msd{
+      if-feature sr;
+      type uint8;
+      description
+        "Maximum SID Depth for SR";
+      reference
+        "I-D.ietf-pce-segment-routing: PCEP Extensions for Segment 
+        Routing";         
     }
   }//info
 
@@ -1030,6 +1048,7 @@ module ietf-pcep {
 
       leaf admin-status {
         type boolean;
+        default true;
         description
           "The administrative status of this PCEP Entity.
           The value true represents admin status as up.
@@ -1077,7 +1096,7 @@ module ietf-pcep {
              "../role = 'pcc-and-pce'"
         {
           description
-            "Valid at PCE";
+            "These fields are applicable when the role is PCE.";
         }
         description
           "The Local PCE Entity PCE information";
@@ -1120,7 +1139,7 @@ module ietf-pcep {
         }
       }
       leaf connect-timer {
-        type uint32 {
+        type uint16 {
           range "1..65535";
         }
         units "seconds";
@@ -1148,7 +1167,7 @@ module ietf-pcep {
       }
 
       leaf init-backoff-timer {
-        type uint32 {
+        type uint16 {
           range "1..65535";
         }
         units "seconds";
@@ -1180,7 +1199,7 @@ module ietf-pcep {
       }
 
       leaf open-wait-timer {
-        type uint32 {
+        type uint16 {
           range "1..65535";
         }
         units "seconds";
@@ -1198,7 +1217,7 @@ module ietf-pcep {
       }
 
       leaf keep-wait-timer {
-        type uint32 {
+        type uint16 {
           range "1..65535";
         }
         units "seconds";
@@ -1217,9 +1236,7 @@ module ietf-pcep {
       }
 
       leaf keep-alive-timer {
-        type uint32 {
-          range "0..255";
-        }
+        type uint8;
         units "seconds";
         default 30;
         description
@@ -1240,16 +1257,11 @@ module ietf-pcep {
       }
 
       leaf dead-timer {
-        type uint32 {
-          range "0..255";
-        }
+        type uint8;
         units "seconds";
         must "(. > ../keep-alive-timer)" {
-             error-message "The dead timer must be "
+          error-message "The dead timer must be "
              + "larger than the keep alive timer";
-          description
-            "This value MUST be greater than
-            keep-alive-timer.";
         }
         default 120;
         description
@@ -1272,9 +1284,7 @@ module ietf-pcep {
       }
 
       leaf max-keep-alive-timer{
-        type uint32 {
-          range "0..255";
-        }
+        type uint8;
         units "seconds";
         description
           "In PCEP session parameter negotiation in seconds,
@@ -1286,9 +1296,7 @@ module ietf-pcep {
       }
 
       leaf max-dead-timer{
-        type uint32 {
-          range "0..255";
-        }
+        type uint8;
         units "seconds";
         description
           "In PCEP session parameter negotiation in seconds,
@@ -1299,9 +1307,7 @@ module ietf-pcep {
       }
 
       leaf min-keep-alive-timer{
-        type uint32 {
-          range "0..255";
-        }
+        type uint8;
         units "seconds";
         description
           "In PCEP session parameter negotiation in seconds,
@@ -1312,9 +1318,7 @@ module ietf-pcep {
       }
 
       leaf min-dead-timer{
-        type uint32 {
-          range "0..255";
-        }
+        type uint8;
         units "seconds";
         description
           "In PCEP session parameter negotiation in
@@ -1326,9 +1330,7 @@ module ietf-pcep {
 
       leaf sync-timer{
         if-feature svec;
-        type uint32 {
-          range "0..65535";
-        }
+        type uint16;
         units "seconds";
         default 60;
         description
@@ -1354,7 +1356,7 @@ module ietf-pcep {
       }
 
       leaf request-timer{
-        type uint32 {
+        type uint16 {
           range "1..65535";
         }
         units "seconds";
@@ -1417,15 +1419,6 @@ module ietf-pcep {
       }
       container stateful-parameter{
         if-feature stateful;
-        must "(/pcep/entity/capability/stateful/enabled" +
-             " = true())"
-        {
-          error-message
-            "The Stateful PCE must be enabled";
-          description
-            "When PCEP entity is stateful
-            enabled";
-        }
         description
           "The configured stateful PCE parameters";
         leaf state-timeout{
@@ -1444,7 +1437,8 @@ module ietf-pcep {
                "../../role = 'pcc-and-pce'"
           {
             description
-              "Valid at PCC";
+              "This field is applicable when the role is
+              PCC";
           }
           type uint32;
           units "seconds";
@@ -1462,7 +1456,8 @@ module ietf-pcep {
                "../../role = 'pcc-and-pce'"
           {
             description
-              "Valid at PCC";
+              "This field is applicable when the role is
+              PCC";
           }
           type boolean;
           default true;
@@ -1482,7 +1477,8 @@ module ietf-pcep {
                "../role = 'pcc-and-pce'"
           {
             description
-              "Valid at PCE";
+              "These field are applicable when the role is
+              PCE";
           }
           if-feature objective-function;
 
@@ -1502,7 +1498,8 @@ module ietf-pcep {
                  "../../role = 'pcc-and-pce'"
             {
               description
-                "Valid at PCC";
+                "This field is applicable when the role is
+                PCC";
             }
             if-feature sync-opt;
             type uint64;
@@ -1680,8 +1677,6 @@ module ietf-pcep {
                 {
                   error-message
                     "The LSP must be delegated";
-                  description
-                    "When LSP is a delegated LSP";
                 }
                 description
                   "At the PCC, the reference to the PCEP peer to
@@ -1707,7 +1702,7 @@ module ietf-pcep {
               leaf enabled{
                 type boolean;
                 description
-                  "LSP is PCE-initiated or not";
+                  "Set to true if this LSP is initiated by a PCE";
               }
               leaf peer{
                 type leafref {
@@ -1717,8 +1712,6 @@ module ietf-pcep {
                 {
                   error-message
                     "The LSP must be PCE-Initiated";
-                  description
-                    "When the LSP must be PCE-Initiated";
                 }
                 description
                   "At the PCC, the reference to the PCEP peer
@@ -1809,7 +1802,8 @@ module ietf-pcep {
         container path-keys {
           when "../role = 'pce' or ../role = 'pcc-and-pce'" {
             description
-              "Valid at PCE";
+              "These fields are applicable when the role is
+              PCE";
           }
           if-feature path-key;
           config false;
@@ -1871,8 +1865,6 @@ module ietf-pcep {
               {
                 error-message
                   "The Path-key should be retreived";
-                description
-                  "When Path-Key has been retreived";
               }
               description
                 "Reference to PCC peer address which
@@ -1956,16 +1948,6 @@ module ietf-pcep {
               type uint8{
                 range "0..7";
               }
-              must "(/pcep/entity/capability/stateful" +
-                   "/active = true())"
-              {
-                error-message
-                  "The Active Stateful PCE must be
-                  enabled";
-                description
-                  "When PCEP entity is active stateful
-                  enabled";
-              }
               description
                 "The PCE peer delegation preference.";
             }
@@ -1993,12 +1975,32 @@ module ietf-pcep {
                       "Cryptographic algorithm associated 
                       with key.";
                   }
-                  leaf key {
-                    nacm:default-deny-all;  
-                    type string;
+                  choice key-string-style {
                     description
-                      "This leaf specifies the authentication
-                      key.";
+                      "Key string styles";
+                    case keystring {
+                      leaf keystring {
+                        nacm:default-deny-all;
+                        type string;
+                        description
+                          "Key string in ASCII format.";
+                      }
+                    }
+                    case hexadecimal {
+                      if-feature "kc:hex-key-string";
+                      leaf hexadecimal-string {
+                        nacm:default-deny-all;
+                        type yang:hex-string;
+                        description
+                          "Key in hexadecimal string format. When 
+                          compared to ASCII, specification in 
+                          hexadecimal affords greater key entropy 
+                          with the same number of internal 
+                          key-string octets.  Additionally, it 
+                          discourages usage of well-known words or
+                          numbers.";
+                      }
+                    }
                   }
                 }
                 case auth-tls {
@@ -2160,9 +2162,7 @@ module ietf-pcep {
               }
 
               leaf local-id {
-                type uint32 {
-                  range "0..255";
-                }
+                type uint8;
                 description
                   "The value of the PCEP session ID used by
                   the local PCEP entity in the Open message
@@ -2177,9 +2177,7 @@ module ietf-pcep {
               }
 
               leaf remote-id {
-                type uint32 {
-                  range "0..255";
-                }
+                type uint8;
                 must "((../state != 'tcp-pending'" +
                      "and " +
                      "../state != 'open-wait' )" +
@@ -2204,9 +2202,7 @@ module ietf-pcep {
               }
 
               leaf keepalive-timer {
-                type uint32 {
-                  range "0..255";
-                }
+                type uint8;
                 units "seconds";
                 must "(../state = 'session-up'" +
                      "or " +
@@ -2230,9 +2226,7 @@ module ietf-pcep {
               }
 
               leaf peer-keepalive-timer {
-                type uint32 {
-                  range "0..255";
-                }
+                type uint8;
                 units "seconds";
                 must "(../state = 'session-up'" +
                      "or "   +
@@ -2257,9 +2251,7 @@ module ietf-pcep {
               }
 
               leaf dead-timer {
-                type uint32 {
-                  range "0..255";
-                }
+                type uint8;
                 units "seconds";
                 description
                   "The dead timer interval for this PCEP session.";
@@ -2269,9 +2261,7 @@ module ietf-pcep {
               }
 
               leaf peer-dead-timer {
-                type uint32 {
-                  range "0..255";
-                }
+                type uint8;
                 units "seconds";
                 must "((../state != 'tcp-pending'" +
                      "and " +
@@ -2297,9 +2287,7 @@ module ietf-pcep {
               }
 
               leaf ka-hold-time-rem {
-                type uint32 {
-                  range "0..255";
-                }
+                type uint8;
                 units "seconds";
                 must "((../state != 'tcp-pending'" +
                      "and " +
@@ -2403,7 +2391,8 @@ module ietf-pcep {
                      "../role = 'pcc-and-pce'"
                 {
                   description
-                  "Valid for PCEP Peer as PCC";
+                    "This field is applicable when the role is
+                    PCC";
                 }
 
                 if-feature stateful;
@@ -2424,7 +2413,8 @@ module ietf-pcep {
                      "../role = 'pcc-and-pce'"
                 {
                   description
-                    "Valid for PCEP Peer as PCE";
+                    "These fields are applicable when the role is
+                    PCE";
                 }
                 if-feature objective-function;
 
@@ -2446,7 +2436,8 @@ module ietf-pcep {
                      "../role = 'pcc-and-pce'"
                 {
                   description
-                    "Valid for PCEP Peer as PCE";
+                    "These fields are applicable when the role is
+                    PCE";
                 }
                 description
                   "Indicate the list of supported
