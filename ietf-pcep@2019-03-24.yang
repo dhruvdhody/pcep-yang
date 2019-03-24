@@ -105,20 +105,6 @@ module ietf-pcep {
   }
 
   /*
-   * Identities
-   */
-
-  identity pcep {
-    description 
-      "Identity for the PCEP protocol.";
-    reference 
-      "RFC 5440: Path Computation Element (PCE) Communication 
-      Protocol (PCEP)";
-  }
-
-
-
-  /*
    * Typedefs
    */
   typedef pcep-role {
@@ -201,6 +187,9 @@ module ietf-pcep {
       - oper-status-going-down(4): Deactivating
       - oper-status-failed(5): Failed
       - oper-status-failed-perm(6): Failed Permanantly";
+    reference
+      "RFC 5440: Path Computation Element (PCE) Communication 
+      Protocol (PCEP)"; 
   }
 
   typedef pcep-initiator {
