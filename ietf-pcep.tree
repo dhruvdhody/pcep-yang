@@ -81,23 +81,24 @@ module: ietf-pcep
         |  |  +--ro source           inet:ip-address
         |  |  +--ro global-source    uint32
         |  |  +--ro extended-id      string
-        |  |  +--ro lsp* [plsp-id pcc-id]
-        |  |     +--ro plsp-id    -> /pcep/entity/lsp-db/lsp/plsp-id
+        |  |  +--ro lsp* [plsp-id pcc-id lsp-id]
+        |  |     +--ro plsp-id
+        |  |     |       -> /pcep/entity/lsp-db/lsp/plsp-id
         |  |     +--ro pcc-id     -> /pcep/entity/lsp-db/lsp/pcc-id
-        |  +--ro lsp* [plsp-id pcc-id]
+        |  |     +--ro lsp-id     -> /pcep/entity/lsp-db/lsp/lsp-id
+        |  +--ro lsp* [plsp-id pcc-id lsp-id]
         |     +--ro plsp-id               uint32
         |     +--ro pcc-id                inet:ip-address
-        |     +--ro lsp-ref
-        |     |  +--ro source?
-        |     |  |       -> /te:te/lsps-state/lsp/source
-        |     |  +--ro destination?
-        |     |  |       -> /te:te/lsps-state/lsp/destination
-        |     |  +--ro tunnel-id?
-        |     |  |       -> /te:te/lsps-state/lsp/tunnel-id
-        |     |  +--ro lsp-id?
-        |     |  |       -> /te:te/lsps-state/lsp/lsp-id
-        |     |  +--ro extended-tunnel-id?
-        |     |          -> /te:te/lsps-state/lsp/extended-tunnel-id
+        |     +--ro source?
+        |     |       -> /te:te/lsps-state/lsp/source
+        |     +--ro destination?
+        |     |       -> /te:te/lsps-state/lsp/destination
+        |     +--ro tunnel-id?
+        |     |       -> /te:te/lsps-state/lsp/tunnel-id
+        |     +--ro lsp-id
+        |     |       -> /te:te/lsps-state/lsp/lsp-id
+        |     +--ro extended-tunnel-id?
+        |     |       -> /te:te/lsps-state/lsp/extended-tunnel-id
         |     +--ro admin-state?          boolean
         |     +--ro operational-state?    operational-state
         |     +--ro delegated
@@ -113,8 +114,7 @@ module: ietf-pcep
         |     +--ro association-list*
         |             [type id source global-source extended-id]
         |             {association}?
-        |        +--ro type
-        |        |       -> /pcep/entity/lsp-db/association-list/type
+        |        +--ro type             leafref
         |        +--ro id
         |        |       -> /pcep/entity/lsp-db/association-list/id
         |        +--ro source           leafref
@@ -150,10 +150,12 @@ module: ietf-pcep
         |     |           +--ro label-hop
         |     |              +--ro te-label
         |     |                    ...
-        |     +--ro pcc-original?    -> /pcep/entity/peers/peer/addr
+        |     +--ro pcc-original?
+        |     |       -> /pcep/entity/peers/peer/addr
         |     +--ro req-id?          uint32
         |     +--ro retrieved?       boolean
-        |     +--ro pcc-retrieved?   -> /pcep/entity/peers/peer/addr
+        |     +--ro pcc-retrieved?
+        |     |       -> /pcep/entity/peers/peer/addr
         |     +--ro creation-time?   yang:timestamp
         |     +--ro discard-time?    uint32
         |     +--ro reuse-time?      uint32
@@ -201,7 +203,8 @@ module: ietf-pcep
               |     |  +--rw key-chain?
               |     |          key-chain:key-chain-ref
               |     +--:(auth-key)
-              |     |  +--rw crypto-algorithm            identityref
+              |     |  +--rw crypto-algorithm
+              |     |  |       identityref
               |     |  +--rw (key-string-style)?
               |     |     +--:(keystring)
               |     |     |  +--rw keystring?            string
@@ -256,7 +259,8 @@ module: ietf-pcep
                     +--ro assoc-type-list {association}?
                     |  +--ro assoc-type* [at]
                     |     +--ro at    identityref
-                    +--ro speaker-entity-id?      string {sync-opt}?
+                    +--ro speaker-entity-id?      string
+                    |       {sync-opt}?
                     +--ro discontinuity-time?     yang:timestamp
 
   rpcs:
