@@ -1,0 +1,735 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0049)https://tools.ietf.org/tools/rfcdiff/rfcdiff.pyht -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+   
+  <meta http-equiv="Content-Style-Type" content="text/css"> 
+  <title>Diff: draft-li-pce-pcep-srv6-yang-00.txt - draft-li-pce-pcep-srv6-yang-01.txt</title> 
+  <style type="text/css"> 
+    body    { margin: 0.4ex; margin-right: auto; } 
+    tr      { } 
+    td      { white-space: pre; font-family: monospace; vertical-align: top; font-size: 0.86em;} 
+    th      { font-size: 0.86em; } 
+    .small  { font-size: 0.6em; font-style: italic; font-family: Verdana, Helvetica, sans-serif; } 
+    .left   { background-color: #EEE; } 
+    .right  { background-color: #FFF; } 
+    .diff   { background-color: #CCF; } 
+    .lblock { background-color: #BFB; } 
+    .rblock { background-color: #FF8; } 
+    .insert { background-color: #8FF; } 
+    .delete { background-color: #ACF; } 
+    .void   { background-color: #FFB; } 
+    .cont   { background-color: #EEE; } 
+    .linebr { background-color: #AAA; } 
+    .lineno { color: red; background-color: #FFF; font-size: 0.7em; text-align: right; padding: 0 2px; } 
+    .elipsis{ background-color: #AAA; } 
+    .left .cont { background-color: #DDD; } 
+    .right .cont { background-color: #EEE; } 
+    .lblock .cont { background-color: #9D9; } 
+    .rblock .cont { background-color: #DD6; } 
+    .insert .cont { background-color: #0DD; } 
+    .delete .cont { background-color: #8AD; } 
+    .stats, .stats td, .stats th { background-color: #EEE; padding: 2px 0; } 
+    span.hide { display: none; color: #aaa;}    a:hover span { display: inline; }    tr.change { background-color: gray; } 
+    tr.change a { text-decoration: none; color: black } 
+  </style> 
+     <script>
+var chunk_index = 0;
+var old_chunk = null;
+
+function format_chunk(index) {
+    var prefix = "diff";
+    var str = index.toString();
+    for (x=0; x<(4-str.length); ++x) {
+        prefix+='0';
+    }
+    return prefix + str;
+}
+
+function find_chunk(n){
+    return document.querySelector('tr[id$="' + n + '"]');
+}
+
+function change_chunk(offset) {
+    var index = chunk_index + offset;
+    var new_str;
+    var new_chunk;
+
+    new_str = format_chunk(index);
+    new_chunk = find_chunk(new_str);
+    if (!new_chunk) {
+        return;
+    }
+    if (old_chunk) {
+        old_chunk.style.outline = "";
+    }
+    old_chunk = new_chunk;
+    old_chunk.style.outline = "1px solid red";
+    window.location.replace("#" + new_str)
+    window.scrollBy(0,-100);
+    chunk_index = index;
+}
+
+document.onkeydown = function(e) {
+    switch (e.keyCode) {
+    case 78:
+        change_chunk(1);
+        break;
+    case 80:
+        change_chunk(-1);
+        break;
+    }
+};
+   </script> 
+</head> 
+<body> 
+  <table border="0" cellpadding="0" cellspacing="0"> 
+  <tbody><tr id="part-1" bgcolor="orange"><th></th><th><a href="https://tools.ietf.org/rfcdiff?url2=draft-li-pce-pcep-srv6-yang-00.txt" style="color:#008; text-decoration:none;">&lt;</a>&nbsp;<a href="https://tools.ietf.org/html/draft-li-pce-pcep-srv6-yang-00.txt" style="color:#008">draft-li-pce-pcep-srv6-yang-00.txt</a>&nbsp;</th><th> </th><th>&nbsp;<a href="https://tools.ietf.org/html/draft-li-pce-pcep-srv6-yang-01.txt" style="color:#008">draft-li-pce-pcep-srv6-yang-01.txt</a>&nbsp;<a href="https://tools.ietf.org/rfcdiff?url1=draft-li-pce-pcep-srv6-yang-01.txt" style="color:#008; text-decoration:none;">&gt;</a></th><th></th></tr> 
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">PCE Working Group                                                  C. Li</td><td> </td><td class="right">PCE Working Group                                                  C. Li</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">Internet-Draft                                       Huawei Technologies</td><td> </td><td class="right">Internet-Draft                                       Huawei Technologies</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">Intended status: Standards Track                            S. Sivabalan</td><td> </td><td class="right">Intended status: Standards Track                            S. Sivabalan</td><td class="lineno"></td></tr>
+      <tr id="diff0001"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">Expires: <span class="delete">September 9, 2019</span>                           Cisco Systems, Inc.</td><td> </td><td class="rblock">Expires: <span class="insert">January 8, 2021                               Ciena Corporation</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">                                                          <span class="delete">March 08, 2019</span></td><td> </td><td class="rblock"><span class="insert">                                                                 S. Peng</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">                                                     Huawei Technologies</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">                                                            M. Koldychev</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock">                                                     Cisco Systems, Inc.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock">                                                               <span class="insert">L. Ndifor</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">                                                            MTN Cameroon</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">                                                            July 7, 2020</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">  A YANG Data Model for Segment Routing in IPv6 (SRv6) support in Path</td><td> </td><td class="right">  A YANG Data Model for Segment Routing in IPv6 (SRv6) support in Path</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">           Computation Element Communications Protocol (PCEP)</td><td> </td><td class="right">           Computation Element Communications Protocol (PCEP)</td><td class="lineno"></td></tr>
+      <tr id="diff0002"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">                     draft-li-pce-pcep-srv6-yang-0<span class="delete">0</span></td><td> </td><td class="rblock">                     draft-li-pce-pcep-srv6-yang-0<span class="insert">1</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">Abstract</td><td> </td><td class="right">Abstract</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   This document augments a YANG data model for the management of Path</td><td> </td><td class="right">   This document augments a YANG data model for the management of Path</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   Computation Element communications Protocol (PCEP) for communications</td><td> </td><td class="right">   Computation Element communications Protocol (PCEP) for communications</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   between a Path Computation Client (PCC) and a Path Computation</td><td> </td><td class="right">   between a Path Computation Client (PCC) and a Path Computation</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   Element (PCE), or between two PCEs in support for Segment Routing in</td><td> </td><td class="right">   Element (PCE), or between two PCEs in support for Segment Routing in</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   IPv6.  The data model includes configuration data and state data</td><td> </td><td class="right">   IPv6.  The data model includes configuration data and state data</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   (status information and counters for the collection of statistics).</td><td> </td><td class="right">   (status information and counters for the collection of statistics).</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="part-2" class="change"><td></td><th><small>skipping to change at</small><a href="https://tools.ietf.org/tools/rfcdiff/rfcdiff.pyht#part-2"><em> page 1, line 37<span class="hide"> ¶</span></em></a></th><th> </th><th><small>skipping to change at</small><a href="https://tools.ietf.org/tools/rfcdiff/rfcdiff.pyht#part-2"><em> page 1, line 43<span class="hide"> ¶</span></em></a></th><td></td></tr>
+      <tr><td class="lineno"></td><td class="left">   Internet-Drafts are working documents of the Internet Engineering</td><td> </td><td class="right">   Internet-Drafts are working documents of the Internet Engineering</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   Task Force (IETF).  Note that other groups may also distribute</td><td> </td><td class="right">   Task Force (IETF).  Note that other groups may also distribute</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   working documents as Internet-Drafts.  The list of current Internet-</td><td> </td><td class="right">   working documents as Internet-Drafts.  The list of current Internet-</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   Drafts is at https://datatracker.ietf.org/drafts/current/.</td><td> </td><td class="right">   Drafts is at https://datatracker.ietf.org/drafts/current/.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   Internet-Drafts are draft documents valid for a maximum of six months</td><td> </td><td class="right">   Internet-Drafts are draft documents valid for a maximum of six months</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   and may be updated, replaced, or obsoleted by other documents at any</td><td> </td><td class="right">   and may be updated, replaced, or obsoleted by other documents at any</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   time.  It is inappropriate to use Internet-Drafts as reference</td><td> </td><td class="right">   time.  It is inappropriate to use Internet-Drafts as reference</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   material or to cite them other than as "work in progress."</td><td> </td><td class="right">   material or to cite them other than as "work in progress."</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0003"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">   This Internet-Draft will expire on <span class="delete">September 9, 2019</span>.</td><td> </td><td class="rblock">   This Internet-Draft will expire on <span class="insert">January 8, 2021</span>.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">Copyright Notice</td><td> </td><td class="right">Copyright Notice</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0004"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">   Copyright (c) 20<span class="delete">19</span> IETF Trust and the persons identified as the</td><td> </td><td class="rblock">   Copyright (c) 20<span class="insert">20</span> IETF Trust and the persons identified as the</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   document authors.  All rights reserved.</td><td> </td><td class="right">   document authors.  All rights reserved.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   This document is subject to BCP 78 and the IETF Trust's Legal</td><td> </td><td class="right">   This document is subject to BCP 78 and the IETF Trust's Legal</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   Provisions Relating to IETF Documents</td><td> </td><td class="right">   Provisions Relating to IETF Documents</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   (https://trustee.ietf.org/license-info) in effect on the date of</td><td> </td><td class="right">   (https://trustee.ietf.org/license-info) in effect on the date of</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   publication of this document.  Please review these documents</td><td> </td><td class="right">   publication of this document.  Please review these documents</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   carefully, as they describe your rights and restrictions with respect</td><td> </td><td class="right">   carefully, as they describe your rights and restrictions with respect</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   to this document.  Code Components extracted from this document must</td><td> </td><td class="right">   to this document.  Code Components extracted from this document must</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   include Simplified BSD License text as described in Section 4.e of</td><td> </td><td class="right">   include Simplified BSD License text as described in Section 4.e of</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   the Trust Legal Provisions and are provided without warranty as</td><td> </td><td class="right">   the Trust Legal Provisions and are provided without warranty as</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="part-3" class="change"><td></td><th><small>skipping to change at</small><a href="https://tools.ietf.org/tools/rfcdiff/rfcdiff.pyht#part-3"><em> page 2, line 21<span class="hide"> ¶</span></em></a></th><th> </th><th><small>skipping to change at</small><a href="https://tools.ietf.org/tools/rfcdiff/rfcdiff.pyht#part-3"><em> page 2, line 28<span class="hide"> ¶</span></em></a></th><td></td></tr>
+      <tr><td class="lineno"></td><td class="left">   2.  Requirements Language . . . . . . . . . . . . . . . . . . . .   3</td><td> </td><td class="right">   2.  Requirements Language . . . . . . . . . . . . . . . . . . . .   3</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   3.  Terminology and Notation  . . . . . . . . . . . . . . . . . .   3</td><td> </td><td class="right">   3.  Terminology and Notation  . . . . . . . . . . . . . . . . . .   3</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">     3.1.  Tree Diagrams . . . . . . . . . . . . . . . . . . . . . .   4</td><td> </td><td class="right">     3.1.  Tree Diagrams . . . . . . . . . . . . . . . . . . . . . .   4</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">     3.2.  Prefixes in Data Node Names . . . . . . . . . . . . . . .   4</td><td> </td><td class="right">     3.2.  Prefixes in Data Node Names . . . . . . . . . . . . . . .   4</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   4.  The Design of PCEP-SRv6 Data Model  . . . . . . . . . . . . .   4</td><td> </td><td class="right">   4.  The Design of PCEP-SRv6 Data Model  . . . . . . . . . . . . .   4</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">     4.1.  The Overview of PCEP SRv6 Data Model  . . . . . . . . . .   4</td><td> </td><td class="right">     4.1.  The Overview of PCEP SRv6 Data Model  . . . . . . . . . .   4</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   5.  PCEP-SRv6 YANG Modules  . . . . . . . . . . . . . . . . . . .   5</td><td> </td><td class="right">   5.  PCEP-SRv6 YANG Modules  . . . . . . . . . . . . . . . . . . .   5</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">     5.1.  ietf-pcep-srv6 module . . . . . . . . . . . . . . . . . .   5</td><td> </td><td class="right">     5.1.  ietf-pcep-srv6 module . . . . . . . . . . . . . . . . . .   5</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   9</td><td> </td><td class="right">   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   9</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  10</td><td> </td><td class="right">   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  10</td><td class="lineno"></td></tr>
+      <tr id="diff0005"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">   8.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  <span class="delete">10</span></td><td> </td><td class="rblock">   8.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  <span class="insert">11</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  <span class="delete">10</span></td><td> </td><td class="rblock">   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  <span class="insert">11</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  <span class="delete">10</span></td><td> </td><td class="rblock">     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  <span class="insert">11</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">     9.2.  Informative References  . . . . . . . . . . . . . . . . .  <span class="delete">12</span></td><td> </td><td class="rblock">     9.2.  Informative References  . . . . . . . . . . . . . . . . .  <span class="insert">13</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  13</td><td> </td><td class="right">   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  13</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">1.  Introduction</td><td> </td><td class="right">1.  Introduction</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   The Path Computation Element (PCE) defined in [RFC4655] is an entity</td><td> </td><td class="right">   The Path Computation Element (PCE) defined in [RFC4655] is an entity</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   that is capable of computing a network path or route based on a</td><td> </td><td class="right">   that is capable of computing a network path or route based on a</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   network graph, and applying computational constraints.  A Path</td><td> </td><td class="right">   network graph, and applying computational constraints.  A Path</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   Computation Client (PCC) may make requests to a PCE for paths to be</td><td> </td><td class="right">   Computation Client (PCC) may make requests to a PCE for paths to be</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   computed.</td><td> </td><td class="right">   computed.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   PCEP is the communication protocol between a PCC and PCE and is</td><td> </td><td class="right">   PCEP is the communication protocol between a PCC and PCE and is</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   defined in [RFC5440].  PCEP interactions include path computation</td><td> </td><td class="right">   defined in [RFC5440].  PCEP interactions include path computation</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   requests and path computation replies as well as notifications of</td><td> </td><td class="right">   requests and path computation replies as well as notifications of</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   specific states related to the use of a PCE in the context of</td><td> </td><td class="right">   specific states related to the use of a PCE in the context of</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   Multiprotocol Label Switching (MPLS) and Generalized MPLS (GMPLS)</td><td> </td><td class="right">   Multiprotocol Label Switching (MPLS) and Generalized MPLS (GMPLS)</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   Traffic Engineering (TE).  [RFC8231] specifies extensions to PCEP to</td><td> </td><td class="right">   Traffic Engineering (TE).  [RFC8231] specifies extensions to PCEP to</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   enable stateful control of MPLS TE LSPs.</td><td> </td><td class="right">   enable stateful control of MPLS TE LSPs.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0006"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">   <span class="delete">[I-D.negi-pce-segment-routing-ipv6]</span> extends</td><td> </td><td class="rblock">   <span class="insert">[I-D.ietf-pce-segment-routing-ipv6]</span> extends <span class="insert">[RFC8664]</span> to support SR</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">   <span class="delete">[I-D.ietf-pce-segment-routing]</span> to support SR for IPv6 data plane.</td><td> </td><td class="rblock">   for IPv6 data plane.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   [I-D.ietf-pce-pcep-yang] defines a YANG [RFC7950] data model for the</td><td> </td><td class="right">   [I-D.ietf-pce-pcep-yang] defines a YANG [RFC7950] data model for the</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   management of PCEP speakers.  This document contains a specification</td><td> </td><td class="right">   management of PCEP speakers.  This document contains a specification</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   of the PCEP-SRv6 YANG module, "ietf-pcep-srv6" which provides the</td><td> </td><td class="right">   of the PCEP-SRv6 YANG module, "ietf-pcep-srv6" which provides the</td><td class="lineno"></td></tr>
+      <tr id="diff0007"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">   PCEP-SRv6 [I-D.<span class="delete">negi</span>-pce-segment-routing-ipv6] data model.</td><td> </td><td class="rblock">   PCEP-SRv6 [I-D.<span class="insert">ietf</span>-pce-segment-routing-ipv6] data model.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   The PCEP operational state is included in the same tree as the PCEP</td><td> </td><td class="right">   The PCEP operational state is included in the same tree as the PCEP</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   configuration consistent with Network Management Datastore</td><td> </td><td class="right">   configuration consistent with Network Management Datastore</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   Architecture [RFC8342].  The origin of the data is indicated as per</td><td> </td><td class="right">   Architecture [RFC8342].  The origin of the data is indicated as per</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   the origin metadata annotation.</td><td> </td><td class="right">   the origin metadata annotation.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">2.  Requirements Language</td><td> </td><td class="right">2.  Requirements Language</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",</td><td> </td><td class="right">   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and</td><td> </td><td class="right">   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="part-4" class="change"><td></td><th><small>skipping to change at</small><a href="https://tools.ietf.org/tools/rfcdiff/rfcdiff.pyht#part-4"><em> page 3, line 49<span class="hide"> ¶</span></em></a></th><th> </th><th><small>skipping to change at</small><a href="https://tools.ietf.org/tools/rfcdiff/rfcdiff.pyht#part-4"><em> page 4, line 5<span class="hide"> ¶</span></em></a></th><td></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   [RFC8281] :</td><td> </td><td class="right">   [RFC8281] :</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   o  PCE-initiated LSP, Path Computation LSP Initiate Message</td><td> </td><td class="right">   o  PCE-initiated LSP, Path Computation LSP Initiate Message</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">      (PCInitiate).</td><td> </td><td class="right">      (PCInitiate).</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   [RFC8408] :</td><td> </td><td class="right">   [RFC8408] :</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   o  Path Setup Type (PST).</td><td> </td><td class="right">   o  Path Setup Type (PST).</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0008"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">   [<span class="delete">I-D.ietf-pce-segment-routing</span>] :</td><td> </td><td class="rblock">   [<span class="insert">RFC8664</span>] :</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   o  Segment Routing (SR).</td><td> </td><td class="right">   o  Segment Routing (SR).</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0009"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">   [I-D.<span class="delete">negi</span>-pce-segment-routing-ipv6] :</td><td> </td><td class="rblock">   [I-D.<span class="insert">ietf</span>-pce-segment-routing-ipv6] :</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   o  Segment Routing in IPv6 (SRv6).</td><td> </td><td class="right">   o  Segment Routing in IPv6 (SRv6).</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">3.1.  Tree Diagrams</td><td> </td><td class="right">3.1.  Tree Diagrams</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   A simplified graphical representation of the data model is used in</td><td> </td><td class="right">   A simplified graphical representation of the data model is used in</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   this document.  The meaning of the symbols in these diagrams is</td><td> </td><td class="right">   this document.  The meaning of the symbols in these diagrams is</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   defined in [RFC8340].</td><td> </td><td class="right">   defined in [RFC8340].</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">3.2.  Prefixes in Data Node Names</td><td> </td><td class="right">3.2.  Prefixes in Data Node Names</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   In this document, names of data nodes and other data model objects</td><td> </td><td class="right">   In this document, names of data nodes and other data model objects</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   are often used without a prefix, as long as it is clear from the</td><td> </td><td class="right">   are often used without a prefix, as long as it is clear from the</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   context in which YANG module each name is defined.  Otherwise, names</td><td> </td><td class="right">   context in which YANG module each name is defined.  Otherwise, names</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   are prefixed using the standard prefix associated with the</td><td> </td><td class="right">   are prefixed using the standard prefix associated with the</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   corresponding YANG module, as shown in Table 1.</td><td> </td><td class="right">   corresponding YANG module, as shown in Table 1.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0010"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       <span class="delete">+----------+-----------------+-----------------------------+</span></td><td> </td><td class="rblock">      <span class="insert">+------------+-----------------+-----------------------------+</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       | Prefix   | YANG module     | Reference                   |</td><td> </td><td class="rblock">      | Prefix     | YANG module     | Reference                   |</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       <span class="delete">+----------+-----------------+-----------------------------+</span></td><td> </td><td class="rblock">      <span class="insert">+------------+-----------------+-----------------------------+</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       | te-types | ietf-te-types   | <span class="delete">[I-D.ietf-teas-yang-te]</span>     |</td><td> </td><td class="rblock">      | te-types   | ietf-te-types   | <span class="insert">[RFC8776]</span>                   |</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       | <span class="delete">p</span>        | ietf-pcep       | [I-D.ietf-pce-pcep-yang]    |</td><td> </td><td class="rblock">      | <span class="insert">pcep</span>       | ietf-pcep       | [I-D.ietf-pce-pcep-yang]    |</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       | <span class="delete">st</span>       | ietf-srv6-types | [I-D.raza-spring-srv6-yang] |</td><td> </td><td class="rblock">      | <span class="insert">srv6-types</span> | ietf-srv6-types | [I-D.raza-spring-srv6-yang] |</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       <span class="delete">+----------+-----------------+-----------------------------+</span></td><td> </td><td class="rblock">      <span class="insert">+------------+-----------------+-----------------------------+</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">             Table 1: Prefixes and corresponding YANG modules</td><td> </td><td class="right">             Table 1: Prefixes and corresponding YANG modules</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">4.  The Design of PCEP-SRv6 Data Model</td><td> </td><td class="right">4.  The Design of PCEP-SRv6 Data Model</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">4.1.  The Overview of PCEP SRv6 Data Model</td><td> </td><td class="right">4.1.  The Overview of PCEP SRv6 Data Model</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   The PCEP-SRv6 YANG module defined in this document has all the common</td><td> </td><td class="right">   The PCEP-SRv6 YANG module defined in this document has all the common</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   building blocks for the PCEP-SRv6 extension.</td><td> </td><td class="right">   building blocks for the PCEP-SRv6 extension.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   module: ietf-pcep-srv6</td><td> </td><td class="right">   module: ietf-pcep-srv6</td><td class="lineno"></td></tr>
+      <tr id="diff0011"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">     augment /p<span class="delete">:pcep/p:entity/</span>p:capability:</td><td> </td><td class="rblock">     augment /p<span class="insert">cep:pcep/pcep:entity/pce</span>p:capability:</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">       +--rw srv6 {srv6}?</td><td> </td><td class="right">       +--rw srv6 {srv6}?</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">          +--rw enabled?     boolean</td><td> </td><td class="right">          +--rw enabled?     boolean</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">          +--rw msd-limit?   boolean</td><td> </td><td class="right">          +--rw msd-limit?   boolean</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">          +--rw srv6-msd* [msd-type]</td><td> </td><td class="right">          +--rw srv6-msd* [msd-type]</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">             +--rw msd-type     uint8</td><td> </td><td class="right">             +--rw msd-type     uint8</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">             +--rw msd-value?   uint8</td><td> </td><td class="right">             +--rw msd-value?   uint8</td><td class="lineno"></td></tr>
+      <tr id="diff0012"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">     augment <span class="delete">/p:pcep/p:entity/p:peers/p:peer/p:capability:</span></td><td> </td><td class="rblock">     augment <span class="insert">/pcep:pcep/pcep:entity/pcep:peers/pcep:peer</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">               /pcep:capability:</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">       +--rw srv6 {srv6}?</td><td> </td><td class="right">       +--rw srv6 {srv6}?</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">          +--rw enabled?     boolean</td><td> </td><td class="right">          +--rw enabled?     boolean</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">          +--rw msd-limit?   boolean</td><td> </td><td class="right">          +--rw msd-limit?   boolean</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">          +--rw srv6-msd* [msd-type]</td><td> </td><td class="right">          +--rw srv6-msd* [msd-type]</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">             +--rw msd-type     uint8</td><td> </td><td class="right">             +--rw msd-type     uint8</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">             +--rw msd-value?   uint8</td><td> </td><td class="right">             +--rw msd-value?   uint8</td><td class="lineno"></td></tr>
+      <tr id="diff0013"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">     augment /p<span class="delete">:pcep/p:entity/p:lsp-db/</span>p:lsp:</td><td> </td><td class="rblock">     augment /p<span class="insert">cep:pcep/pcep:entity/pcep:lsp-db/pce</span>p:lsp:</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">       +--ro srv6 {srv6}?</td><td> </td><td class="right">       +--ro srv6 {srv6}?</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">          +--ro segment-list</td><td> </td><td class="right">          +--ro segment-list</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">             +--ro segment* [index]</td><td> </td><td class="right">             +--ro segment* [index]</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">                +--ro index        uint32</td><td> </td><td class="right">                +--ro index        uint32</td><td class="lineno"></td></tr>
+      <tr id="diff0014"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">                +--ro sid-value?   s<span class="delete">t</span>:srv6-sid</td><td> </td><td class="rblock">                +--ro sid-value?   s<span class="insert">rv6-types</span>:srv6-sid</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">5.  PCEP-SRv6 YANG Modules</td><td> </td><td class="right">5.  PCEP-SRv6 YANG Modules</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">5.1.  ietf-pcep-srv6 module</td><td> </td><td class="right">5.1.  ietf-pcep-srv6 module</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   RFC Ed.: In this section, replace all occurrences of 'XXXX' with the</td><td> </td><td class="right">   RFC Ed.: In this section, replace all occurrences of 'XXXX' with the</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   actual RFC number and all occurrences of the revision date below with</td><td> </td><td class="right">   actual RFC number and all occurrences of the revision date below with</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   the date of RFC publication (and remove this note).</td><td> </td><td class="right">   the date of RFC publication (and remove this note).</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0015"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">   &lt;CODE BEGINS&gt; file "ietf-pcep-srv6@20<span class="delete">19-03</span>-08.yang"</td><td> </td><td class="rblock">   &lt;CODE BEGINS&gt; file "ietf-pcep-srv6@20<span class="insert">20-07</span>-08.yang"</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   module ietf-pcep-srv6 {</td><td> </td><td class="right">   module ietf-pcep-srv6 {</td><td class="lineno"></td></tr>
+      <tr id="diff0016"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock">     <span class="insert">yang-version 1.1;</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">     namespace "urn:ietf:params:xml:ns:yang:ietf-pcep-srv6";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">     prefix pcep-srv6;</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0017"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       <span class="delete">yang-version 1.1;</span></td><td> </td><td class="rblock">     <span class="insert">import ietf-srv6-types {</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">       prefix srv6-types;</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">       reference</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">         "I-D.raza-spring-srv6-yang: YANG Data Model for SRv6</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">          Base and Static";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">     }</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">     import ietf-te-types {</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">       prefix te-types;</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">       reference</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">         "RFC 8776: Common YANG Data Types for Traffic Engineering";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">     }</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">     import ietf-pcep {</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">       prefix pcep;</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">       reference</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">         "I-D.ietf-pce-pcep-yang: A YANG Data Model for Path</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">          Computation Element Communications Protocol (PCEP)";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">     }</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0018"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       <span class="delete">namespace "urn:ietf:params:xml:ns:yang:ietf-pcep-srv6";</span></td><td> </td><td class="rblock">     <span class="insert">organization</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">       prefix ps;</span></td><td> </td><td class="rblock"><span class="insert">       "IETF PCE (Path Computation Element) Working Group";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">     contact</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">       "WG Web:   &lt;http://tools.ietf.org/wg/pce/&gt;</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">        WG List:  &lt;mailto:pce@ietf.org&gt;</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">        Editor:   Cheng Li</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">                  &lt;mailto:c.l@huawei.com&gt;";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">     description</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">       "The YANG module augments the PCEP YANG operational</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">        model with SRv6.</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0019"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       <span class="delete">import ietf-srv6-types {</span></td><td> </td><td class="rblock">        <span class="insert">Copyright (c) 2020 IETF Trust and the persons identified as</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">           prefix "st";</span></td><td> </td><td class="rblock"><span class="insert">        authors of the code.  All rights reserved.</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">           reference "RFC XXXX";</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">       }</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0020"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       <span class="delete">import ietf-te-types {</span></td><td> </td><td class="rblock">        <span class="insert">Redistribution and use in source and binary forms, with or</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">          prefix "te-types";</span></td><td> </td><td class="rblock"><span class="insert">        without modification, is permitted pursuant to, and subject</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">          reference "RFC XXXX";</span></td><td> </td><td class="rblock"><span class="insert">        to the license terms contained in, the Simplified BSD License</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">       }</span></td><td> </td><td class="rblock"><span class="insert">        set forth in Section 4.c of the IETF Trust's Legal Provisions</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">        Relating to IETF Documents</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">        (https://trustee.ietf.org/license-info).</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0021"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       <span class="delete">import ietf-pcep {</span></td><td> </td><td class="rblock">        <span class="insert">This version of this YANG module is part of RFC XXXX; see the</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">          prefix "p";</span></td><td> </td><td class="rblock"><span class="insert">        RFC itself for full legal notices.";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">          reference "RFC XXXX";</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">       }</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0022"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       <span class="delete">organization</span></td><td> </td><td class="rblock">     <span class="insert">revision 2020-07-08 {</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">           "IETF PCE (Path</span> Computation <span class="delete">Element) Working Group";</span></td><td> </td><td class="rblock"><span class="insert">       description</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">         "Initial revision.";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">       reference</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">         "RFC XXXX:  A YANG Data Model for Path</span> Computation</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock">                     <span class="insert">Element Communications Protocol</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">                     (PCEP) - Segement Routing in IPv6</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">                     (SRv6)";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">     }</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0023"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       <span class="delete">contact</span></td><td> </td><td class="rblock">     <span class="insert">/* Features */</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">           "WG Web:   &lt;http://tools.ietf.org/wg/pce/&gt;</span></td><td> </td><td class="rblock"><span class="insert"></span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">            WG List:  &lt;mailto:pce@ietf.org&gt;</span></td><td> </td><td class="rblock"><span class="insert">     feature srv6 {</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">            Editor:   Cheng Li</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">                      &lt;mailto:chengli13@huawei.com&gt;";</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">       description</td><td> </td><td class="right">       description</td><td class="lineno"></td></tr>
+      <tr id="diff0024"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">           <span class="delete">"The YANG module augments the PCEP yang operational</span></td><td> </td><td class="rblock">         <span class="insert">"Support Segment Routing in IPv6 (SRv6) for PCE.";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">           model with SRv6";</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0025"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       <span class="delete">revision 2019-03-08 {</span></td><td> </td><td class="rblock">       reference</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">           description "Initial revision.";</span></td><td> </td><td class="rblock">         <span class="insert">"I-D.ietf-pce-segment-routing-ipv6: PCEP Extensions</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">           reference</td><td> </td><td class="rblock">          for <span class="insert">Segment</span> Routing <span class="insert">leveraging the</span> IPv6 <span class="insert">data plane";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">               <span class="delete">"RFC XXXX:  A YANG Data Model</span> for <span class="delete">Path Computation</span></td><td> </td><td class="rblock">     }</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">                           Element Communications Protocol</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">                           (PCEP) - Segement</span> Routing <span class="delete">in</span> IPv6</td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">                           <span class="delete">(SRv6)";</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       }</td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0026"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       /* Identity */</td><td> </td><td class="rblock">     /* Identity */</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       <span class="delete">identity path-setup-srv6 {</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">           base te-types:path-signaling-type;</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">           description</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">             "SRv6 path setup type";</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">       }</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0027"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       <span class="delete">/* Features */</span></td><td> </td><td class="rblock">     <span class="insert">identity path-setup-srv6</span> {</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">       feature srv6</span> {</td><td> </td><td class="rblock">       <span class="insert">if-feature "srv6";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">           description</td><td> </td><td class="rblock"><span class="insert">       base te-types:path-signaling-type;</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">               <span class="delete">"Support Segment Routing in IPv6 (SRv6) for PCE.";</span></td><td> </td><td class="rblock">       description</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       }</td><td> </td><td class="rblock">         <span class="insert">"SRv6 path setup type";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock">     }</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0028"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       /* Groupings */</td><td> </td><td class="rblock">     /* Groupings */</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       <span class="delete">grouping srv6-msd {</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">           description</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">               "SRv6 MSD";</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0029"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">           leaf msd-type {</td><td> </td><td class="rblock">     <span class="insert">grouping srv6-msd {</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">               type uint8;</td><td> </td><td class="rblock"><span class="insert">       description</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">               description</td><td> </td><td class="rblock"><span class="insert">         "SRv6 MSD";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">                   "SRv6 Maximum Segment Depth (MSD) Type";</td><td> </td><td class="rblock">       leaf msd-type {</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">           <span class="delete">}</span></td><td> </td><td class="rblock">         type uint8;</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">           leaf msd-value {</span></td><td> </td><td class="rblock">         description</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">               type uint8;</span></td><td> </td><td class="rblock">           "SRv6 Maximum Segment Depth (MSD) Type";</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">               description</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">                   "SRv6 MSD value for the type";</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">           }</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">       }</td><td> </td><td class="right">       }</td><td class="lineno"></td></tr>
+      <tr id="diff0030"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">                                                                         </td><td> </td><td class="rblock">       leaf <span class="insert">msd-value</span> {</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       <span class="delete">grouping srv6 {</span></td><td> </td><td class="rblock">         type <span class="insert">uint8;</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">           description</span></td><td> </td><td class="rblock">         description</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">               "SRv6";</span></td><td> </td><td class="rblock">           <span class="insert">"SRv6 MSD value for</span> the <span class="insert">type";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">           container srv6 {</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">               if-feature srv6;</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">               description</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">                   "If SRv6 is supported";</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">               leaf <span class="delete">enabled{</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">                   type boolean;</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">                   description</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">                       "Enabled or Disabled";</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">               }</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">               leaf msd-limit</span> {</td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">                   type <span class="delete">boolean;</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">                   default false;</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">                   description</td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">                       <span class="delete">"True indicates no limit on MSD,</span> the</td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">                       <span class="delete">list srv6-msd is ignored";</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">               }</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">               list srv6-msd {</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">                   key "msd-type";</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">                   description "list of SRv6 MSD";</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">                   uses srv6-msd;</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">               }</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">           }</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">       }</td><td> </td><td class="right">       }</td><td class="lineno"></td></tr>
+      <tr id="diff0031"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">     }</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0032"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       grouping <span class="delete">segment-list</span> {</td><td> </td><td class="rblock">     grouping <span class="insert">srv6</span> {</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock">       <span class="insert">description</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">         "SRv6";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">       container srv6 {</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">         if-feature "srv6";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">         description</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">           "If SRv6 is supported";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">         leaf enabled {</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">           type boolean;</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">           description</td><td> </td><td class="right">           description</td><td class="lineno"></td></tr>
+      <tr id="diff0033"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">               <span class="delete">"Segment list grouping";</span></td><td> </td><td class="rblock">             <span class="insert">"Enabled or Disabled";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">           container segment-list</span> {</td><td> </td><td class="rblock"><span class="insert">         }</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">               description</td><td> </td><td class="rblock"><span class="insert">         leaf msd-limit</span> {</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">                   <span class="delete">"Segments for given segment list";</span></td><td> </td><td class="rblock">           <span class="insert">type boolean;</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">                                                                         </td><td> </td><td class="rblock"><span class="insert">           default "false";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">               list <span class="delete">segment</span> {</td><td> </td><td class="rblock">           description</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">                   key <span class="delete">"index";</span></td><td> </td><td class="rblock">             <span class="insert">"True indicates no limit on MSD, the</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">                   description <span class="delete">"Configure Segment/hop at the index";</span></td><td> </td><td class="rblock">              list <span class="insert">srv6-msd is ignored";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">                   uses <span class="delete">segment-properties;</span></td><td> </td><td class="rblock"><span class="insert">         }</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">               }</span></td><td> </td><td class="rblock"><span class="insert">         list srv6-msd</span> {</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">           }</td><td> </td><td class="rblock">           key <span class="insert">"msd-type";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock">           description</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock">             <span class="insert">"list of SRv6 MSD";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock">           uses <span class="insert">srv6-msd;</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock">         }</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">       }</td><td> </td><td class="right">       }</td><td class="lineno"></td></tr>
+      <tr id="diff0034"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">     }</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0035"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       grouping <span class="delete">segment-properties</span> {</td><td> </td><td class="rblock">     grouping <span class="insert">segment-list</span> {</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">           description "Segment <span class="delete">properties</span> grouping";</td><td> </td><td class="rblock">       description</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">           <span class="delete">leaf index</span> {</td><td> </td><td class="rblock">         "Segment <span class="insert">list</span> grouping";</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">               <span class="delete">type uint32;</span></td><td> </td><td class="rblock">       <span class="insert">container segment-list</span> {</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">               description <span class="delete">"Segment index";</span></td><td> </td><td class="rblock">         description</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">           }</span></td><td> </td><td class="rblock">           <span class="insert">"Segments for given segment list";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">           leaf sid-value</span> {</td><td> </td><td class="rblock"><span class="insert">         list segment</span> {</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">               <span class="delete">type st:srv6-sid;</span></td><td> </td><td class="rblock">           <span class="insert">key "index";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">               description <span class="delete">"SRv6 SID value";</span></td><td> </td><td class="rblock">           description</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">           }</td><td> </td><td class="rblock">             <span class="insert">"Configure Segment/hop at the index";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">           uses segment-properties;</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock">         }</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">       }</td><td> </td><td class="right">       }</td><td class="lineno"></td></tr>
+      <tr id="diff0036"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">     }</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0037"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       <span class="delete">/*</span></td><td> </td><td class="rblock">     <span class="insert">grouping segment-properties {</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">        * Augment modules to add SRv6</span></td><td> </td><td class="rblock">       description</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">        */</span></td><td> </td><td class="rblock">         <span class="insert">"Segment properties grouping";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">       augment "/p:pcep/p:entity/p:capability"{</span></td><td> </td><td class="rblock"><span class="insert">       leaf index {</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">           description</td><td> </td><td class="rblock"><span class="insert">         type uint32;</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">               <span class="delete">"Augmenting SRv6";</span></td><td> </td><td class="rblock"><span class="insert">         description</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">           uses srv6;</span></td><td> </td><td class="rblock"><span class="insert">           "Segment index";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">       }</td><td> </td><td class="right">       }</td><td class="lineno"></td></tr>
+      <tr id="diff0038"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       <span class="delete">augment "/p:pcep/p:entity/p:peers/p:peer/p:capability"{</span></td><td> </td><td class="rblock">       <span class="insert">leaf sid-value {</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">           description</td><td> </td><td class="rblock"><span class="insert">         type srv6-types:srv6-sid;</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">               <span class="delete">"Augmenting SRv6";</span></td><td> </td><td class="rblock">         description</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">           uses srv6;</span></td><td> </td><td class="rblock">           <span class="insert">"SRv6 SID value";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">       }</td><td> </td><td class="right">       }</td><td class="lineno"></td></tr>
+      <tr id="diff0039"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       augment <span class="delete">"/p:pcep/p:entity/p:lsp-db/p:lsp"{</span></td><td> </td><td class="rblock">     <span class="insert">}</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert"></span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">     /*</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">      * Augment modules to add SRv6</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">      */</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock">                                                                         </td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock">     augment <span class="insert">"/pcep:pcep/pcep:entity/pcep:capability" {</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">       description</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">         "Augmenting SRv6";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert"></span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">       uses srv6;</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">     }</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert"></span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">     augment</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">       "/pcep:pcep/pcep:entity/pcep:peers/pcep:peer/pcep:capability" {</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">       description</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">         "Augmenting SRv6";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">       uses srv6;</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">     }</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert"></span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">     augment "/pcep:pcep/pcep:entity/pcep:lsp-db/pcep:lsp" {</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">       description</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">         "Augmenting SRv6";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">       container srv6 {</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">         when "/pcep:pcep/pcep:entity/pcep:lsp-db/pcep:lsp/pcep:pst</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">               = 'path-setup-srv6'" {</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">           description</td><td> </td><td class="right">           description</td><td class="lineno"></td></tr>
+      <tr id="diff0040"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">               <span class="delete">"Augmenting SRv6";</span></td><td> </td><td class="rblock">             "For SRv6 path";</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">           container srv6 {</span></td><td> </td><td class="rblock">         }</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">               when "/p:pcep/p:entity/p:lsp-db/p:lsp/p:pst</span></td><td> </td><td class="rblock">         if-feature <span class="insert">"srv6";</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">                     = ps:path-setup-srv6" {</span></td><td> </td><td class="rblock">         uses segment-list;</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">                   description</span></td><td> </td><td class="rblock">         description</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">                       "For SRv6 path";</td><td> </td><td class="rblock">           "SRv6";</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">               }</td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">               if-feature <span class="delete">srv6;</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">               uses segment-list;</td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">               description</td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">                   "SRv6";</td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">           <span class="delete">}</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">       }</td><td> </td><td class="right">       }</td><td class="lineno"></td></tr>
+      <tr id="diff0041"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">                                                                         </td><td> </td><td class="rblock">     <span class="insert">}</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">   <span class="delete">}//module</span></td><td> </td><td class="rblock"><span class="insert">   }</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   &lt;CODE ENDS&gt;</td><td> </td><td class="right">   &lt;CODE ENDS&gt;</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">6.  Security Considerations</td><td> </td><td class="right">6.  Security Considerations</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   The YANG module defined in this document is designed to be accessed</td><td> </td><td class="right">   The YANG module defined in this document is designed to be accessed</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   via network management protocol such as NETCONF [RFC6241] or RESTCONF</td><td> </td><td class="right">   via network management protocol such as NETCONF [RFC6241] or RESTCONF</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   [RFC8040].  The lowest NETCONF layer is the secure transport layer</td><td> </td><td class="right">   [RFC8040].  The lowest NETCONF layer is the secure transport layer</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   and the mandatory-to-implement secure transport is SSH [RFC6242].</td><td> </td><td class="right">   and the mandatory-to-implement secure transport is SSH [RFC6242].</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   The lowest RESTCONF layer is HTTPS, and the mandatory-to-implement</td><td> </td><td class="right">   The lowest RESTCONF layer is HTTPS, and the mandatory-to-implement</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="part-5" class="change"><td></td><th><small>skipping to change at</small><a href="https://tools.ietf.org/tools/rfcdiff/rfcdiff.pyht#part-5"><em> page 9, line 31<span class="hide"> ¶</span></em></a></th><th> </th><th><small>skipping to change at</small><a href="https://tools.ietf.org/tools/rfcdiff/rfcdiff.pyht#part-5"><em> page 10, line 7<span class="hide"> ¶</span></em></a></th><td></td></tr>
+      <tr><td class="lineno"></td><td class="left">   operations and content.</td><td> </td><td class="right">   operations and content.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   There are a number of data nodes defined in the YANG module which are</td><td> </td><td class="right">   There are a number of data nodes defined in the YANG module which are</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   writable/creatable/deletable (i.e., config true, which is the</td><td> </td><td class="right">   writable/creatable/deletable (i.e., config true, which is the</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   default).  These data nodes may be considered sensitive or vulnerable</td><td> </td><td class="right">   default).  These data nodes may be considered sensitive or vulnerable</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   in some network environments.  Write operations (e.g., &lt;edit-config&gt;)</td><td> </td><td class="right">   in some network environments.  Write operations (e.g., &lt;edit-config&gt;)</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   to these data nodes without proper protection can have a negative</td><td> </td><td class="right">   to these data nodes without proper protection can have a negative</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   effect on network operations.  These are the subtrees and data nodes</td><td> </td><td class="right">   effect on network operations.  These are the subtrees and data nodes</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   and their sensitivity/vulnerability:</td><td> </td><td class="right">   and their sensitivity/vulnerability:</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0042"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">      <span class="delete">/p:pcep/p:entity/p:capability/ps:srv6</span> - configure local SRv6</td><td> </td><td class="rblock">      <span class="insert">/pcep:pcep/pcep:entity/pcep:capability/pcep-srv6:srv6</span> - configure</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">      capability and parameters.</td><td> </td><td class="rblock">      local SRv6 capability and parameters.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0043"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">      <span class="delete">/p:pcep/p:entity/p:peers/p:peer/p:capability/ps:srv6</span> - configure</td><td> </td><td class="rblock">      <span class="insert">/pcep:pcep/pcep:entity/pcep:peers/pcep:peer/pcep:capability/pcep-</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">      peer's SRv6 capability and parameters.</td><td> </td><td class="rblock"><span class="insert">      srv6:srv6</span> - configure peer's SRv6 capability and parameters.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   Unauthorized access to above list can adversely affect the PCEP</td><td> </td><td class="right">   Unauthorized access to above list can adversely affect the PCEP</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   session between the local entity and the peers.  This may lead to</td><td> </td><td class="right">   session between the local entity and the peers.  This may lead to</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   inability to compute new paths, stateful operations on the delegated</td><td> </td><td class="right">   inability to compute new paths, stateful operations on the delegated</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   as well as PCE-initiated LSPs.</td><td> </td><td class="right">   as well as PCE-initiated LSPs.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   Some of the readable data nodes in this YANG module may be considered</td><td> </td><td class="right">   Some of the readable data nodes in this YANG module may be considered</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   sensitive or vulnerable in some network environments.  It is thus</td><td> </td><td class="right">   sensitive or vulnerable in some network environments.  It is thus</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   important to control read access (e.g., via get, get-config, or</td><td> </td><td class="right">   important to control read access (e.g., via get, get-config, or</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   notification) to these data nodes.  These are the subtrees and data</td><td> </td><td class="right">   notification) to these data nodes.  These are the subtrees and data</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   nodes and their sensitivity/vulnerability:</td><td> </td><td class="right">   nodes and their sensitivity/vulnerability:</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0044"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">      <span class="delete">/p:pcep/p:entity/p:lsp-db/p:lsp/ps:srv6</span> - The SRv6 SID in the</td><td> </td><td class="rblock">      <span class="insert">/pcep:pcep/pcep:entity/pcep:lsp-db/pcep:lsp/pcep-srv6:srv6</span> - The</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">      network.  Unauthorized access to this could provide the all path</td><td> </td><td class="rblock">      SRv6 SID in the network.  Unauthorized access to this could</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">      and network usage information.</td><td> </td><td class="rblock">      provide the all path and network usage information.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">7.  IANA Considerations</td><td> </td><td class="right">7.  IANA Considerations</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   This document registers a URI in the "IETF XML Registry" [RFC3688].</td><td> </td><td class="right">   This document registers a URI in the "IETF XML Registry" [RFC3688].</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   Following the format in RFC 3688, the following registration has been</td><td> </td><td class="right">   Following the format in RFC 3688, the following registration has been</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   made.</td><td> </td><td class="right">   made.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   URI:  urn:ietf:params:xml:ns:yang:ietf-pcep-srv6</td><td> </td><td class="right">   URI:  urn:ietf:params:xml:ns:yang:ietf-pcep-srv6</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   Registrant Contact:  The PCE WG of the IETF.</td><td> </td><td class="right">   Registrant Contact:  The PCE WG of the IETF.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   XML:  N/A; the requested URI is an XML namespace.</td><td> </td><td class="right">   XML:  N/A; the requested URI is an XML namespace.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   This document registers a YANG module in the "YANG Module Names"</td><td> </td><td class="right">   This document registers a YANG module in the "YANG Module Names"</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   registry [RFC6020].</td><td> </td><td class="right">   registry [RFC6020].</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0045"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       Name:         ietf-pcep</td><td> </td><td class="rblock">       Name:         ietf-pcep<span class="insert">-srv6</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">       Namespace:    urn:ietf:params:xml:ns:yang:ietf-pcep-srv6</td><td> </td><td class="right">       Namespace:    urn:ietf:params:xml:ns:yang:ietf-pcep-srv6</td><td class="lineno"></td></tr>
+      <tr id="diff0046"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">       Prefix:       p<span class="delete">s</span></td><td> </td><td class="rblock">       Prefix:       p<span class="insert">cep-srv6</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">       Reference:    This I-D</td><td> </td><td class="right">       Reference:    This I-D</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">8.  Acknowledgements</td><td> </td><td class="right">8.  Acknowledgements</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   The authors would like to thank Dhruv Dhody for the initial YANG</td><td> </td><td class="right">   The authors would like to thank Dhruv Dhody for the initial YANG</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   model.</td><td> </td><td class="right">   model.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">9.  References</td><td> </td><td class="right">9.  References</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">9.1.  Normative References</td><td> </td><td class="right">9.1.  Normative References</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="part-6" class="change"><td></td><th><small>skipping to change at</small><a href="https://tools.ietf.org/tools/rfcdiff/rfcdiff.pyht#part-6"><em> page 12, line 9<span class="hide"> ¶</span></em></a></th><th> </th><th><small>skipping to change at</small><a href="https://tools.ietf.org/tools/rfcdiff/rfcdiff.pyht#part-6"><em> page 12, line 35<span class="hide"> ¶</span></em></a></th><td></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   [RFC8408]  Sivabalan, S., Tantsura, J., Minei, I., Varga, R., and J.</td><td> </td><td class="right">   [RFC8408]  Sivabalan, S., Tantsura, J., Minei, I., Varga, R., and J.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">              Hardwick, "Conveying Path Setup Type in PCE Communication</td><td> </td><td class="right">              Hardwick, "Conveying Path Setup Type in PCE Communication</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">              Protocol (PCEP) Messages", RFC 8408, DOI 10.17487/RFC8408,</td><td> </td><td class="right">              Protocol (PCEP) Messages", RFC 8408, DOI 10.17487/RFC8408,</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">              July 2018, &lt;https://www.rfc-editor.org/info/rfc8408&gt;.</td><td> </td><td class="right">              July 2018, &lt;https://www.rfc-editor.org/info/rfc8408&gt;.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol</td><td> </td><td class="right">   [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">              Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,</td><td> </td><td class="right">              Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">              &lt;https://www.rfc-editor.org/info/rfc8446&gt;.</td><td> </td><td class="right">              &lt;https://www.rfc-editor.org/info/rfc8446&gt;.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0047"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">   <span class="delete">[I-D.ietf-teas-yang-te]</span></td><td> </td><td class="rblock">   <span class="insert">[RFC8664]  Sivabalan, S., Filsfils, C., Tantsura, J., Henderickx, W.,</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">              Saad, T., Gandhi, R., Liu, X., Beeram, V.,</span> and <span class="delete">I. Bryskin,</span></td><td> </td><td class="rblock">              and <span class="insert">J. Hardwick, "Path Computation Element Communication</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">              "A YANG Data Model</span> for <span class="delete">Traffic Engineering Tunnels and</span></td><td> </td><td class="rblock"><span class="insert">              Protocol (PCEP) Extensions</span> for <span class="insert">Segment Routing", RFC 8664,</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">              Interfaces", draft-ietf-teas-yang-te-19 (work in</span></td><td> </td><td class="rblock"><span class="insert">              DOI 10.17487/RFC8664, December 2019,</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">              progress), February 2019.</span></td><td> </td><td class="rblock"><span class="insert">              &lt;https://www.rfc-editor.org/info/rfc8664&gt;.</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0048"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">   <span class="delete">[I-D.ietf-pce-segment-routing]</span></td><td> </td><td class="rblock">   <span class="insert">[RFC8776]  Saad, T., Gandhi, R., Liu, X., Beeram, V.,</span> and <span class="insert">I. Bryskin,</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">              Sivabalan, S., Filsfils, C., Tantsura, J., Henderickx, W.,</span></td><td> </td><td class="rblock"><span class="insert">              "Common YANG Data Types</span> for <span class="insert">Traffic Engineering",</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">              and <span class="delete">J. Hardwick, "PCEP Extensions</span> for <span class="delete">Segment Routing",</span></td><td> </td><td class="rblock"><span class="insert">              RFC 8776, DOI 10.17487/RFC8776, June 2020,</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">              draft-ietf-pce-segment-routing-16 (work in progress),</span></td><td> </td><td class="rblock"><span class="insert">              &lt;https://www.rfc-editor.org/info/rfc8776&gt;.</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">              March 2019.</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   [I-D.raza-spring-srv6-yang]</td><td> </td><td class="right">   [I-D.raza-spring-srv6-yang]</td><td class="lineno"></td></tr>
+      <tr id="diff0049"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">              Raza, K., <span class="delete">Rajamanickam, J.,</span> Liu, X., Hu, Z., Hussain, I.,</td><td> </td><td class="rblock">              Raza, K., <span class="insert">Agarwal, S.,</span> Liu, X., Hu, Z., Hussain, I., Shah,</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">              Shah, H., <span class="delete">daniel.voyer@bell.ca, d.,</span> Elmalky, H.,</td><td> </td><td class="rblock">              H., <span class="insert">Voyer, D.,</span> Elmalky, H., Matsushima, S., Horiba, K.,</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">              Matsushima, S., Horiba, K., <span class="delete">and A.</span> Abdelsalam, "YANG Data</td><td> </td><td class="rblock">              Abdelsalam, <span class="insert">A., and J. Rajamanickam,</span> "YANG Data Model for</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">              Model for SRv6 Base and Static", <span class="delete">draft-raza-spring-</span></td><td> </td><td class="rblock">              SRv6 Base and Static", <span class="insert">draft-raza-spring-srv6-yang-05</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">              srv6-yang-02</span> (work in progress), October <span class="delete">2018.</span></td><td> </td><td class="rblock">              (work in progress), October <span class="insert">2019.</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   [I-D.ietf-pce-pcep-yang]</td><td> </td><td class="right">   [I-D.ietf-pce-pcep-yang]</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">              Dhody, D., Hardwick, J., Beeram, V., and J. Tantsura, "A</td><td> </td><td class="right">              Dhody, D., Hardwick, J., Beeram, V., and J. Tantsura, "A</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">              YANG Data Model for Path Computation Element</td><td> </td><td class="right">              YANG Data Model for Path Computation Element</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">              Communications Protocol (PCEP)", draft-ietf-pce-pcep-</td><td> </td><td class="right">              Communications Protocol (PCEP)", draft-ietf-pce-pcep-</td><td class="lineno"></td></tr>
+      <tr id="diff0050"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">              yang-<span class="delete">09 (work in progress), October 2018</span>.</td><td> </td><td class="rblock">              yang-<span class="insert">13 (work in progress), October 2019</span>.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0051"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">   <span class="delete">[I-D.negi-pce-segment-routing-ipv6]</span></td><td> </td><td class="rblock">   <span class="insert">[I-D.ietf-pce-segment-routing-ipv6]</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">              Negi, M.,</span> Li, C., <span class="delete">Sivabalan, S., and P.</span> Kaladharan, "PCEP</td><td> </td><td class="rblock">              Li, C., <span class="insert">Negi, M., Koldychev, M.,</span> Kaladharan, <span class="insert">P., and Y.</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">              Extensions for Segment Routing leveraging the IPv6 data</td><td> </td><td class="rblock"><span class="insert">              Zhu,</span> "PCEP Extensions for Segment Routing leveraging the</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">              plane", <span class="delete">draft-negi-pce-segment-routing-ipv6-04</span> (work in</td><td> </td><td class="rblock">              IPv6 data plane", <span class="insert">draft-ietf-pce-segment-routing-ipv6-06</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">              progress), <span class="delete">February 2019.</span></td><td> </td><td class="rblock">              (work in progress), <span class="insert">July 2020.</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">9.2.  Informative References</td><td> </td><td class="right">9.2.  Informative References</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   [RFC4655]  Farrel, A., Vasseur, J., and J. Ash, "A Path Computation</td><td> </td><td class="right">   [RFC4655]  Farrel, A., Vasseur, J., and J. Ash, "A Path Computation</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">              Element (PCE)-Based Architecture", RFC 4655,</td><td> </td><td class="right">              Element (PCE)-Based Architecture", RFC 4655,</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">              DOI 10.17487/RFC4655, August 2006,</td><td> </td><td class="right">              DOI 10.17487/RFC4655, August 2006,</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">              &lt;https://www.rfc-editor.org/info/rfc4655&gt;.</td><td> </td><td class="right">              &lt;https://www.rfc-editor.org/info/rfc4655&gt;.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   [RFC7420]  Koushik, A., Stephan, E., Zhao, Q., King, D., and J.</td><td> </td><td class="right">   [RFC7420]  Koushik, A., Stephan, E., Zhao, Q., King, D., and J.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">              Hardwick, "Path Computation Element Communication Protocol</td><td> </td><td class="right">              Hardwick, "Path Computation Element Communication Protocol</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="part-7" class="change"><td></td><th><small>skipping to change at</small><a href="https://tools.ietf.org/tools/rfcdiff/rfcdiff.pyht#part-7"><em> page 13, line 18<span class="hide"> ¶</span></em></a></th><th> </th><th><small>skipping to change at</small><a href="https://tools.ietf.org/tools/rfcdiff/rfcdiff.pyht#part-7"><em> page 13, line 43<span class="hide"> ¶</span></em></a></th><td></td></tr>
+      <tr><td class="lineno"></td><td class="left">              &lt;https://www.rfc-editor.org/info/rfc8342&gt;.</td><td> </td><td class="right">              &lt;https://www.rfc-editor.org/info/rfc8342&gt;.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">Authors' Addresses</td><td> </td><td class="right">Authors' Addresses</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   Cheng Li</td><td> </td><td class="right">   Cheng Li</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   Huawei Technologies</td><td> </td><td class="right">   Huawei Technologies</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   Huawei Campus, No. 156 Beiqing Rd.</td><td> </td><td class="right">   Huawei Campus, No. 156 Beiqing Rd.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   Beijing  100095</td><td> </td><td class="right">   Beijing  100095</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   China</td><td> </td><td class="right">   China</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0052"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">   EMail: c<span class="delete">hengli13</span>@huawei.com</td><td> </td><td class="rblock">   EMail: c<span class="insert">.l</span>@huawei.com</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   Siva Sivabalan</td><td> </td><td class="right">   Siva Sivabalan</td><td class="lineno"></td></tr>
+      <tr id="diff0053"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock">   <span class="insert">Ciena Corporation</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert"></span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">   EMail: ssivabal@ciena.com</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">   Shuping Peng</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">   Huawei Technologies</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">   Huawei Campus, No. 156 Beiqing Rd.</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">   Beijing  100095</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">   China</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert"></span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">   EMail: pengshuping@huawei.com</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert"></span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">   Mike Koldychev</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   Cisco Systems, Inc.</td><td> </td><td class="right">   Cisco Systems, Inc.</td><td class="lineno"></td></tr>
+      <tr id="diff0054"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">   <span class="delete">2000 Innovation Drive</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">   Kanata, Ontario  K2K 3E8</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"><span class="delete">   Canada</span></td><td> </td><td class="rblock"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="diff0055"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">   EMail: <span class="delete">msiva@cisco.com</span></td><td> </td><td class="rblock">   EMail: <span class="insert">mkoldych@cisco.com</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert"></span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">   Luc-Fabrice Ndifor</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">   MTN Cameroon</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">   Cameroon</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert"></span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">   EMail: Luc-Fabrice.Ndifor@mtn.com</span></td><td class="lineno"></td></tr>
+
+     <tr><td></td><td class="left"></td><td> </td><td class="right"></td><td></td></tr>
+     <tr id="end" bgcolor="gray"><th colspan="5" align="center">&nbsp;End of changes. 55 change blocks.&nbsp;</th></tr>
+     <tr class="stats"><td></td><th><i>191 lines changed or deleted</i></th><th><i> </i></th><th><i>235 lines changed or added</i></th><td></td></tr>
+     <tr><td colspan="5" align="center" class="small"><br>This html diff was produced by rfcdiff 1.47. The latest version is available from <a href="http://www.tools.ietf.org/tools/rfcdiff/">http://tools.ietf.org/tools/rfcdiff/</a> </td></tr>
+   </tbody></table>
+   
+   
+</body></html>

@@ -1,9 +1,6 @@
 module ietf-pcep {
-
   yang-version 1.1;
-  
   namespace "urn:ietf:params:xml:ns:yang:ietf-pcep";
-  
   prefix pcep;
 
   import ietf-inet-types {
@@ -25,8 +22,7 @@ module ietf-pcep {
   import ietf-te-types {
     prefix te-types;
     reference
-      "I-D.ietf-teas-yang-te-types: Traffic Engineering Common YANG
-       Types";
+      "RFC 8776: Common YANG Data Types for Traffic Engineering";
   }
   import ietf-key-chain {
     prefix key-chain;
@@ -74,7 +70,13 @@ module ietf-pcep {
     "The YANG module defines a generic configuration and
      operational model for PCEP.
 
-     Copyright (c) 2019 IETF Trust and the persons identified as
+     The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL
+     NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
+     'MAY', and 'OPTIONAL' in this document are to be interpreted as
+     described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
+     they appear in all capitals, as shown here.
+
+     Copyright (c) 2020 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -87,7 +89,7 @@ module ietf-pcep {
      This version of this YANG module is part of RFC XXXX; see the
      RFC itself for full legal notices.";
 
-  revision 2019-07-01 {
+  revision 2020-07-08 {
     description
       "Initial revision.";
     reference
@@ -458,16 +460,17 @@ module ietf-pcep {
     description
       "Support Segment Routing for PCE.";
     reference
-      "I-D.ietf-pce-segment-routing: PCEP Extensions for Segment
-       Routing";
+      "RFC 8664: Path Computation Element Communication Protocol
+       (PCEP) Extensions for Segment Routing";
   }
 
   feature association {
     description
       "Support Association in PCEP.";
     reference
-      "I-D.ietf-pce-association-group: PCEP Extensions for
-       Establishing Relationships Between Sets of LSPs";
+      "RFC 8697: Path Computation Element Communication Protocol
+       (PCEP) Extensions for Establishing Relationships between
+       Sets of Label Switched Paths (LSPs)";
   }
 
   /*
@@ -484,8 +487,8 @@ module ietf-pcep {
   }
 
   identity no-error-lsp-error {
-    base lsp-error;
     if-feature "stateful";
+    base lsp-error;
     description
       "No error, LSP is fine.";
     reference
@@ -494,8 +497,8 @@ module ietf-pcep {
   }
 
   identity unknown-lsp-error {
-    base lsp-error;
     if-feature "stateful";
+    base lsp-error;
     description
       "Unknown reason.";
     reference
@@ -504,8 +507,8 @@ module ietf-pcep {
   }
 
   identity limit-lsp-error {
-    base lsp-error;
     if-feature "stateful";
+    base lsp-error;
     description
       "Limit reached for PCE-controlled LSPs.";
     reference
@@ -514,8 +517,8 @@ module ietf-pcep {
   }
 
   identity pending-lsp-error {
-    base lsp-error;
     if-feature "stateful";
+    base lsp-error;
     description
       "Too many pending LSP update requests.";
     reference
@@ -524,8 +527,8 @@ module ietf-pcep {
   }
 
   identity unacceptable-lsp-error {
-    base lsp-error;
     if-feature "stateful";
+    base lsp-error;
     description
       "Unacceptable parameters.";
     reference
@@ -534,8 +537,8 @@ module ietf-pcep {
   }
 
   identity internal-lsp-error {
-    base lsp-error;
     if-feature "stateful";
+    base lsp-error;
     description
       "Internal error.";
     reference
@@ -544,8 +547,8 @@ module ietf-pcep {
   }
 
   identity admin-lsp-error {
-    base lsp-error;
     if-feature "stateful";
+    base lsp-error;
     description
       "LSP administratively brought down.";
     reference
@@ -554,8 +557,8 @@ module ietf-pcep {
   }
 
   identity preempted-lsp-error {
-    base lsp-error;
     if-feature "stateful";
+    base lsp-error;
     description
       "LSP preempted.";
     reference
@@ -564,8 +567,8 @@ module ietf-pcep {
   }
 
   identity rsvp-lsp-error {
-    base lsp-error;
     if-feature "stateful";
+    base lsp-error;
     description
       "RSVP signaling error.";
     reference
@@ -853,8 +856,8 @@ module ietf-pcep {
         description
           "If segment routing is supported";
         reference
-          "I-D.ietf-pce-segment-routing: PCEP Extensions for Segment
-           Routing";
+          "RFC 8664: Path Computation Element Communication Protocol
+           (PCEP) Extensions for Segment Routing";
         leaf enabled {
           type boolean;
           description
@@ -875,17 +878,17 @@ module ietf-pcep {
              to SID";
         }
       }
-      //sr      
+      //sr
     }
-    //capability  
+    //capability
     leaf msd {
       if-feature "sr";
       type uint8;
       description
         "Maximum SID Depth for SR";
       reference
-        "I-D.ietf-pce-segment-routing: PCEP Extensions for Segment
-         Routing";
+        "RFC 8664: Path Computation Element Communication Protocol
+         (PCEP) Extensions for Segment Routing";
     }
   }
 
@@ -1178,11 +1181,10 @@ module ietf-pcep {
            Protocol (PCEP)";
       }
       leaf open-wait-timer {
-        type uint16 {
-          range "1..65535";
-        }
+        type uint16;
         units "seconds";
         default "60";
+        config false;
         description
           "The time in seconds that the PCEP entity will wait
            to receive an Open message from a peer after the
@@ -1195,11 +1197,10 @@ module ietf-pcep {
            Protocol (PCEP)";
       }
       leaf keep-wait-timer {
-        type uint16 {
-          range "1..65535";
-        }
+        type uint16;
         units "seconds";
         default "60";
+        config false;
         description
           "The time in seconds that the PCEP entity will wait
            to receive a Keepalive or PCErr message from a peer
@@ -1312,7 +1313,7 @@ module ietf-pcep {
            computation requests.  If after the expiration of
            the SyncTimer all the M path computation requests
            have not been, received a protocol error is
-           triggered and the PCE MUST cancel the whole set
+           triggered and the PCE must cancel the whole set
            of path computation requests.
            The aim of the SyncTimer is to avoid the storage
            of unused synchronized requests should one of
@@ -1471,9 +1472,10 @@ module ietf-pcep {
           description
             "List of all PCEP associations";
           reference
-            "I-D.ietf-pce-association-group: PCEP
-             Extensions for Establishing Relationships
-             Between Sets of LSPs";
+            "RFC 8697: Path Computation Element Communication
+             Protocol (PCEP) Extensions for Establishing
+             Relationships between Sets of Label Switched
+             Paths (LSPs)";
           leaf type {
             type identityref {
               base te-types:association-type;
@@ -1750,9 +1752,10 @@ module ietf-pcep {
                  support unique identification.";
             }
             reference
-              "I-D.ietf-pce-association-group: PCEP
-               Extensions for Establishing Relationships
-               Between Sets of LSPs";
+              "RFC 8697: Path Computation Element Communication
+               Protocol (PCEP) Extensions for Establishing
+               Relationships between Sets of Label Switched
+               Paths (LSPs)";
           }
         }
       }
@@ -2375,9 +2378,10 @@ module ietf-pcep {
                   "Indicate the list of supported association types
                    on this session";
                 reference
-                  "I-D.ietf-pce-association-group: PCEP
-                   Extensions for Establishing Relationships
-                   Between Sets of LSPs";
+                  "RFC 8697: Path Computation Element Communication
+                   Protocol (PCEP) Extensions for Establishing
+                   Relationships between Sets of Label Switched
+                   Paths (LSPs)";
                 list assoc-type {
                   key "at";
                   description
@@ -2606,4 +2610,3 @@ module ietf-pcep {
 
   //rpc
 }
-

@@ -49,8 +49,8 @@ module: ietf-pcep
         +--rw connect-max-retry?            uint32
         +--rw init-backoff-timer?           uint16
         +--rw max-backoff-timer?            uint32
-        +--rw open-wait-timer?              uint16
-        +--rw keep-wait-timer?              uint16
+        +--ro open-wait-timer?              uint16
+        +--ro keep-wait-timer?              uint16
         +--rw keep-alive-timer?             uint8
         +--rw dead-timer?                   uint8
         +--rw allow-negotiation?            boolean
@@ -82,8 +82,7 @@ module: ietf-pcep
         |  |  +--ro global-source    uint32
         |  |  +--ro extended-id      string
         |  |  +--ro lsp* [plsp-id pcc-id lsp-id]
-        |  |     +--ro plsp-id
-        |  |     |       -> /pcep/entity/lsp-db/lsp/plsp-id
+        |  |     +--ro plsp-id    -> /pcep/entity/lsp-db/lsp/plsp-id
         |  |     +--ro pcc-id     -> /pcep/entity/lsp-db/lsp/pcc-id
         |  |     +--ro lsp-id     -> /pcep/entity/lsp-db/lsp/lsp-id
         |  +--ro lsp* [plsp-id pcc-id lsp-id]
@@ -114,7 +113,8 @@ module: ietf-pcep
         |     +--ro association-list*
         |             [type id source global-source extended-id]
         |             {association}?
-        |        +--ro type             leafref
+        |        +--ro type
+        |        |       -> /pcep/entity/lsp-db/association-list/type
         |        +--ro id
         |        |       -> /pcep/entity/lsp-db/association-list/id
         |        +--ro source           leafref
@@ -150,12 +150,10 @@ module: ietf-pcep
         |     |           +--ro label-hop
         |     |              +--ro te-label
         |     |                    ...
-        |     +--ro pcc-original?
-        |     |       -> /pcep/entity/peers/peer/addr
+        |     +--ro pcc-original?    -> /pcep/entity/peers/peer/addr
         |     +--ro req-id?          uint32
         |     +--ro retrieved?       boolean
-        |     +--ro pcc-retrieved?
-        |     |       -> /pcep/entity/peers/peer/addr
+        |     +--ro pcc-retrieved?   -> /pcep/entity/peers/peer/addr
         |     +--ro creation-time?   yang:timestamp
         |     +--ro discard-time?    uint32
         |     +--ro reuse-time?      uint32
@@ -203,8 +201,7 @@ module: ietf-pcep
               |     |  +--rw key-chain?
               |     |          key-chain:key-chain-ref
               |     +--:(auth-key)
-              |     |  +--rw crypto-algorithm
-              |     |  |       identityref
+              |     |  +--rw crypto-algorithm            identityref
               |     |  +--rw (key-string-style)?
               |     |     +--:(keystring)
               |     |     |  +--rw keystring?            string
@@ -259,8 +256,7 @@ module: ietf-pcep
                     +--ro assoc-type-list {association}?
                     |  +--ro assoc-type* [at]
                     |     +--ro at    identityref
-                    +--ro speaker-entity-id?      string
-                    |       {sync-opt}?
+                    +--ro speaker-entity-id?      string {sync-opt}?
                     +--ro discontinuity-time?     yang:timestamp
 
   rpcs:

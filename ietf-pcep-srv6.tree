@@ -1,0 +1,23 @@
+
+module: ietf-pcep-srv6
+  augment /pcep:pcep/pcep:entity/pcep:capability:
+    +--rw srv6 {srv6}?
+       +--rw enabled?     boolean
+       +--rw msd-limit?   boolean
+       +--rw srv6-msd* [msd-type]
+          +--rw msd-type     uint8
+          +--rw msd-value?   uint8
+  augment /pcep:pcep/pcep:entity/pcep:peers/pcep:peer
+            /pcep:capability:
+    +--rw srv6 {srv6}?
+       +--rw enabled?     boolean
+       +--rw msd-limit?   boolean
+       +--rw srv6-msd* [msd-type]
+          +--rw msd-type     uint8
+          +--rw msd-value?   uint8
+  augment /pcep:pcep/pcep:entity/pcep:lsp-db/pcep:lsp:
+    +--ro srv6 {srv6}?
+       +--ro segment-list
+          +--ro segment* [index]
+             +--ro index        uint32
+             +--ro sid-value?   srv6-types:srv6-sid
